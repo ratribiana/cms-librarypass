@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LibraryService } from "../../../_services/library.service"
 import { FlashMessagesService } from 'angular2-flash-messages';;
 import { map, tap } from "rxjs/operators";
@@ -18,7 +18,7 @@ export class AuthGoogleOauthComponent implements OnInit {
   @Input() auth_id;
 
   loading = false;
-  updateLibraryAuthMethodForm: FormGroup;
+  updateLibraryAuthMethodForm: UntypedFormGroup;
   submitted = false;
   auth_is_active = false;
   form_loaded = false;
@@ -32,7 +32,7 @@ export class AuthGoogleOauthComponent implements OnInit {
   constructor(
     private libraryService: LibraryService,
     private _flashMessagesService: FlashMessagesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
   ) { }
 
   ngOnInit() {

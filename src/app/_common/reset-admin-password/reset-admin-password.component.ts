@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 
 import {first} from "rxjs/operators";
 import {ResetPasswordService} from "../_services/reset-password.service";
@@ -14,7 +14,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
   styleUrls: ['./reset-admin-password.component.css']
 })
 export class ResetAdminPasswordComponent implements OnInit {
-  passwordResetForm: FormGroup;  
+  passwordResetForm: UntypedFormGroup;  
   email: string = '';
   expire_time: string = '';
   hash: string = '';
@@ -24,7 +24,7 @@ export class ResetAdminPasswordComponent implements OnInit {
   error = '';
 
   constructor(    
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private resetPasswordService: ResetPasswordService,
     private router: Router,
     private route: ActivatedRoute,

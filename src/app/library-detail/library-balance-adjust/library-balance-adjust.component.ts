@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LibraryService } from "../../_services/library.service"
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { AuthenticationService } from "../../_services";
@@ -15,7 +15,7 @@ export class LibraryBalanceAdjustComponent implements OnInit {
   @Input() LibData;
 
   current_balance: any;
-  updateLibraryBalanceForm: FormGroup;
+  updateLibraryBalanceForm: UntypedFormGroup;
   library_balance_types: object;
   loading = false;
   submitted = false;
@@ -23,7 +23,7 @@ export class LibraryBalanceAdjustComponent implements OnInit {
   currentUser = this.authenticationService.currentUserValue;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private libraryService: LibraryService,
     private _flashMessagesService: FlashMessagesService,
     private authenticationService: AuthenticationService,

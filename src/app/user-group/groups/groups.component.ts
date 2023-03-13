@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import {map, tap} from "rxjs/operators";
@@ -19,12 +19,12 @@ export class GroupsComponent implements OnInit {
   pageLabel = 'Create User Group';
 
    /** declare form inputs */
-  groupForm = new FormGroup({
-  		groupName: new FormControl('', [
+  groupForm = new UntypedFormGroup({
+  		groupName: new UntypedFormControl('', [
 	        Validators.required
 	      ]),
-  		roles: new FormControl([]),
-      active: new FormControl('')
+  		roles: new UntypedFormControl([]),
+      active: new UntypedFormControl('')
   	});
 
   aclRoles: object;

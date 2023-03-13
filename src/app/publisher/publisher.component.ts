@@ -9,7 +9,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ExcelService} from '../_services/excel.service';
 import { DateTimeAdapter, OWL_DATE_TIME_FORMATS, OWL_DATE_TIME_LOCALE, OwlDateTimeComponent, OwlDateTimeFormats } from 'ng-pick-datetime';
 import { MomentDateTimeAdapter, OWL_MOMENT_DATE_TIME_ADAPTER_OPTIONS } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-adapter.class';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { saveAs } from 'file-saver';
@@ -45,7 +45,7 @@ export class PublisherComponent implements OnInit {
   page: number = 1;
   loading: boolean = false;
   report_type = 'detached';
-  month_year = new FormControl(moment());
+  month_year = new UntypedFormControl(moment());
 
 
   @ViewChild(PublisherStatementComponent) pub_statement:PublisherStatementComponent;

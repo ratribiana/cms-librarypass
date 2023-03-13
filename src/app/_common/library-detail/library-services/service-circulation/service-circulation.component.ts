@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LibraryService } from "../../../_services/library.service"
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 
 @Component({
@@ -25,16 +25,16 @@ export class ServiceCirculationComponent implements OnInit {
 
   submitted = false;
   loaded: boolean = false;
-  updateLibraryForm: FormGroup;
+  updateLibraryForm: UntypedFormGroup;
 
-  myForm:FormGroup;
+  myForm:UntypedFormGroup;
   disabled = false;
   ShowFilter = false;
   dropdownSettings = {};
 
   constructor(
     private libraryService: LibraryService,
-    private formBuilder: FormBuilder    
+    private formBuilder: UntypedFormBuilder    
   ) { }
 
   ngOnInit() {

@@ -5,7 +5,7 @@ import { environment } from "../../../environments/environment";
 import { AuthenticationService } from "../../_services";
 import { LibraryService } from "../../_services/library.service";
 import { Subject } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import { DataTableDirective } from 'angular-datatables';
@@ -22,7 +22,7 @@ export class PromotionDetailComponent implements OnInit {
 
   products: any = [];  
   dtOptions: any = {};  
-  createPromotionForm: FormGroup;
+  createPromotionForm: UntypedFormGroup;
   dtTrigger: Subject<any> = new Subject<any>();
   dropdownSettings = {};  
   apiUrl = environment.apiEndpoint;
@@ -51,7 +51,7 @@ export class PromotionDetailComponent implements OnInit {
     private promotionsService: PromotionsService,     
     private router: Router, 
     private authenticationService: AuthenticationService,
-    private formBuilder: FormBuilder,    
+    private formBuilder: UntypedFormBuilder,    
     private activatedRoute: ActivatedRoute,
     private toastr: ToastrService,
   ) { }

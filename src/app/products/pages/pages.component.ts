@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { CdkDrag, CdkDragStart,  CdkDropList, CdkDropListGroup, 
           CdkDragMove, CdkDragEnter, moveItemInArray} from "@angular/cdk/drag-drop";
 import {ViewportRuler} from "@angular/cdk/overlay";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { faWindowClose, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import { ProductsService} from "../../_services";
 import {ConfirmModalComponent, ModalConfig} from '../../_common/confirm-modal'
@@ -46,20 +46,20 @@ export class PagesComponent implements OnInit {
     disableDismissButton: true,
   }
 
-  detailForm = new FormGroup({
-    waid_format: new FormControl(0),
-    disable_trim: new FormControl(0),
+  detailForm = new UntypedFormGroup({
+    waid_format: new UntypedFormControl(0),
+    disable_trim: new UntypedFormControl(0),
   });
 
-  ftpForm = new FormGroup({
-    source_url: new FormControl('', [Validators.required]),
-    login: new FormControl(''),
-    password: new FormControl(''),
-    s3_source: new FormControl(0),
-    type: new FormControl(0),
-    replace_pages: new FormControl(0),
-    disable_trimbox: new FormControl(0),
-    disable_trim: new FormControl(0),
+  ftpForm = new UntypedFormGroup({
+    source_url: new UntypedFormControl('', [Validators.required]),
+    login: new UntypedFormControl(''),
+    password: new UntypedFormControl(''),
+    s3_source: new UntypedFormControl(0),
+    type: new UntypedFormControl(0),
+    replace_pages: new UntypedFormControl(0),
+    disable_trimbox: new UntypedFormControl(0),
+    disable_trim: new UntypedFormControl(0),
    });
 
   allowed_types = '.jpg,.jpeg,.gif,.tif,.tiff,.gif';

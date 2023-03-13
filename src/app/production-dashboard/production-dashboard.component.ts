@@ -6,7 +6,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { MiscService } from '../_services';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl, UntypedFormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import {  } from '@angular/forms';
 import * as moment from 'moment';
@@ -27,10 +27,10 @@ export class ProductionDashboardComponent implements OnInit {
   tableDropdownSettings = {};
   dropdownListB = {};
   addFilterColumns = {};
-  filterForm:FormGroup;
-  profileForm:FormGroup;
-  productSearchForm:FormGroup;
-  productsLocaleForm:FormGroup;
+  filterForm:UntypedFormGroup;
+  profileForm:UntypedFormGroup;
+  productSearchForm:UntypedFormGroup;
+  productsLocaleForm:UntypedFormGroup;
   editing = {};
   rows:any = [];
   products: object;
@@ -61,8 +61,8 @@ export class ProductionDashboardComponent implements OnInit {
   selectedProfile = 1;
   searchOnColumn;
   search_group = [1];
-  search_date_from = [new FormControl(moment())];
-  search_date_to = [new FormControl(moment())];
+  search_date_from = [new UntypedFormControl(moment())];
+  search_date_to = [new UntypedFormControl(moment())];
   search_input = [{
     'value': '',
     'type': 'name',
@@ -231,7 +231,7 @@ export class ProductionDashboardComponent implements OnInit {
   constructor(
     private productService: ProductsService,    
     private misc: MiscService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
     private authenticationService: AuthenticationService,
     ) {                  
@@ -477,12 +477,12 @@ export class ProductionDashboardComponent implements OnInit {
     });
 
     this.productSearchForm = this.formBuilder.group({           
-      query_fields: new FormArray([]),
+      query_fields: new UntypedFormArray([]),
     });
   }
   
   get ps() { return this.productSearchForm.controls; }
-  get queryField() { return this.ps.query_fields as FormArray; }
+  get queryField() { return this.ps.query_fields as UntypedFormArray; }
   addMoreSearch() {
     let search_fields = this.productSearchForm.value.query_fields;    
     // let unavailable_fields = search_fields.map(d => d.type);

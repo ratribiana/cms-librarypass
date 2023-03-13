@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthenticationService } from "../_services";
 import { environment } from "../../environments/environment";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {LibraryService} from "../_services/library.service";
 
 @Component({
@@ -16,8 +16,8 @@ import {LibraryService} from "../_services/library.service";
 export class UserMaintenanceComponent implements OnInit {
 
   apiUrl = environment.apiEndpoint;
-  createUserForm: FormGroup;
-  searchForm:FormGroup;
+  createUserForm: UntypedFormGroup;
+  searchForm:UntypedFormGroup;
   loading = false;
   dataLoaded = true;
   submitted = false;
@@ -44,7 +44,7 @@ export class UserMaintenanceComponent implements OnInit {
     private userService: UserMaintenanceService,
     private toastr: ToastrService,
     private authenticationService: AuthenticationService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private libraryService: LibraryService
   ) { }
   ngOnInit() {        

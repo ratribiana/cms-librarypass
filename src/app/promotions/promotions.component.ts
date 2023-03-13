@@ -7,7 +7,7 @@ import { LibraryService } from "../_services/library.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { DataTableDirective } from 'angular-datatables';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,7 @@ export class PromotionsComponent implements OnInit {
   datatableElement: DataTableDirective;
   
   dtOptions: any = {};  
-  createPromotionForm: FormGroup;
+  createPromotionForm: UntypedFormGroup;
   apiUrl = environment.apiEndpoint;
   promotions: [];
   table: any;
@@ -52,7 +52,7 @@ export class PromotionsComponent implements OnInit {
     private libraryService: LibraryService, 
     private promotionsService: PromotionsService,     
     private authenticationService: AuthenticationService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private misc: MiscService,
     private toastr: ToastrService,
     private router : Router

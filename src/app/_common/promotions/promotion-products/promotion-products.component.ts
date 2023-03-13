@@ -2,7 +2,7 @@ import { Component, OnInit, Input} from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { LibraryService } from "../../_services/library.service"
 import { ProductsService } from "../../_services/products.service"
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { AuthenticationService } from "../../_services";
 import {PromotionsService} from "../../_services/promotions.service";
 import {ReportService} from "../../_services/report.service";
@@ -19,7 +19,7 @@ export class PromotionProductsComponent implements OnInit {
   @Input() promotion_id;
   // @Output() myEvent = new EventEmitter<string>();
 
-  filterForm:FormGroup;
+  filterForm:UntypedFormGroup;
   apiUrl = environment.apiEndpoint;
   loading = false;
   dataLoaded = false;        
@@ -55,7 +55,7 @@ export class PromotionProductsComponent implements OnInit {
     private reportService: ReportService, 
     private productService: ProductsService, 
     private miscService: MiscService,
-    private formBuilder: FormBuilder,            
+    private formBuilder: UntypedFormBuilder,            
     private authenticationService: AuthenticationService,    
   ) { }
 

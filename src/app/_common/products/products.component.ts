@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { LibraryService } from "../_services/library.service"
 import { ProductsService } from "../_services/products.service"
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { AuthenticationService } from "../_services";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -18,7 +18,7 @@ import { AuthGuard } from "../_guards";
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  filterForm:FormGroup;
+  filterForm:UntypedFormGroup;
   apiUrl = environment.apiEndpoint;
   loading = false;
   dataLoaded = false;        
@@ -55,7 +55,7 @@ export class ProductsComponent implements OnInit {
   constructor(    
     private libraryService: LibraryService, 
     private productsService: ProductsService, 
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _flashMessagesService: FlashMessagesService,
     private authenticationService: AuthenticationService,
     private router : Router,

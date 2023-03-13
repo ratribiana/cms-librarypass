@@ -1,7 +1,7 @@
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 
 export function ValidateRange(from_ip_address: string, to_ip_address: string) {
-    return (formGroup: FormGroup) => {
+    return (formGroup: UntypedFormGroup) => {
         const from_range = formGroup.controls[from_ip_address];
         const to_range = formGroup.controls[to_ip_address];        
 

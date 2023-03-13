@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormArray, Validators } from '@angular/forms';
 import { LibraryService } from "../../../_services/library.service"
 import { FlashMessagesService } from 'angular2-flash-messages';;
 
@@ -15,7 +15,7 @@ export class AuthSip2Component implements OnInit {
   @Input() auth_id;
 
   loading = false;
-  updateLibraryAuthMethodForm: FormGroup;
+  updateLibraryAuthMethodForm: UntypedFormGroup;
   submitted = false;
   auth_is_active = false;
   form_loaded = false;
@@ -27,7 +27,7 @@ export class AuthSip2Component implements OnInit {
   constructor(
     private libraryService: LibraryService,
     private _flashMessagesService: FlashMessagesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
   ) { }
 
   ngOnInit() {
@@ -140,8 +140,8 @@ export class AuthSip2Component implements OnInit {
       validate_patron: [''],
       validation_type: ['1'],
       bv_field: ['', Validators.required],
-      af_field: new FormArray([]),
-      patron_status: new FormArray([]),
+      af_field: new UntypedFormArray([]),
+      patron_status: new UntypedFormArray([]),
       authSettings: this.formBuilder.group({
         username_placeholder: [''],
         password_placeholder: [''],
@@ -235,8 +235,8 @@ export class AuthSip2Component implements OnInit {
   }
 
   get f() { return this.updateLibraryAuthMethodForm.controls; }
-  get af() { return this.f.af_field as FormArray; }
-  get ps() { return this.f.patron_status as FormArray; }
+  get af() { return this.f.af_field as UntypedFormArray; }
+  get ps() { return this.f.patron_status as UntypedFormArray; }
 
   addAfField(val: string = '') {
     this.af.push(this.formBuilder.group({

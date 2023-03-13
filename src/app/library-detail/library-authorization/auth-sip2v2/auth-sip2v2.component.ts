@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LibraryService } from "../../../_services/library.service"
 import { FlashMessagesService } from 'angular2-flash-messages';;
 import { map, tap } from "rxjs/operators";
@@ -20,8 +20,8 @@ export class AuthSip2v2Component implements OnInit {
 
   loading = false;
   rule_loading = false;
-  updateLibraryAuthMethodForm: FormGroup;
-  validationRulesForm: FormGroup;
+  updateLibraryAuthMethodForm: UntypedFormGroup;
+  validationRulesForm: UntypedFormGroup;
   submitted = false;
   rule_submitted = false;
   auth_is_active = false;
@@ -37,7 +37,7 @@ export class AuthSip2v2Component implements OnInit {
   constructor(
     private libraryService: LibraryService,
     private _flashMessagesService: FlashMessagesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private misc: MiscService,
   ) { }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { UserMaintenanceService } from "../../_services/user-maintenance.service"
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from "../../_services";
@@ -17,7 +17,7 @@ import { AuthGuard } from 'src/app/_guards';
 })
 export class CmsUserCreateComponent implements OnInit {
 
-  updateCmsUserForm: FormGroup;
+  updateCmsUserForm: UntypedFormGroup;
   cms_user_roles: object;
   cms_role = '1';
   loading = false;
@@ -35,7 +35,7 @@ export class CmsUserCreateComponent implements OnInit {
   username: any;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private userMaintenanceService: UserMaintenanceService,
     private toastr: ToastrService,
     private authenticationService: AuthenticationService,

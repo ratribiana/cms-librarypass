@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { LibraryService, ProductsService} from "../../_services";
 import * as moment from 'moment';
 
@@ -25,23 +25,23 @@ export class PricingAvailabilityComponent implements OnInit {
 
 
 
-  detailForm = new FormGroup({
-    available_date: new FormControl(''),
-    print_on_sale_date: new FormControl(''),
-    price_tier_id: new FormControl(0),
-    library_content_rating_id: new FormControl([]),
-    active: new FormControl(0),
-    web: new FormControl(0),
-    subscription: new FormControl(0),
-    rental_allowed: new FormControl(0),
-    drm_free: new FormControl(0),
-    price_change_date: new FormControl(''),
-    previous_price_tier_id: new FormControl(0),
-    mature: new FormControl(0),
-    adult: new FormControl(0),
-    tapjoy: new FormControl(0),
-    library: new FormControl(0),
-    library_price_tier_id: new FormControl(0)
+  detailForm = new UntypedFormGroup({
+    available_date: new UntypedFormControl(''),
+    print_on_sale_date: new UntypedFormControl(''),
+    price_tier_id: new UntypedFormControl(0),
+    library_content_rating_id: new UntypedFormControl([]),
+    active: new UntypedFormControl(0),
+    web: new UntypedFormControl(0),
+    subscription: new UntypedFormControl(0),
+    rental_allowed: new UntypedFormControl(0),
+    drm_free: new UntypedFormControl(0),
+    price_change_date: new UntypedFormControl(''),
+    previous_price_tier_id: new UntypedFormControl(0),
+    mature: new UntypedFormControl(0),
+    adult: new UntypedFormControl(0),
+    tapjoy: new UntypedFormControl(0),
+    library: new UntypedFormControl(0),
+    library_price_tier_id: new UntypedFormControl(0)
   });
 
   constructor(

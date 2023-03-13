@@ -4,7 +4,7 @@ import { AuthenticationService } from "../_services";
 import {LibraryService} from "../_services/library.service"
 import { LibrarianStatementComponent } from "./librarian-statement/librarian-statement.component";
 import { LibrarianActivityComponent } from "./librarian-activity/librarian-activity.component";
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-librarian',
@@ -13,7 +13,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class LibrarianComponent implements OnInit {
 
-  searchForm:FormGroup;
+  searchForm:UntypedFormGroup;
   apiUrl = environment.apiEndpoint;
   currentUser = this.authenticationService.currentUserValue;
   library_ids = [];
@@ -35,7 +35,7 @@ export class LibrarianComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private libraryService: LibraryService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) { }
 
   ngOnInit() {    

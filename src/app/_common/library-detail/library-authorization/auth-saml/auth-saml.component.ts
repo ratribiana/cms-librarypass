@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormArray } from '@angular/forms';
 import { LibraryService } from "../../../_services/library.service"
 import { FlashMessagesService } from 'angular2-flash-messages';
 
@@ -16,7 +16,7 @@ export class AuthSamlComponent implements OnInit {
 
 
   loading = false;
-  updateLibraryAuthMethodForm: FormGroup;
+  updateLibraryAuthMethodForm: UntypedFormGroup;
   submitted = false;
   auth_is_active = false;
   form_loaded = false;
@@ -27,7 +27,7 @@ export class AuthSamlComponent implements OnInit {
   constructor(
     private libraryService: LibraryService,
     private _flashMessagesService: FlashMessagesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
   ) { }
 
   ngOnInit() {
@@ -75,7 +75,7 @@ export class AuthSamlComponent implements OnInit {
       idp_x509cert: ['', Validators.required],
       parent_pass_through: [0],
       attribute_field: [''],
-      attribute_value: new FormArray([]),
+      attribute_value: new UntypedFormArray([]),
       authSettings: this.formBuilder.group({
         username_placeholder: [''],
         password_placeholder: [''],
@@ -154,7 +154,7 @@ export class AuthSamlComponent implements OnInit {
   }
 
   get f() { return this.updateLibraryAuthMethodForm.controls; }
-  get lib_att() { return this.f.attribute_value as FormArray; }
+  get lib_att() { return this.f.attribute_value as UntypedFormArray; }
 
   updateLibraryAuthMethod(e) {
 

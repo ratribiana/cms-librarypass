@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {ProductsService} from "../../_services";
 
 
@@ -11,9 +11,9 @@ import {ProductsService} from "../../_services";
 export class CreditsComponent implements OnInit {
   @Input() product_id;
 
-  detailForm = new FormGroup({
-    writers: new FormControl('', [Validators.required]),
-    artists: new FormControl('', [Validators.required])
+  detailForm = new UntypedFormGroup({
+    writers: new UntypedFormControl('', [Validators.required]),
+    artists: new UntypedFormControl('', [Validators.required])
    });
 
 

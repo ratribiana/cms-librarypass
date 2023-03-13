@@ -3,7 +3,7 @@ import { environment } from "../../environments/environment";
 import { AuthenticationService, UserService } from "../_services";
 import { UserMaintenanceService } from "../_services/user-maintenance.service";
 import { LibraryService } from "../_services/library.service";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthGuard } from "../_guards";
 import { ToastrService } from 'ngx-toastr';
 import {ConfirmModalComponent, ModalConfig} from '../_common/confirm-modal';
@@ -27,10 +27,10 @@ export class SettingsComponent implements OnInit {
 	loading = false;
 	loading2 = false;
 	allow_children_curation = 1;
-	selectedTheme = new FormControl([]);
-	limitCuration = new FormControl([]);
-	lockDisabled = new FormControl([]);
-  	show_read_progress = new FormControl([0]);
+	selectedTheme = new UntypedFormControl([]);
+	limitCuration = new UntypedFormControl([]);
+	lockDisabled = new UntypedFormControl([]);
+  	show_read_progress = new UntypedFormControl([0]);
 	is_parent = false;
 
 	dropdownSettings = {}; 
@@ -43,9 +43,9 @@ export class SettingsComponent implements OnInit {
 	temp_hidden = true;
 
 	/** declare form inputs */
-	connectForm = new FormGroup({
-		username: new FormControl('', [ Validators.required]),
-		pwd: new FormControl('', [ Validators.required])
+	connectForm = new UntypedFormGroup({
+		username: new UntypedFormControl('', [ Validators.required]),
+		pwd: new UntypedFormControl('', [ Validators.required])
 	});
 
 	// modal for deleting Profile

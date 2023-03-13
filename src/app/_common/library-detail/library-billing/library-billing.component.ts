@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LibraryService } from "../../_services/library.service"
 import { AnnounceService } from "../../_services/announce.service"
 import { FlashMessagesService } from 'angular2-flash-messages';
@@ -15,8 +15,8 @@ export class LibraryBillingComponent implements OnInit {
   @Input() library_id;
   @Input() LibData;
 
-  updateLibraryBillingForm: FormGroup;
-  updateLibraryDataForm: FormGroup;
+  updateLibraryBillingForm: UntypedFormGroup;
+  updateLibraryDataForm: UntypedFormGroup;
   billing_types: object;
   payment_methods: object;
   loading = false;
@@ -32,7 +32,7 @@ export class LibraryBillingComponent implements OnInit {
   constructor(
     private libraryService: LibraryService,
     private _flashMessagesService: FlashMessagesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private announceService: AnnounceService,
   ) { }
 

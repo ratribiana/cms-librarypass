@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild  } from '@angular/core';
 import {ProductsService} from "../../_services";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ConstantPool } from '@angular/compiler';
 
 
@@ -16,8 +16,8 @@ export class NotesComponent implements OnInit {
   notesList = [];
 
   
-  detailForm = new FormGroup({
-    notes: new FormControl(''),
+  detailForm = new UntypedFormGroup({
+    notes: new UntypedFormControl(''),
    });
 
   constructor(

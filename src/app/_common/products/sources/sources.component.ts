@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {ProductsService} from "../../_services";
 import {ConfirmModalComponent, ModalConfig} from '../../_common/confirm-modal';
 import { faInfoCircle, faWindowClose, faDownload} from '@fortawesome/free-solid-svg-icons';
@@ -51,11 +51,11 @@ export class SourcesComponent implements OnInit {
   allowed_types_printready = '.pdf,.zip';
   allowed_types_indesign = '.psd,.zip';
 
-  detailForm = new FormGroup({
-    source_url: new FormControl('', [Validators.required]),
-    type: new FormControl(0),
-    login: new FormControl(''),
-    password: new FormControl('')
+  detailForm = new UntypedFormGroup({
+    source_url: new UntypedFormControl('', [Validators.required]),
+    type: new UntypedFormControl(0),
+    login: new UntypedFormControl(''),
+    password: new UntypedFormControl('')
    });
 
 

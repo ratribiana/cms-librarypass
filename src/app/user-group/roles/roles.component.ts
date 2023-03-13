@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import {map, tap} from "rxjs/operators";
@@ -20,17 +20,17 @@ export class RolesComponent implements OnInit {
   security_level = 'soft';
 
   /** declare form inputs */
-  roleForm = new FormGroup({
-  		roleName: new FormControl('', [
+  roleForm = new UntypedFormGroup({
+  		roleName: new UntypedFormControl('', [
           Validators.required
         ]),
-      	shortCode: new FormControl('', [
+      	shortCode: new UntypedFormControl('', [
           Validators.required
         ]),
-		urlRoute: new FormControl(''),
-  		shortDescription: new FormControl(''),
-  		routes: new FormControl([]),
-  		active: new FormControl(''),
+		urlRoute: new UntypedFormControl(''),
+  		shortDescription: new UntypedFormControl(''),
+  		routes: new UntypedFormControl([]),
+  		active: new UntypedFormControl(''),
   	});
 
   aclRoutes: object;

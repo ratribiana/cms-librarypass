@@ -3,7 +3,7 @@ import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, Subject, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, switchMap} from 'rxjs/operators';
 import { UserService, ProductsService} from "../../_services";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { faSearch} from '@fortawesome/free-solid-svg-icons';
 
 
@@ -22,10 +22,10 @@ export class UvieComponent implements OnInit {
   model: any;
 
 
-  detailForm = new FormGroup({
-    uview_allowed: new FormControl(0),
-    uview_publish: new FormControl(0),
-    uview_export: new FormControl(0),
+  detailForm = new UntypedFormGroup({
+    uview_allowed: new UntypedFormControl(0),
+    uview_publish: new UntypedFormControl(0),
+    uview_export: new UntypedFormControl(0),
   });
 
   constructor(

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { LibraryService } from "../../_services/library.service";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {ReportService, MiscService, ProductsService} from "../../_services";
 import * as moment from 'moment';
 
@@ -31,34 +31,34 @@ export class ComicDetailComponent implements OnInit {
   releaseTypes = [];
 
   /** declare form inputs */
-  detailForm = new FormGroup({
-      name: new FormControl('', [
+  detailForm = new UntypedFormGroup({
+      name: new UntypedFormControl('', [
           Validators.required
         ]),
-      service_types: new FormControl([], [
+      service_types: new UntypedFormControl([], [
           Validators.required
         ]),
-      comic_bundle_name: new FormControl(''),
-      series_bundle_name: new FormControl(''),
-      number: new FormControl('', [
+      comic_bundle_name: new UntypedFormControl(''),
+      series_bundle_name: new UntypedFormControl(''),
+      number: new UntypedFormControl('', [
           Validators.required
         ]),
-      product_type_id: new FormControl(''),
-      supplier_id: new FormControl(''),
-      language_id: new FormControl(''),
-      raw_name: new FormControl('', [
+      product_type_id: new UntypedFormControl(''),
+      supplier_id: new UntypedFormControl(''),
+      language_id: new UntypedFormControl(''),
+      raw_name: new UntypedFormControl('', [
           Validators.required
         ]),
-      release_category_id: new FormControl(''),
-      product_publisher_identifier: new FormControl(''),
-      synopsis: new FormControl(''),
-      video_url: new FormControl(''),
-      description: new FormControl(''),
-      manga_orientation: new FormControl(0),
-      webtoon_orientation: new FormControl(0),
-      price_tier_id: new FormControl(1),
-      legal: new FormControl(''),
-      notes: new FormControl(''),
+      release_category_id: new UntypedFormControl(''),
+      product_publisher_identifier: new UntypedFormControl(''),
+      synopsis: new UntypedFormControl(''),
+      video_url: new UntypedFormControl(''),
+      description: new UntypedFormControl(''),
+      manga_orientation: new UntypedFormControl(0),
+      webtoon_orientation: new UntypedFormControl(0),
+      price_tier_id: new UntypedFormControl(1),
+      legal: new UntypedFormControl(''),
+      notes: new UntypedFormControl(''),
     });
 
 

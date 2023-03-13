@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {LibraryService} from "../../_services/library.service"
 import {CdkDragDrop, CdkDragEnter, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { FlashMessagesService } from 'angular2-flash-messages';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 
 @Component({
@@ -22,7 +22,7 @@ export class LibraryCirculationComponent implements OnInit {
   updated_selected_price_tiers: any;
   submitted = false;  
   loading: boolean = false;
-  updateLibraryForm: FormGroup;  
+  updateLibraryForm: UntypedFormGroup;  
 
   //comics, rpg, manga and storybooks
 
@@ -120,7 +120,7 @@ export class LibraryCirculationComponent implements OnInit {
   constructor(
     private libraryService: LibraryService,
     private _flashMessagesService: FlashMessagesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
   ) { }
 
   ngOnInit() {  

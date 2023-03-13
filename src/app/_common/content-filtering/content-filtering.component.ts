@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { LibraryService } from "../_services/library.service"
 import { ProductsService } from "../_services/products.service"
 import { UserMaintenanceService } from "../_services/user-maintenance.service";
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { AuthenticationService } from "../_services";
 import { HttpErrorResponse } from "@angular/common/http";
 import {map, tap} from "rxjs/operators";
@@ -20,7 +20,7 @@ import {NgbdSortableHeader, SortEvent} from '../_helpers/sortable.directive';
 export class ContentFilteringComponent implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   
-  filterForm:FormGroup;
+  filterForm:UntypedFormGroup;
   apiUrl = environment.apiEndpoint;
   loading = false;
   dataLoaded = true;        
@@ -73,7 +73,7 @@ export class ContentFilteringComponent implements OnInit {
     private userService: UserMaintenanceService,
     private libraryService: LibraryService, 
     private productsService: ProductsService, 
-    private formBuilder: FormBuilder,    
+    private formBuilder: UntypedFormBuilder,    
     private authenticationService: AuthenticationService,
     private toastr: ToastrService,
     private router : Router,

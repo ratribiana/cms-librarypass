@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ProductsService} from "../../_services";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -14,7 +14,7 @@ export class SkuComponent implements OnInit {
   applicationsList = [];
   productApplications = [];
 
-  skuForm = new FormGroup({});
+  skuForm = new UntypedFormGroup({});
 
   constructor(
       private productService: ProductsService
@@ -34,10 +34,10 @@ export class SkuComponent implements OnInit {
     await this.getApplications();
     let group = {};
     this.applicationsList.forEach(sku=>{
-        group['application_' + sku.id] = new FormControl('');
+        group['application_' + sku.id] = new UntypedFormControl('');
     });
 
-    this.skuForm = new FormGroup(group);
+    this.skuForm = new UntypedFormGroup(group);
 
     // lets get skus of product itself
     await this.getProductApplications();

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LibraryService } from "../../_services/library.service"
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AnnounceService } from "../../_services/announce.service"
 import * as _ from 'lodash';
 
@@ -18,7 +18,7 @@ export class LibraryAuthorizationComponent implements OnInit {
   active_auth_method: object;
   loading = false;
   auth_methods: any;
-  authMethodForm: FormGroup;
+  authMethodForm: UntypedFormGroup;
   authMethodval: string = '1';
   selected_auth_method;
   library_auth_methods;
@@ -26,7 +26,7 @@ export class LibraryAuthorizationComponent implements OnInit {
 
   constructor(
     private libraryService: LibraryService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private announceService: AnnounceService,
   ) { }
 

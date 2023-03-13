@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from "../../_services";
 import { LibraryService } from "../../_services/library.service"
 import { FlashMessagesService } from 'angular2-flash-messages';
@@ -17,7 +17,7 @@ export class LibraryProfileComponent implements OnInit {
   @Input() LibData;
 
   apiUrl = environment.apiEndpoint;
-  updateLibraryForm: FormGroup;
+  updateLibraryForm: UntypedFormGroup;
   loading = false;
   submitted = false;
   currentUser = this.authenticationService.currentUserValue;
@@ -34,7 +34,7 @@ export class LibraryProfileComponent implements OnInit {
     private libraryService: LibraryService,
     private authenticationService: AuthenticationService,
     private _flashMessagesService: FlashMessagesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private announceService: AnnounceService,
   ) { }
 

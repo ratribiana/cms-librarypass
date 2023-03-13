@@ -1,6 +1,6 @@
 import {Component, Input, OnInit,  QueryList, ViewChildren} from '@angular/core';
 import {map, tap} from "rxjs/operators";
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {ReportService} from "../../_services/report.service";
 import * as moment from 'moment';
 import { Moment } from 'moment';
@@ -50,7 +50,7 @@ export class PublisherActivityComponent implements OnInit {
   payout_rate = '';
   loading: boolean = true;
   sort: string = '';  
-  month_year = new FormControl(moment());
+  month_year = new UntypedFormControl(moment());
 
   constructor(
     private reportService: ReportService,
