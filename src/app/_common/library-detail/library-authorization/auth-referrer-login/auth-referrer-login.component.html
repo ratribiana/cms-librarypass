@@ -1,0 +1,117 @@
+<div *ngIf="!form_loaded" class="text-center mt-4">  
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="form_loaded" class="mb-4">
+  <form [formGroup]="updateLibraryAuthMethodForm" (ngSubmit)="updateLibraryAuthMethod($event);">
+    
+    <div>
+      <!-- <label for="active"><h6>Active</h6></label>
+      &nbsp;&nbsp;
+      <input type="checkbox" formControlName="active"> -->
+      <div class="form-group checkbox-wrap">
+        <label class="checkbox">
+            <input type="checkbox" class="btn-checkbox-all" formControlName="active">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-label" for="active"><h6>Active</h6></label>
+      </div>                               
+    </div>
+    
+    <div *ngIf="auth_is_active">
+
+      <div formGroupName="authSettings" >
+        <h6>Form Label</h6>
+
+        <div class="form-group col-md-12" >
+          <label for="username_placeholder">Username</label>        
+          <input type="text" formControlName="username_placeholder" class="form-control" />        
+        </div>
+  
+        <div class="form-group col-md-12" >
+          <label for="password_placeholder">Password</label>        
+          <input type="text" formControlName="password_placeholder" class="form-control" />        
+        </div>
+
+        <h6>Settings</h6>
+        <div class="form-group col-md-12">
+          <!-- <label for="no_login_required">No Login Required</label>
+          &nbsp;&nbsp;
+          <input type="checkbox" formControlName="no_login_required"> -->
+          <div class="form-group checkbox-wrap">
+            <label class="checkbox">
+                <input type="checkbox" class="btn-checkbox-all" formControlName="no_login_required">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="no_login_required">No Login Required</label>
+          </div>                          
+        </div>
+      </div>
+
+      <div formGroupName="singleUserAuth">                      
+        <input type="hidden" formControlName="user_id">
+        <div class="form-group col-md-12">                    
+          <label for="username">Single User Account</label>
+          <input type="text" formControlName="username" class="form-control" placeholder="Username/Email" [ngClass]="{ 'is-invalid': submitted && f.singleUserAuth.controls.username.errors }" />
+          <div *ngIf="submitted && f.singleUserAuth.controls.username.errors" class="invalid-feedback"> 
+             <div> Username / Email is required when No Login is Required </div>
+          </div>          
+        </div>
+        <!-- <div class="form-group col-md-6">
+          <label for="password">Password</label>
+          <input type="password" formControlName="password" class="form-control" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.singleUserAuth.controls.password.errors }" />
+          <div *ngIf="submitted && f.singleUserAuth.controls.password.errors" class="invalid-feedback"> 
+            <div> Password is required </div>
+         </div>    
+        </div> -->
+      </div>
+
+      <div class="form-row col-md-12">
+        <div class="form-group col-md-12" >
+          <label for="referrer_url">Add a Referrer URL</label>                     
+          <input type="text" formControlName="referrer_url" class="form-control col-md-12" placeholder="Add New Referrer URL" [ngClass]="{ 'is-invalid': submitted && f.referrer_url.errors }"
+            pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" />
+          <div *ngIf="submitted && f.referrer_url.errors" class="invalid-feedback">
+            Please Enter a valid URL (eg. https://www.google.com or http://www.google.com/)
+          </div>
+        </div>
+      </div>
+    </div>  
+    
+    <div class="mt-3">           
+      <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+      <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div> 
+
+  </form>
+  <br>
+      
+  <div class="col-md-10" *ngIf="auth_is_active">        
+        <table class="table table-hover table-striped library-reports-table col-md-12">      
+          <thead>
+            <th> Referrer URL </th>    
+            <th> &nbsp; </th>
+          </thead>      
+          <tbody>
+          <tr *ngFor="let referrer_url of referrer_urls | async | paginate: { id: 'statement_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }">
+            <td>{{ referrer_url['referrer_url']  }}</td>
+            <td>                
+              <!-- <button  type="button" class="btn btn-outline-danger" (click)="deleteAuthReferrer($event, referrer_url['id'], referrer_url['referrer_url'])">Delete</button>               -->
+              <button type="button" (click)="deleteAuthReferrer($event, referrer_url['id'], referrer_url['referrer_url'])" class="btn btn-outline-danger btn-delete btn-delete-top"><i class="icon icon-delete"></i> Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      
+      
+        <div class="col-12 text-center">
+          <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+          <pagination-controls (pageChange)="getReferrerUrlList($event, filter)" id="statement_report_paging" previousLabel="" nextLabel=""></pagination-controls>
+        </div>                                
+  </div>
+
+
+</div>
+

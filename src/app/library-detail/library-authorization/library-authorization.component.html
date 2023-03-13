@@ -1,0 +1,143 @@
+<div class="col-sm-12 offset-md-1 col-md-5 no-padding" *ngIf="is_parent_auth">
+  <code class="text-muted mt-4 text-center">
+      ** Library is using Parent Authorization Settings.
+  </code>
+</div>
+
+<div class="col-sm-12 offset-md-1 col-md-10 no-padding" *ngIf="!is_parent_auth">
+  <div class="row">
+    <div class="col-12 mb-4">
+      <form [formGroup]="authMethodForm">
+        <div class="form-group">
+          <div class="float-left mt-1 mr-3"><b>Authorization Methods</b></div>
+          <div class="float-left no-padding-mob col-md-2">
+            <select class="form-control" formControlName="authentication_methods">
+                <option [ngValue]="auth_method.id" *ngFor="let auth_method of auth_methods">
+                  {{auth_method.name}}
+                  <span *ngIf="checkAuthActive(auth_method.id)">&nbsp;<b>(active)</b></span>
+                </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-12 lib-auth-details" *ngIf="selected_auth_method && library_auth_methods">
+      <div>
+        <h5>{{selected_auth_method.name}}</h5>
+      </div>
+      <div class="mb-4">
+        <p class="lead text-muted auth-description">{{selected_auth_method.description}}</p>
+      </div>
+
+      <!-- SIP2 id = 1 -->
+      <div *ngIf="authMethodval == '1'">
+        <app-auth-sip2 [auth_id]="authMethodval" [library_id]="library_id" [library_auth_methods]="library_auth_methods">
+        </app-auth-sip2>
+      </div>
+
+      <!-- DEMO id = 2 -->
+      <div *ngIf="authMethodval == '2'">
+        <app-auth-demo [auth_id]="authMethodval" [library_id]="library_id" [library_auth_methods]="library_auth_methods">
+        </app-auth-demo>
+      </div>
+
+      <!-- Patron API id = 3 -->
+      <div *ngIf="authMethodval == '3'">
+        <app-auth-patron-api [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-patron-api>
+      </div>
+
+      <!-- IP Auth id = 4 -->
+      <div *ngIf="authMethodval == '4'" style="width: 90%;">
+        <app-auth-ip-auth [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-ip-auth>
+      </div>
+
+      <!-- Shared Secret id = 7 -->
+      <div *ngIf="authMethodval == '7'">
+        <app-auth-shared-secret [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-shared-secret>
+      </div>
+
+      <!-- RBDigital Gateway id = 8 -->
+      <div *ngIf="authMethodval == '8'">
+        <app-auth-rb-digital [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-rb-digital>
+      </div>
+
+      <!-- Secret Code  id = 10 -->
+      <div *ngIf="authMethodval == '10'">
+        <app-auth-secret-code [auth_id]="authMethodval" [library_id]="library_id" 
+          [authSecretCode]="authSecretCode" [library_auth_methods]="library_auth_methods"></app-auth-secret-code>
+      </div>
+
+      <!-- Google Oauth id = 11 -->
+      <div *ngIf="authMethodval == '11'">
+        <app-auth-google-oauth [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-google-oauth>
+      </div>
+
+      <!-- User Managed id = 12 -->
+      <div *ngIf="authMethodval == '12'">
+        <app-auth-user-managed [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-user-managed>
+      </div>
+
+      <!-- SAML id = 13 -->
+      <div *ngIf="authMethodval == '13'">
+        <app-auth-saml [auth_id]="authMethodval" [library_id]="library_id" [library_auth_methods]="library_auth_methods">
+        </app-auth-saml>
+      </div>
+
+      <!-- Referrer Login id = 14 -->
+      <div *ngIf="authMethodval == '14'">
+        <app-auth-referrer-login [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-referrer-login>
+      </div>
+
+      <!-- Prefix Login id = 15 -->
+      <div *ngIf="authMethodval == '15'">
+        <app-auth-prefix [auth_id]="authMethodval" [library_id]="library_id"
+          [library_auth_methods]="library_auth_methods"></app-auth-prefix>
+      </div>
+
+      <!-- LTI Login id = 16 -->
+      <div *ngIf="authMethodval == '16'">
+        <app-auth-lti [auth_id]="authMethodval" [library_id]="library_id" [library_name]="library_name"
+          [library_auth_methods]="library_auth_methods"></app-auth-lti>
+      </div>
+
+      <!-- Clever Oauth Login id = 17 -->
+      <div *ngIf="authMethodval == '17'">
+        <app-auth-clever [auth_id]="authMethodval" [library_id]="library_id" ></app-auth-clever>
+      </div>
+
+      <!-- Google Classroom Login id = 18 -->
+      <div *ngIf="authMethodval == '18'">
+        <app-auth-google-classroom [auth_id]="authMethodval" [library_id]="library_id" ></app-auth-google-classroom>
+      </div>
+
+      <!-- SIP2v2 = 19 -->
+      <div *ngIf="authMethodval == '19'">
+        <app-auth-sip2v2 [auth_id]="authMethodval" [library_id]="library_id" 
+          [library_auth_methods]="library_auth_methods"></app-auth-sip2v2>
+      </div>
+      
+      <!-- ClassLink Login id = 20 -->
+      <div *ngIf="authMethodval == '20'">
+        <app-auth-classlink [auth_id]="authMethodval" [library_id]="library_id" ></app-auth-classlink>
+      </div>  
+
+      <!-- MS365 Login id = 21 -->
+      <div *ngIf="authMethodval == '21'">
+        <app-auth-microsoft365 [auth_id]="authMethodval" [library_id]="library_id" ></app-auth-microsoft365>
+      </div>
+
+      <!-- OpenAthens OpenID Login id = 22 -->
+      <div *ngIf="authMethodval == '22'">
+        <app-auth-openathens [auth_id]="authMethodval" [library_id]="library_id" ></app-auth-openathens>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+.filter-fields{
+    min-width: 200px;
+}
+
+.report-statements-tab{
+    padding-bottom: 50px;
+}
+
+.library-reports-table {
+    font-size: 14px;
+    /*margin-left: 15px;*/
+    /*margin-right: 15px;*/
+}
+
+.library-reports-table td {
+    /*padding: 5px;*/
+}
+
+.report-label{
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.filter-field-month{
+    padding-right: 10px;
+}
+.btn-download {
+    color: #3F4254;
+    border: 0;
+}
+@media (min-width: 768px) {
+    .td-width-30 {
+        width: 30px;
+    }
+}
+@media (max-width: 767px) {
+    .filter-fields-space {
+        margin-bottom: 15px;
+    }
+    .filter-field-month {
+        padding-right: 0;
+    }
+}

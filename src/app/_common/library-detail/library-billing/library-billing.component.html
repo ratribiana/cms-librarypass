@@ -1,0 +1,226 @@
+<div *ngIf="!loadedForm" class="text-center mt-4">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div class="col-sm-12 offset-md-1 col-md-11 no-padding">
+  
+  <div class="row col-md-12">
+    <code *ngIf="is_parent_billing" class="text-muted mt-4 text-center">
+      ** Institution is using Parent Billing Information.
+    </code>
+  </div>
+
+  <div class="row col-md-12 pt-4" *ngIf="is_parent_billing">      
+    <form [formGroup]="updateLibraryDataForm" (ngSubmit)="updateLibraryData($event);" class="billing-form">
+
+      <div class="form-group">
+        <label for="daily_spend_limit">Daily Spend Amount<span class="required-asterisk">*</span></label>
+        <input type="number" formControlName="daily_spend_limit" class="form-control" 
+          [ngClass]="{ 'is-invalid': submitted && updateLibraryDataForm.controls.daily_spend_limit.errors }" />
+        <div *ngIf="submitted && updateLibraryDataForm.controls.daily_spend_limit.errors" class="invalid-feedback">
+          <div *ngIf="updateLibraryDataForm.controls.daily_spend_limit.errors.required">Daily Spend Amount is required</div>
+        </div>
+      </div>   
+
+      <div class="form-group mt-3">            
+        <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+        <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div>       
+    </form>
+  </div>
+
+  <div class="row col-md-12" *ngIf="!is_parent_billing">      
+
+    <div class="row col-md-12 d-flex p-2 font-weight-bold current-balance" *ngIf="loadedForm" >  
+      <span>Current Balance: ${{current_balance}}</span>      
+    </div>
+
+    <form [formGroup]="updateLibraryBillingForm" (ngSubmit)="updateLibraryBilling($event);" class="billing-form">
+
+      <!-- <div class="form-group col-md-12 p-2" *ngIf="lib_parent.length > 0">
+        <label for="parent_billing"><b>Use Parent Billing</b></label>
+        &nbsp;&nbsp;
+        <input type="checkbox" formControlName="parent_billing">                            
+      </div> -->
+
+      <div class="form-group col-md-12">
+        <label for="payment_method">Payment Method <span class="required-asterisk">*</span></label>
+
+        <select class="form-control" formControlName="payment_method" [ngClass]="{ 'is-invalid': submitted && f.payment_method.errors }">        
+          <option [ngValue]="payment_method.id" *ngFor="let payment_method of payment_methods">{{payment_method.name}}</option>
+        </select>
+        
+        <div *ngIf="submitted && f.payment_method.errors" class="invalid-feedback">
+          <div *ngIf="f.payment_method.errors.required">Payment Method is required</div>
+        </div>
+      </div>
+
+      <div class="bank-payment-info" *ngIf="payment_method_val != '5'"> 
+
+        <div class="form-group col-md-12">
+          <label for="billing_name">Name on Credit or Bank Card<span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="billing_name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.billing_name.errors }" />
+          <div *ngIf="submitted && f.billing_name.errors" class="invalid-feedback">
+            <div *ngIf="f.billing_name.errors.required">Name on Credit or Bank Card is required</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-12">
+          <label for="billing_address1">Billing Address 1<span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="billing_address1" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.billing_address1.errors }" />
+          <div *ngIf="submitted && f.billing_address1.errors" class="invalid-feedback">
+            <div *ngIf="f.billing_address1.errors.required">Billing Address 1 is required</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-12">
+          <label for="billing_address2">Billing Address 2</label>
+          <input type="text" formControlName="billing_address2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.billing_address2.errors }" />
+          <div *ngIf="submitted && f.billing_address2.errors" class="invalid-feedback">
+            <div *ngIf="f.billing_address2.errors.required">Billing Address 2 is required</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-12">
+          <label for="billing_city">Billing City <span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="billing_city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.billing_city.errors }" />
+          <div *ngIf="submitted && f.billing_city.errors" class="invalid-feedback">
+            <div *ngIf="f.billing_city.errors.required">Billing City is required</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-12">
+          <label for="billing_state">Billing State <span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="billing_state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.billing_state.errors }" />
+          <div *ngIf="submitted && f.billing_state.errors" class="invalid-feedback">
+            <div *ngIf="f.billing_state.errors.required">Billing State is required</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-12">
+          <label for="billing_zip">Billing Zip <span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="billing_zip" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.billing_zip.errors }" />
+          <div *ngIf="submitted && f.billing_zip.errors" class="invalid-feedback">
+            <div *ngIf="f.billing_zip.errors.required">Billing Zip is required</div>
+          </div>
+        </div>
+
+
+        <div class="form-row col-md-12">
+          <div class="form-group col-md-6">                
+            <label for="payment_creditcard">Credit or Bank Card Number <span class="required-asterisk">*</span></label>
+            <input type="password" formControlName="payment_creditcard" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.payment_creditcard.errors }" />
+            <div *ngIf="submitted && f.payment_creditcard.errors" class="invalid-feedback">
+              <div *ngIf="f.payment_creditcard.errors.required">Credit or Bank Card Number is required</div>
+            </div>                
+          </div>
+          <div class="form-group col-md-2">                
+            <label for="payment_expiration_month">Exp. Month <span class="required-asterisk">*</span></label>
+            <input type="number" formControlName="payment_expiration_month" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.payment_expiration_month.errors }" />
+            <div *ngIf="submitted && f.payment_expiration_month.errors" class="invalid-feedback">
+              Exp. Month invalid
+            </div>                
+          </div>
+
+          <div class="form-group col-md-3">                
+            <label for="payment_expiration_year">Exp. Year <span class="required-asterisk">*</span></label>
+            <input type="number" formControlName="payment_expiration_year" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.payment_expiration_year.errors }" />
+            <div *ngIf="submitted && f.payment_expiration_year.errors" class="invalid-feedback">
+              Exp. Year is invalid
+            </div>                
+          </div>              
+        </div>
+
+        
+        <div class="form-group col-md-3">                
+          <label for="payment_cvv">CVV <span class="required-asterisk">*</span></label>
+          <input type="number" formControlName="payment_cvv" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.payment_cvv.errors }" />
+          <div *ngIf="submitted && f.payment_cvv.errors" class="invalid-feedback">
+            CVV is invalid            
+          </div>                
+        </div>      
+
+      </div>
+
+      <div class="form-row col-md-12">
+        <div class="form-group col-md-7">     
+          <label for="billing_type">Billing type <span class="required-asterisk">*</span></label>
+          <select class="form-control" formControlName="billing_type" [ngClass]="{ 'is-invalid': submitted && f.billing_type.errors }">        
+            <option [ngValue]="billing_type.id" *ngFor="let billing_type of billing_types">{{billing_type.name}}</option>
+          </select>
+          <div *ngIf="submitted && f.billing_type.errors" class="invalid-feedback">
+            <div *ngIf="f.billing_type.errors.required">Billing type is required</div>
+          </div>
+        </div>
+        <div class="form-group col-md-5" *ngIf="billing_type_val == '2'">              
+          <label for="minimum_balance">Minimum Balance <span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="minimum_balance" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.minimum_balance.errors }" />
+          <div *ngIf="submitted && f.minimum_balance.errors" class="invalid-feedback">
+            <div *ngIf="f.minimum_balance.errors.required">Minimum Balance is required</div>
+          </div>          
+        </div>
+      </div>  
+
+      <div class="form-group col-md-10">
+        <label for="charge_amount">Charge Amount<span class="required-asterisk">*</span></label>
+        <input type="number" formControlName="charge_amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.charge_amount.errors }" />
+        <div *ngIf="submitted && f.charge_amount.errors" class="invalid-feedback">
+          <div *ngIf="f.charge_amount.errors.required">Charge Amount is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-10">
+        <label for="daily_spend_limit">Daily Spend Amount<span class="required-asterisk">*</span></label>
+        <input type="number" formControlName="daily_spend_limit" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.daily_spend_limit.errors }" />
+        <div *ngIf="submitted && f.daily_spend_limit.errors" class="invalid-feedback">
+          <div *ngIf="f.daily_spend_limit.errors.required">Daily Spend Amount is required</div>
+        </div>
+      </div>    
+
+      <div class="form-group col-md-10">
+        <div class="checkbox-wrap">
+            <label class="checkbox rounded">
+                <input type="radio" class="btn-checkbox-all" formControlName="subscription" value="1">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="subscription">Subscription Institution</label>
+        </div>
+
+        <div class="col-md-12" *ngIf="subscription_val == '1'">
+          <label>
+            Start:
+            <input [owlDateTimeTrigger]="subscription_start" formControlName="subscription_start" [owlDateTime]="subscription_start"  class="form-control">
+            <owl-date-time #subscription_start></owl-date-time>
+          </label>
+          <br>
+          <label>
+            End:
+            <input [owlDateTimeTrigger]="subscription_end" formControlName="subscription_end" [owlDateTime]="subscription_end"  class="form-control">
+            <owl-date-time #subscription_end></owl-date-time>
+          </label>            
+        </div>
+      </div>
+
+      <div class="form-group col-md-10">
+        <div class="checkbox-wrap">
+            <label class="checkbox rounded">
+                <input type="radio" class="btn-checkbox-all" formControlName="subscription" value="0">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="subscription">Credits Institution</label>
+        </div>             
+      </div>
+
+      <div class="form-group col-md-11 mt-3">            
+        <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+        <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div>         
+
+    
+    </form>  
+    
+    
+  </div>    
+</div>

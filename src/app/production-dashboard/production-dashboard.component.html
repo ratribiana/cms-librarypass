@@ -1,0 +1,638 @@
+<div id="dashboard-box" class="box">
+  <div class="selected-column row">
+
+    <div class="col-md-12 col-lg-4">
+      <div class="float-left">
+        <p class="report-label">Production Dashboard</p>
+      </div>
+      <button type="button" (click)="batchsaveProduct()" class="btn btn-aqua btn-save mr-2" *ngIf="is_dirty" >Save Changes</button>
+    </div>
+
+    <div class="col-md-12 col-lg-8">
+      <div class="float-right">
+        <div class="float-left-responsive">
+          <div class="float-left">
+            <p class="text-filter ml-4 mr-2">Select Profile: </p>
+          </div>
+
+          <!-- <div class="float-left">
+            <select class="btn btn-filter" (change)="changeDashboardProfile($event.target.value)" >
+              <option  *ngFor="let profile of dashboardProfiles" value="{{profile.id}}" selected="is_current==1">{{profile.name}}</option>
+              <option  value="btn">
+                <button type="button" class="btn btn-filter" data-toggle="collapse" data-target="#profileAccordion">Create Profile</button>
+              </option>
+            </select>
+          </div> -->
+
+          <div class="float-left">
+            <div class="dropdown">
+              <button class="btn btn-filter dropdown-toggle" type="button" data-toggle="dropdown">{{profile_active.name}}
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li class="row" *ngFor="let profile of dashboardProfiles; let i=index">
+                  <div class="col-8">
+                    <button type="button" class="text font-weight-bold" (click)="changeDashboardProfile(i, true)" *ngIf="profile.id == profile_active.id">
+                      {{profile.name}}
+                    </button>
+
+                    <button type="button" class="text" (click)="changeDashboardProfile(i, true)" *ngIf="profile.id != profile_active.id">
+                      {{profile.name}}
+                    </button>
+                  </div>
+                  <div class="col-4 p-0">
+                    <button type="button" class="btn btn-edit btn-profile-delete" (click)="editProfile($event, profile, i)" data-target="#profileAccordion">
+                      <i class="icon icon-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-delete btn-profile-delete" (click)="deleteProfile(profile.id, profile.name, i)" *ngIf="profile.id != selectedProfile">
+                      <i class="icon icon-delete"></i>
+                    </button>
+                  </div>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-text" data-target="#profileAccordion" (click)="openProfileForm($event)">Create Profile</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!--
+        <div class="float-left-responsive">  
+          <div class="float-left">
+            <div class="dropdown">
+              <button class="btn btn-filter dropdown-toggle" type="button" data-toggle="dropdown">Filter Columns
+              <span class="icon"></span></button>
+              <ul class="dropdown-menu" onclick="event.stopPropagation()">
+                <li *ngFor="let col of allColumns">
+                  <div class="checkbox-wrap">
+                    <label class="checkbox">
+                      <input class="form-check-input" type="checkbox" [id]="col.name" (click)="toggle(col)" [checked]="isChecked(col)" />
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label" [attr.for]="col.name">
+                      {{ col.name }}
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        -->
+
+      </div>
+
+      <div class="float-right">
+        <!-- <div class="float-left">
+          <div class="dropdown">
+            <button class="btn btn-filter dropdown-toggle" type="button" data-toggle="dropdown">{{limit_active}}
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li *ngFor="let limit of limitFilter">
+                <button type="button" class="text" (click)="filterLimit(limit)">
+                  {{limit}}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div> -->
+
+        <div class="float-left" *ngIf="is_admin">
+          <button type="button" class="btn btn-filter ml-2 mr-2 btn-filter-by" (click)="toggleFilters($event, 1)">List By <span class="icon icon-filter"></span></button>
+        </div>
+
+        <div class="float-left">
+          <button type="button" class="btn btn-filter ml-2 mr-2 btn-filter-by" (click)="toggleFilters($event, 2)">Filter By <span class="icon icon-filter"></span></button>
+        </div>
+
+        <!-- <button type="button" class="btn btn-filter" data-toggle="collapse" data-target="#profileAccordion">Create Profile</button> -->
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="accordion-group">
+    <div id="profileAccordion" class="collapse" data-parent="#dashboard-box">
+      <div class="row mb-3">
+        <div class="col-md-6 offset-md-6 col-lg-4 offset-lg-8 col-xl-3 offset-xl-9">
+          <form [formGroup]="profileForm" class="row">
+            <div class="form-group col-md-12" >     
+              <input type="hidden" formControlName="profile_id" >      
+              <input type="text" formControlName="profile_name" placeholder="Profile Name" class="form-control" />        
+            </div>
+
+            <div class="form-group col-md-12" >
+              <ng-multiselect-dropdown   
+                  name="profile_fields"
+                  formControlName="profile_fields"  
+                  [placeholder]="'Add Columns'"
+                  [(ngModel)]="profile_columns"
+                  [data]="tableColumns"  
+                  [disabled]="filter_disabled"
+                  [settings]="addFilterColumns"        
+              >      
+              </ng-multiselect-dropdown> 
+            </div>
+              
+            <div class="col-md-12">
+              <div class="mt-2 float-right"> 
+                <button type="button" class="btn btn-aqua btn-no-bg mr-2" (click)="closeProfileForm($event)">Cancel</button>
+                <button [disabled]="loading" (click)="saveProfile()" class="btn btn-primary btn-aqua">Save</button>                
+                <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              </div> 
+            </div>
+          
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="filterAccordion" class="collapse" data-parent="#dashboard-box">
+      <form id="filter-form" [formGroup]="filterForm">
+
+        <div>
+          <div class="filter-select filter-select-categories mb-3 mr-2" >  
+            <ng-multiselect-dropdown
+              name="categories"
+              formControlName="categories"
+              [placeholder]="' '"
+              [data]="categories_filters"  
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('categories')"
+              (onDeSelect)="updateFilter('categories')"
+            >
+            </ng-multiselect-dropdown> 
+          </div>  
+        
+          <div class="filter-select filter-select-publishers mb-3 mr-2" >  
+            <ng-multiselect-dropdown
+              name="publishers"
+              formControlName="publishers"
+              [placeholder]="' '"
+              [data]="publishers_filter"  
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('publishers')"
+              (onDeSelect)="updateFilter('publishers')"
+            >
+            </ng-multiselect-dropdown> 
+          </div>  
+        
+        
+          <div class="filter-select filter-select-age mb-3 mr-2" >  
+            <ng-multiselect-dropdown
+              name="content_ratings"
+              formControlName="content_ratings"
+              [placeholder]="' '"
+              [data]="library_content_filter"  
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('content_ratings')"
+              (onDeSelect)="updateFilter('content_ratings')"
+            >
+            </ng-multiselect-dropdown> 
+          </div>  
+        
+          <div class="filter-select filter-select-types mb-3 mr-2" >  
+            <ng-multiselect-dropdown
+              name="productTypes"
+              formControlName="productTypes"
+              [placeholder]="' '"
+              [data]="product_type_filter"  
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('productTypes')"
+              (onDeSelect)="updateFilter('productTypes')"
+            >
+            </ng-multiselect-dropdown> 
+          </div>  
+        
+        
+          <div class="filter-select filter-select-languages mb-3 mr-2" >  
+            <ng-multiselect-dropdown
+              name="languages"
+              formControlName="languages"
+              [placeholder]="' '"
+              [data]="language_filters"  
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('languages')"
+              (onDeSelect)="updateFilter('languages')"
+            >
+            </ng-multiselect-dropdown> 
+          </div>  
+
+
+          <div class="filter-select filter-select-assigned mb-3 mr-2" *ngIf="search_type == 1">  
+            <ng-multiselect-dropdown
+              name="workflow_user_id"
+              formControlName="workflow_user_id"
+              [placeholder]="' '"
+              [data]="assigned_to_filter"  
+              [(ngModel)]="default_production_user"
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('workflow_user_id')"
+              (onDeSelect)="updateFilter('workflow_user_id')"
+            >
+            </ng-multiselect-dropdown> 
+          </div> 
+
+          <div class="filter-select filter-select-assigned mb-3 mr-2" *ngIf="show_user_filter && search_type == 2">  
+            <ng-multiselect-dropdown
+              name="assignedUser"
+              formControlName="assignedUser"
+              [placeholder]="' '"
+              [data]="assigned_to_filter"                
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('assignedUser')"
+              (onDeSelect)="updateFilter('assignedUser')"
+            >
+            </ng-multiselect-dropdown> 
+          </div> 
+
+
+          <div class="filter-select filter-select-workflow mb-3 mr-2 search-type-1"  *ngIf="search_type == 1 || search_type_fade == true">  
+            <ng-multiselect-dropdown
+              name="workflowStatus"
+              formControlName="workflowStatus"
+              [placeholder]="' '"
+              [data]="workflow_filters"  
+              [disabled]="filter_disabled"
+              [settings]="dropdownSettings"        
+              (onSelect)="updateFilter('workflowStatus')"
+              (onDeSelect)="updateFilter('workflowStatus')"
+            >
+            </ng-multiselect-dropdown> 
+          </div>  
+        </div>
+
+        <div class="overflow-hidden search-type-2" *ngIf="search_type == 2 || search_type_fade == true" >
+          <form [formGroup]="productSearchForm" (ngSubmit)="onSubmit()">
+            <div class="float-left">            
+              <div *ngFor="let query_fields of queryField.controls; let i=index" [formGroup]="query_fields">
+                <div class="filter-input mb-2 mr-2">  
+                  <div *ngIf="queryField.value[i].type != 'date'">                  
+                    <input type="text" formControlName="query" class="search-input" placeholder="Search..." />                                    
+                  </div>
+
+                  <div *ngIf="queryField.value[i].type == 'date'">
+                    <!-- search_input[i].type == 'date' -->
+                    <!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" [formControl]="search_date_from"  placeholder="Search..." 
+                    class="search-input input-date mr-2" (dateTimeChange)="filterCustomRange('date_from', i)"> 
+                      <owl-date-time [pickerType]="'calendar'"  (yearSelected)="chosenYearHandler($event, search_date_from)"
+                       (monthSelected)="chosenMonthHandler($event, dt1, search_date_from)" [startView]="'month'" #dt1="owlDateTime" ></owl-date-time> 
+                    -->
+                    <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" [formControl]="search_date_from[i]" placeholder="Search from" 
+                    class="search-input input-date mr-2" (dateTimeChange)="filterCustomRange(i, 'date_from')">
+                    <owl-date-time [pickerType]="'calendar'" [startView]="'month'" #dt1="owlDateTime" ></owl-date-time>
+
+                    <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" [formControl]="search_date_to[i]" placeholder="Search to" 
+                    class="search-input input-date" (dateTimeChange)="filterCustomRange(i, 'date_to')">
+                    <owl-date-time [pickerType]="'calendar'" [startView]="'month'" #dt2="owlDateTime" ></owl-date-time>
+                  </div>
+
+                </div>
+
+                <div class="filter-select mb-3 mr-2">   
+                  <select class="btn btn-filter" formControlName="type" >              
+                    <option  *ngFor="let searchFilter of fullSearchFilters" value="{{searchFilter.value}}" >
+                      {{searchFilter.desc}}
+                      </option>             
+                  </select>
+                </div> 
+
+                <div class="filter-button mb-3 mr-2">
+                  <button class="btn btn-filter-aqua mr-2" type="button" (click)="addMoreSearch()" *ngIf="i == 0 && allowMore">
+                    + Add More
+                  </button>
+
+                  <button class="btn btn-filter-aqua btn-no-bg" type="button" (click)="search()" *ngIf="i == 0">
+                    Search
+                  </button>
+
+                  <button class="btn btn-filter-error" type="button" (click)="removeSearch(i)" *ngIf="i != 0">-</button>
+                </div>
+              </div>                        
+            </div>
+
+          </form>
+        </div>
+
+        <!--
+        <div id="add-filters" class="filter-select mb-3 mr-2">  
+          <button type="button" class="btn btn-filter" [hidden]="true" (click)="openFilterDropdown('#multiple-filter', 'filters')">+ Add Filter<span class="caret"></span></button>
+          <ng-multiselect-dropdown
+            name="filters"
+            formControlName="filters"
+            [placeholder]="'Add Filter'"
+            [data]="filters_filters"  
+            [(ngModel)]="default_filters"
+            [disabled]="filter_disabled"
+            [settings]="dropdownMultipleSettings"
+            (onSelect)="updateFilterBy($event, true)"
+            (onDeSelect)="updateFilterBy($event, false)"
+          ></ng-multiselect-dropdown> 
+        </div> 
+        -->
+      </form>
+    </div>
+
+  </div>
+
+  <ngx-datatable
+  #production_dashboard_table
+  class="material"
+  [headerHeight]="50"
+  [limit]="20"
+  [columnMode]="ColumnMode.force"
+  [footerHeight]="50"
+  rowHeight="auto"
+  [rows]="rows"
+  rowHeight="auto"
+  [loadingIndicator]="loadingIndicator"
+  [reorderable]="reorderable"
+  [scrollbarH]="true"
+  >
+
+  <!-- <ngx-datatable-column prop="comic_bundle_name" name="Comic Bundle Name" [cellClass]="getDefaultClass">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      {{ value }}
+    </ng-template>
+  </ngx-datatable-column> -->
+
+  <ngx-datatable-column *ngFor="let col of columns" [prop]="col.prop" [name]="col.name" [cellClass]="getCellClass" > 
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+
+        <div *ngIf="col.editable && !editing[rowIndex + '-' + col.prop]">
+          <span
+            title="Double click to edit"
+            (dblclick)="initRowUpdate(rowIndex, col.prop, col.name, value)"
+          >             
+            {{ getSelectValue(col.select_options, value) }}
+          </span>
+        </div>
+
+        <span class="not-editable" *ngIf="!col.editable && col.type == 'button'">                  
+          <div  *ngIf="col.name=='Build' && (value == '1' || value.length == 0 )">            
+            <button type="button" (click)="buildProduct(rowIndex)" class="btn btn-aqua btn-save mr-2" >
+              Build
+            </button>                    
+            <br> {{rows[rowIndex]['bundle_updated']}}
+          </div>   
+          
+          <button type="button" (click)="openProductPages(rowIndex)" class="btn btn-filter-aqua my-0" data-toggle="modal" data-target="#viewPageModal" *ngIf="col.name=='View Pages'">View</button>
+        </span>
+
+        <span class="not-editable" *ngIf="!col.editable && col.type == 'link'">             
+          <a href="/products/edit/{{ value }}" target="_blank"> Edit</a>
+        </span>
+
+        <span class="not-editable" *ngIf="!col.editable && col.type == 'text'">             
+          {{ value }}          
+        </span>
+
+        <span class="not-editable" *ngIf="!col.editable && col.type == 'image'">             
+          <img class="img-responsive" style="max-width:50px;" src="{{value}}">
+        </span>
+      
+        <div *ngIf="col.type == 'select' && editing[rowIndex + '-' + col.prop ]">
+          <select                        
+            appAutoFocusDirective
+            (blur)="editing[rowIndex + '-' + col.prop] = 0"
+            (change)="updateValue($event, col.prop, rowIndex)"
+            [value]="value"    
+          >                
+            <option  value="{{select_option.id}}" *ngFor="let select_option of getSelectOptions(col.select_options)" >
+              {{select_option.name}}            
+            </option>
+          </select>
+        </div>
+
+        <div *ngIf="col.type == 'boolean' && editing[rowIndex + '-' + col.prop ]">
+          <select                        
+            appAutoFocusDirective
+            (blur)="editing[rowIndex + '-' + col.prop] = 0"
+            (change)="updateValue($event, col.prop, rowIndex)"
+            [value]="value"    
+          >                
+            <option value="1">
+              yes
+            </option>
+            <option  value="0">
+              no
+            </option>
+          </select>
+        </div>
+
+        <div *ngIf="col.type == 'text' && editing[rowIndex + '-' + col.prop ]">
+          <input
+            appAutoFocusDirective
+            (change)="updateValue($event, col.prop, rowIndex)"
+            (blur)="editing[rowIndex + '-' + col.prop] = 0"        
+            type="text"
+            [value]="value"
+          />
+        </div>
+
+        <div *ngIf="col.type == 'number' && editing[rowIndex + '-' + col.prop ]">
+          <input
+            appAutoFocusDirective
+            
+            (change)="updateValue($event, col.prop, rowIndex)"
+            (blur)="editing[rowIndex + '-' + col.prop] = 0"        
+            type="number"
+            [value]="value"
+          />
+        </div>
+
+        <div *ngIf="col.type == 'textarea' && col.prop != 'description' && editing[rowIndex + '-' + col.prop ]">
+          <textarea 
+            appAutoFocusDirective
+            (change)="updateValue($event, col.prop, rowIndex)"
+            (blur)="editing[rowIndex + '-' + col.prop] = 0"        
+            type="text"
+            [value]="value"
+          ></textarea>
+        </div>
+
+        <div *ngIf="col.type == 'datetime' && editing[rowIndex + '-' + col.prop ]" >
+          <input
+            appAutoFocusDirective     
+            (blur)="updateValue($event, col.prop, rowIndex)"        
+            type="datetime-local"          
+            [value]="dateTimeFormat(value)"
+          />
+        </div>
+
+        <ng-multiselect-dropdown
+          appAutoFocusDirective        
+          *ngIf="col.type == 'multi' && col.prop == 'categories' && editing[rowIndex + '-' + col.prop ]"
+          [placeholder]="col.name"
+          [settings]="tableDropdownSettings"
+          [data]="categories_list"        
+          [(ngModel)]="productCategories[rowIndex]"
+          (onDropDownClose)="tableDropdownClose(rowIndex, col.prop)" 
+          (onSelect)="multiselectUpdated($event, rowIndex, col.prop)"
+          (onDeSelect)="multiselectUpdated($event, rowIndex, col.prop)"
+        >
+        </ng-multiselect-dropdown>
+
+        <ng-multiselect-dropdown
+        appAutoFocusDirective        
+        *ngIf="col.type == 'multi' && col.prop == 'product_lines' && editing[rowIndex + '-' + col.prop ]"
+        [placeholder]="col.name"
+        [settings]="tableDropdownSettings"
+        [data]="product_lines_list"        
+        [(ngModel)]="productLines[rowIndex]"
+        (onDropDownClose)="tableDropdownClose(rowIndex, col.prop)" 
+        (onSelect)="multiselectUpdated($event, rowIndex, col.prop)"
+        (onDeSelect)="multiselectUpdated($event, rowIndex, col.prop)"
+      >
+      </ng-multiselect-dropdown>
+
+      </ng-template>
+
+
+      
+  </ngx-datatable-column>
+
+  </ngx-datatable>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="viewPageModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">View Pages</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body p-0">
+        
+        <div class="view-type-1 py-3 d-none">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-4 col-md-3" *ngFor="let image of [1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10]">
+                <img class="img-fluid" src="https://cdpmm-public.librarypass.com/store/cover/large/14B098EE764.png" >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-type-2">
+          <div class="row" *ngIf="page_thumbnail_active!=''">
+            <div class="col-8 col-md-6 col-lg-4 offset-2 offset-md-3 offset-lg-4 py-3 text-center position-relative">
+              <div [class]="'page-active '+(page_thumbnail_loaded ? 'visible' : 'invisible')" >
+                <a [href]="page_thumbnail_active" target="_blank">
+                  <img class="img-fluid" [src]="page_thumbnail_active" (load)="pageThumbnailLoad()">
+                </a>
+              </div>
+              <div class="spin-loader" *ngIf="page_thumbnail_loaded == false"></div>
+            </div>
+          </div>
+
+          <div class="d-flex thumbnails-wrap py-2">
+            <div class="thumbnails" *ngFor="let image of page_thumbnail" >
+              <span role="button" class="page-thumbnail" (click)="changeThumbnailActive(image.image_url)"><img class="img-fluid" [lazyLoad]="image.thumbnail_url"></span>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2 pb-2 text-center" *ngIf="page_thumbnail?.length == 0">
+            <p>No Pages to show</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-confirm-modal #modalDelete [modalConfig]="modalDeleteConfig" >
+  Are you sure you want to delete '{{ profile_delete.name }}'?
+</app-confirm-modal>
+
+<app-confirm-modal #modalUpdate [modalConfig]="modalUpdateConfig" >
+  <div class="p-3">
+    <textarea 
+      appAutoFocusDirective 
+      type="text" 
+      rows="10"
+      [ngModel]="profile_update.value"
+      (ngModelChange)="updateProfileText($event)"
+      class="container-fluid"></textarea>
+  </div>
+</app-confirm-modal>
+
+<app-confirm-modal #localesModal [modalConfig]="modalLocalesConfig" >
+  
+    <form [formGroup]="productsLocaleForm">
+
+      <div class="form-group">
+
+        <div class="radiobox-wrap mb-2">
+          <label class="radiobox">
+            <input class="form-check-input" type="radio" formControlName="mode" value="0">
+            <span class="radiomark"></span>
+          </label>
+          <label class="form-check-label radiobox-label">Available to All Countries</label>
+        </div>
+
+        <div class="radiobox-wrap mb-2">
+          <label class="radiobox">
+            <input class="form-check-input" type="radio" formControlName="mode" value="1">
+            <span class="radiomark"></span>
+          </label>
+          <label class="form-check-label radiobox-label">Available to ONLY the selected Countries</label>
+        </div>
+
+        <div class="radiobox-wrap mb-2">
+          <label class="radiobox">
+            <input class="form-check-input" type="radio" formControlName="mode" value="2">
+            <span class="radiomark"></span>
+          </label>
+          <label class="form-check-label radiobox-label">Available to All Countries except the selected Countries</label>
+        </div>
+
+      </div>
+
+      <ng-multiselect-dropdown      
+        appAutoFocusDirective  
+        formControlName="selected_locales"  
+        [placeholder]="'Locales'"
+        [settings]="tableDropdownSettings"
+        [data]="locales_list"                  
+      >
+      </ng-multiselect-dropdown>
+
+    </form>
+
+    <button class="d-none" id="force-event"></button>
+    <!-- [ngModel]="productLocales"         -->
+</app-confirm-modal>
+
+<app-confirm-modal #modalBuild [modalConfig]="modalBuildConfig" >
+  Are you sure you want to continue?
+</app-confirm-modal>
+
+<app-confirm-modal #modalUnsaved [modalConfig]="modalUnsavedConfig" >
+  There are unsaved changes. Are you sure you want to continue?
+</app-confirm-modal>
+
+<app-confirm-modal #modalUnsavedFilter [modalConfig]="modalUnsavedFilterConfig" >
+  Changes will be lost when updating this filter. Would you like to continue?
+</app-confirm-modal>

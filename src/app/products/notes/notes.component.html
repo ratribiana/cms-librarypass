@@ -1,0 +1,19 @@
+
+<div class="col-12" *ngFor="let data of notesList">
+
+    <div class="alert alert-info mb-2" role="alert">
+      <p class="mb-0">{{data.notes}}</p>
+     <div class="text-right mt-2" ><small>Posted by {{data.username}} {{data.date_created}}</small></div>
+    </div>
+</div>
+
+
+<div class="col-12 mt-2">
+  <form [formGroup]="detailForm">
+    <div class="form-group">
+      <textarea class="form-control" lass="form-control" formControlName="notes"  rows="4"></textarea>
+    </div>
+  </form>
+  <button type="button" class="btn btn-aqua mr-2" (click)="addNewNotes()">Save</button>
+
+</div>

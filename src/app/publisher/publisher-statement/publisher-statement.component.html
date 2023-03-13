@@ -1,0 +1,117 @@
+<div class="row report-statements-tab">
+  <div class="col-12">
+    <p class="report-label"> 
+      Statements       
+    </p>
+    <i class="note">(Quarterly statements are available 14 days after the end of the quarter.)</i>
+    
+<!--
+      <div class="float-right filter-fields">
+        <div class="float-left">   
+
+          <div class="float-left filter-fields">
+            <select class="form-control" (change)="filterStatementReport($event.target.value)">
+              <option *ngFor="let year of prev_years" value="{{year}}">{{year}}</option>
+            </select>
+          </div>
+
+        <select class="form-control" (change)="filterStatementReport($event.target.value)">
+          <option value="last_month">Last Month</option>
+          <option value="last_3_months">Last 3 Months</option>
+          <option value="year_now">Year To Date ({{year}})</option>
+          <option value="year_prev">Last Year ({{year - 1}})</option>
+          <option value="prev_2_years">{{year - 2}}</option>          
+        </select> 
+
+      </div>
+    </div>-->
+
+    <!-- <div class="float-right">
+      <button type="button" class="btn btn-outline-dark" [attr.disabled]="(loading || total == 0) ? 'disabled' : null"  (click)="downloadZipReport();">Download All</button>
+      <img *ngIf="loading" class="pl-2"
+        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div> -->
+  </div>
+
+  <div class="col-12">
+    <div class="filter-field-date">
+      <label class="float-left form-label">Year: </label>
+      <div class="filter-fields filter-fields-space xs-float-right"> 
+        <select class="form-control" (change)="filterStatementReport($event.target.value)">
+          <option *ngFor="let year of prev_years" value="{{year}}">{{year}}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- <div class="float-right">
+      
+      <button type="button" class="btn btn-download" [attr.disabled]="(loading || total == 0) ? 'disabled' : null"  (click)="downloadZipReport();">Download All <i class="icon icon-download"></i></button>
+      <img *ngIf="loading" class="pl-2"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />  
+    </div> -->
+  </div>
+
+  <div class="col-sm-12 no-padding-xs">
+    <table class="table table-hover table-striped library-reports-table mt-3">
+      <thead>
+        <tr>
+          <!-- <th> Date </th> -->
+          <th> Royalties </th>
+          <th> Download </th>    
+        </tr>  
+      </thead>
+      <tbody>
+      <tr *ngFor="let report of reports | async | paginate: { id: 'publisher_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }">
+        <!-- <td>
+          {{ (report.report_month - 1) | dateFormat : 'MMM' }} {{ report.report_year }}
+        </td>       -->
+        <td>
+          {{ report.report_name }}
+        </td>
+        <td>
+          <button type="button" (click)="exportReportToCSV(report, $event)" class="btn btn-primary btn-aqua btn-no-bg">Download</button>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- <div class="col-12 col-no-padding">
+    <div class="table-wrap">
+      <div class="table table-striped table-hover library-reports-table">
+        <div class="thead">
+          <div class="th">Royalties</div>
+          <div class="th">Download</div>
+        </div>
+
+        <div class="tbody">
+          <div class="tr" 
+            *ngFor="let report of reports | async | paginate: { id: 'publisher_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }; let i = index">
+            
+            <a class="td-title collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+              <span class="arrow"></span>{{ report.report_name }}
+            </a>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Royalties</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ report.report_name }}
+            </div>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Download</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              <button type="button" (click)="exportReportToCSV(report, $event)" class="btn btn-primary btn-aqua btn-no-bg">Download</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div> -->
+  
+  <div class="col-12 text-center" *ngIf="reports">
+    <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+    <pagination-controls (pageChange)="getStatementReports(supplier_id, $event)" id="publisher_report_paging" previousLabel="" nextLabel=""></pagination-controls>
+  </div>
+</div>

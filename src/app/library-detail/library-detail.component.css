@@ -1,0 +1,25 @@
+.library-info{
+    font-size: 14px;
+}
+
+.library-info input{
+    font-size: 14px;
+}
+
+.tab-content{
+    /*background: #f7f7f7;*/
+    border: 1px solid #dee2e6;
+    border-top: 0;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    min-height: 600px;
+}
+a {
+	color: #00BFC2;
+}
+
+@media (max-width: 767px) {
+	.tab-content {
+		padding: 0!important;
+	}
+}

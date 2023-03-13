@@ -1,0 +1,33 @@
+table.dataTable td.sorting_1 {
+    /* text-align: center; */
+    cursor: move
+}
+
+.required-asterisk {
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 1.2em;
+}
+
+.hidden {
+    display: none;
+}
+
+/*tr.expired{
+    background: #f7f2f2;
+}*/
+
+::ng-deep .cdk-overlay-container {
+    /* Do you changes here */
+    position: fixed; 
+    z-index: 1600;
+}
+
+@media (min-width: 768px) {
+    .width-25 {
+        width: 25%;
+    }
+}
+@media (max-width: 767px) {
+}

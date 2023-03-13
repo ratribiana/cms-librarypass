@@ -1,0 +1,68 @@
+<div *ngIf="!library_selected_services" class="text-center mt-4">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div class="row offset-md-1 col-md-11" *ngIf="is_parent_services">
+  <code class="text-muted mt-4 text-center">
+    ** Library is using Parent Services Information.
+  </code>
+</div>
+
+<div *ngIf="library_selected_services && !is_parent_services">  
+  <div class="row data-row">
+    <div class="data-container" class="col-md-5 offset-md-1 mb-3 mb-md-0">
+      <b>Services Available</b>
+      
+      <div  
+        cdkDropList
+        #selectedList="cdkDropList"
+        [cdkDropListData]="library_selected_services"
+        [cdkDropListConnectedTo]="[servicesList]"
+        class="data-list chosen"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="updatedata($event)" 
+        (cdkDropListExited)="updatedata($event)">
+
+        <div class="data-box" *ngFor="let item of library_selected_services" cdkDrag (click)="selectService(item)" style="margin: 5px;">
+          <img src="assets/img/{{item.service_img_url}}" width="180" class="img-responsive" title="{{item.name}}" alt="{{item.name}}" style="margin: auto;"> 
+        </div>
+      </div>  
+    </div>
+    
+    <div class="data-container" class="col-md-5">							
+      <b>Additonal Services</b>
+      <div    
+        cdkDropList
+        #servicesList="cdkDropList"
+        [cdkDropListData]="library_services"
+        [cdkDropListConnectedTo]="[selectedList]"
+        class="data-list "
+        (cdkDropListDropped)="drop($event)">
+
+        <div class="data-box" *ngFor="let item of library_services" cdkDrag (click)="selectService(item)" style="margin: 5px;">
+          <img src="assets/img/{{item.service_img_url}}" width="180" class="img-responsive" title="{{item.name}}" alt="{{item.name}}" style="margin: auto;"> 
+        </div>    
+      </div>
+    </div>
+  </div>
+
+
+  <div class="library-info col-md-10 offset-md-1 p-md-4">
+    
+    <img src="assets/img/{{service_img}}" width="150" class="img-responsive mb-3" title="{{service_name}}" alt="{{service_name}}" *ngIf="service_name">     
+    <h6>Circulation Control</h6>
+
+    <code *ngIf="!service_id">
+      Please Select a Service to update.
+    </code>
+
+    <app-service-circulation [library_id]="library_id" [service_id]="service_id" [LibData]="LibData" *ngIf="LibData">></app-service-circulation>	    
+  </div>
+
+  <div class="col-md-11 offset-1 mt-3">            
+    <button [disabled]="loading" class="btn btn-primary btn-aqua" (click)="savedata($event)">Save Changes</button>
+    <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  </div>    
+</div>  

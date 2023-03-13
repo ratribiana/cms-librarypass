@@ -1,0 +1,77 @@
+<div class="box">
+    <div class="row">
+        <div class="col-12">
+        <h4>{{modeLabel}}</h4>
+        <hr>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true" (click)="tagCurrentTab('details')">Comic Details</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-categories-tab" data-toggle="pill" href="#v-pills-categories" role="tab" aria-controls="v-pills-categories" aria-selected="false" (click)="tagCurrentTab('categories')">Categories</a>
+                <a class="nav-link  {{disableAllPanel}}" id="v-pills-credits-tab" data-toggle="pill" href="#v-pills-credits" role="tab" aria-controls="v-pills-credits" aria-selected="false" (click)="tagCurrentTab('credits')">Credits</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-pages-tab" data-toggle="pill" href="#v-pills-pages" role="tab" aria-controls="v-pills-pages" aria-selected="false" (click)="tagCurrentTab('pages')">Pages</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-uview-tab" data-toggle="pill" href="#v-pills-uview" role="tab" aria-controls="v-pills-uview" aria-selected="false" (click)="tagCurrentTab('uview')">PanelView</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-pricing-tab" data-toggle="pill" href="#v-pills-pricing" role="tab" aria-controls="v-pills-pricing" aria-selected="false" (click)="tagCurrentTab('pricing')">Pricing and Availability</a>
+            <!---   <a class="nav-link {{disableAllPanel}}" id="v-pills-sku-tab" data-toggle="pill" href="#v-pills-sku" role="tab" aria-controls="v-pills-sku" aria-selected="false" (click)="tagCurrentTab('sku')">SKUs</a> -->
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-lines-tab" data-toggle="pill" href="#v-pills-lines" role="tab" aria-controls="v-pills-lines" aria-selected="false" (click)="tagCurrentTab('lines')">Product Lines</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-locales-tab" data-toggle="pill" href="#v-pills-locales" role="tab" aria-controls="v-pills-locales" aria-selected="false" (click)="tagCurrentTab('locales')">Locales</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-sources-tab" data-toggle="pill" href="#v-pills-sources" role="tab" aria-controls="v-pills-sources" aria-selected="false" (click)="tagCurrentTab('sources')">Sources</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-custom-tab" data-toggle="pill" href="#v-pills-custom" role="tab" aria-controls="v-pills-custom" aria-selected="false" (click)="tagCurrentTab('custom')">Custom Fields</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-work-tab" data-toggle="pill" href="#v-pills-work" role="tab" aria-controls="v-pills-work" aria-selected="false" (click)="tagCurrentTab('work')">Workflow Logs</a>
+                <a class="nav-link {{disableAllPanel}}" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false" (click)="tagCurrentTab('notes')">Notes</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+                    <app-comic-detail [product_id]="product_id" (onCreateNewProduct)="setProductId($event)" (updateName)="setProductName($event)"></app-comic-detail>
+                </div>
+                <div class="tab-pane fade" id="v-pills-categories" role="tabpanel" aria-labelledby="v-pills-categories-tab">
+                    <app-categories [product_id]="product_id"></app-categories>
+                </div>
+                <div class="tab-pane fade" id="v-pills-credits" role="tabpanel" aria-labelledby="v-pills-credits-tab">
+                    <app-credits [product_id]="product_id"></app-credits>
+                </div>
+                <div class="tab-pane fade" id="v-pills-pages" role="tabpanel" aria-labelledby="v-pills-pages-tab">
+                    <app-pages [product_id]="product_id"></app-pages>
+                </div>
+                <div class="tab-pane fade" id="v-pills-uview" role="tabpanel" aria-labelledby="v-pills-uview-tab">
+                    <app-uvie [product_id]="product_id"></app-uvie>
+                </div>
+                <div class="tab-pane fade" id="v-pills-pricing" role="tabpanel" aria-labelledby="v-pills-pricing-tab">
+                    <app-pricing-availability [product_id]="product_id"></app-pricing-availability>
+                </div>
+                <!--
+                <div class="tab-pane fade" id="v-pills-sku" role="tabpanel" aria-labelledby="v-pills-sku-tab">
+                    <app-sku [product_id]="product_id"></app-sku>
+                </div>
+                -->
+                <div class="tab-pane fade" id="v-pills-lines" role="tabpanel" aria-labelledby="v-pills-lines-tab">
+                    <app-product-lines [product_id]="product_id"></app-product-lines>
+                </div>
+                <div class="tab-pane fade" id="v-pills-locales" role="tabpanel" aria-labelledby="v-pills-locales-tab">
+                    <app-locales [product_id]="product_id"></app-locales>
+                </div>
+                <div class="tab-pane fade" id="v-pills-sources" role="tabpanel" aria-labelledby="v-pills-sources-tab">
+                    <app-sources [product_id]="product_id"></app-sources>
+                </div>
+                <div class="tab-pane fade" id="v-pills-custom" role="tabpanel" aria-labelledby="v-pills-custom-tab">
+                    <app-custom-fields [product_id]="product_id"></app-custom-fields>
+                </div>
+                <div class="tab-pane fade" id="v-pills-work" role="tabpanel" aria-labelledby="v-pills-work-tab">
+                    <app-workflow-log [product_id]="product_id"></app-workflow-log>
+                </div>
+                <div class="tab-pane fade" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
+                    <app-notes [product_id]="product_id"></app-notes>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-right mt-3">
+        <button type="button" (click)="saveProduct()" class="btn btn-aqua mr-2" >Save</button>
+        <button type="button" (click)="saveAndBuild()" class="btn btn-aqua mr-2">Save and Build</button>
+        <button type="button" (click)="saveBuildAndCreate()" class="btn btn-aqua btn-no-bg">Save, Build and Create New</button>
+    </div>
+</div>

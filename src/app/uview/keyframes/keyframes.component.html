@@ -1,0 +1,34 @@
+
+ <div class="d-flex flex-row">
+  <div class="p-1 m-1"></div>
+  <div class="text-center m-1 keyframe"> <img src="assets/img/uview/keyframe/keyframe_number.png" /></div>
+  <div class="text-center m-1 keyframe" ><img src="assets/img/uview/keyframe/content-number.png" /></div>
+  <div class="text-center m-1 keyframe"><img src="assets/img/uview/keyframe/pagekey.png" /></div>
+  <div class="text-center m-1 keyframe"><img src="assets/img/uview/keyframe/numberpoints.png" /></div>
+
+  <div class="mr-1  ml-3"> <img src="assets/img/uview/keyframe/actions.png" /></div>
+  <div class="mr-1"></div>
+  <div class="mr-1"> </div>
+
+</div>      
+<div id="keyframes" class="overflow-auto kf-container" >
+  <div cdkDropList (cdkDropListDropped)="drop($event)" ng-if="entries.length > 0">
+    <div cdkDrag cdkDragLockAxis="y" *ngFor="let data of entries">
+        <div class="d-flex flex-row row-frames kf-box blur-row" 
+          [ngClass]="{'highlight' : data.is_approved, 'active' : data.is_selected, 'blur-row' : data.is_blur}" >
+
+          <div class="p-0 pt-1 m-1" style="cursor: move;"><img src="/assets/img/uview/more.png" width="15px" /></div>
+          <div class="p-2 m-1 bg-primary text-center  keyframe text-white" (click)="setSelectedKeyFrame(data.id)" >{{data.id}}</div>
+          <div class="p-2 m-1 bg-keyframe text-center kf-box" >{{data.frame_index}}</div>
+          <div class="p-2 m-1 bg-keyframe text-center kf-box">{{data.page_index}}</div>
+          <div class="p-2 m-1 bg-keyframe text-center kf-box">{{data.polygon_points }}</div>
+
+          <div class="ml-3 pt-1"> <a class="btn btn-outline-secondary" [ngClass]="{'disabled' : data.edit_this}" (click)="setKeyframeToEdit(data.id)" ><div class="edit-pen"></div></a></div>
+          <div class="ml-1 pt-1"><a class="btn btn-outline-secondary" (click)="deleteKeyFrame(data.id)"><div class="trash"></div></a></div>
+          <div class="ml-1 mr-1 pt-1" *ngIf="!data.is_approved"> <a class="btn btn-primary " (click)="saveKeyFrame(data.id)"  ><div class="save"></div></a></div>
+          <div class="ml-1 mr-1 pt-1" *ngIf="data.is_approved" > <a class="btn btn-success" (click)="saveApproved(data.id)"  ><div class="check"></div></a></div>
+        </div>    
+        
+      </div>
+    </div>  
+  </div>

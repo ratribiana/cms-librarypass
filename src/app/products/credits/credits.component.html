@@ -1,0 +1,19 @@
+<section class="credits">
+  <div class="alert alert-info" role="alert">
+  Enter each entry on its own line.
+  </div>
+
+<form [formGroup]="detailForm"  >
+  <div class="row">
+    
+    <div class="col-6">
+        <label for="" class="align-top">Writers<span class="required-asterisk">*</span></label>
+      <textarea cols="40" rows="15" formControlName="writers"></textarea>
+    </div>
+    <div class="col-6">
+        <label for="" class="align-top">Artists<span class="required-asterisk">*</span></label>
+      <textarea cols="40" rows="15" formControlName="artists"></textarea>
+    </div>
+  </div>
+  </form>
+</section>

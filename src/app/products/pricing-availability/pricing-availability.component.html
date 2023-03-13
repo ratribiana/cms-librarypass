@@ -1,0 +1,111 @@
+<section class="pricing-availability">
+    <form [formGroup]="detailForm">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <label>Release Date (UTC) </label>
+                <input placeholder="" [owlDateTimeTrigger]="dt_release" formControlName="available_date" [owlDateTime]="dt_release" class="form-control">
+                <owl-date-time #dt_release></owl-date-time>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <label>Print Release Date</label>
+                <input placeholder="" [owlDateTimeTrigger]="dt_print_release" formControlName="print_on_sale_date" [owlDateTime]="dt_print_release" class="form-control">
+                <owl-date-time #dt_print_release></owl-date-time>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mb-3" >
+                <label>Price Tier</label>
+                <ng-multiselect-dropdown name="price_tiers_list" [placeholder]="'Select Price Tier'" [data]="priceTiers" [settings]="priceTiersDropdown" formControlName="price_tier_id">
+                </ng-multiselect-dropdown>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-3">
+                <label>Content Rating</label>
+                <ng-multiselect-dropdown name="content_rating_list" [placeholder]="'Select Content Rating'" [data]="contentRatings" [settings]="contentRatingsDropdown" formControlName="library_content_rating_id">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-6 col-sm-12 mb-3" style="display: none;">
+                <label>Price Change Date (UMT) </label>
+                <input placeholder="" [owlDateTimeTrigger]="dt_price_change" [owlDateTime]="dt_price_change" class="form-control" formControlName="price_change_date">
+                <owl-date-time #dt_price_change></owl-date-time>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-3"  style="display: none;">
+                <label> New Price Tier</label>
+                <ng-multiselect-dropdown name="previous_price_tier_list" [placeholder]="'Select Price Tier'" [data]="previousPriceTiers" [settings]="previousPriceTiersDropdown" formControlName="previous_price_tier_id">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-md-12 col-sm-12 m-0 p-0">
+                            <label>
+                                <input type="checkbox" formControlName="active"> Active and Published
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 m-0 p-0">
+                            <label>
+                                <input type="checkbox" formControlName="web"> Available on Web
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 m-0 p-0" *ngIf="!hideElementNotNeeded">
+                            <label>
+                                <input type="checkbox" formControlName="subscription"> Available to Subscriptions
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 m-0 p-0" *ngIf="!hideElementNotNeeded">
+                            <label>
+                                <input type="checkbox" formControlName="rental_allowed"> Available for Rental
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 m-0 p-0" style="display: none;">
+                            <label>
+                                <input type="checkbox" formControlName="drm_free"> Available for Download (DRM Free)
+                            </label>
+                        </div>
+                        <div class="col-md-6 col-sm-12 m-0 p-0">
+                            <label>
+                                <input type="checkbox" formControlName="library" (change)="onChangeLibraryPriceTier($event)"> Institution
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  <div class="col-md-6" [style.visibility]="disableLibraryPriceTier ? 'hidden' : 'visible'"> -->
+            <div class="col-md-6" >
+                <div class="card">
+                    <div class="card-body">
+                        <div class="ml-3 mt-0" >
+                            <label>Institution Price Tier </label>
+                            <ng-multiselect-dropdown name="library_price_tier_list" [placeholder]="'Select Price Tier'" [data]="libraryPriceTiers" [settings]="libraryPriceTiersDropdown" formControlName="library_price_tier_id">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="!hideElementNotNeeded">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-md-12 col-sm-12 m-0 p-0">
+                            <label>
+                                <input type="checkbox" formControlName="mature"> Mature
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 m-0 p-0">
+                            <label>
+                                <input type="checkbox" formControlName="adult"> Adult
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 m-0 p-0">
+                            <label>
+                                <input type="checkbox" formControlName="tapjoy"> Tapjoy
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

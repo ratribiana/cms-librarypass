@@ -1,0 +1,105 @@
+<div *ngIf="!form_loaded" class="text-center mt-4">  
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="form_loaded" class="mb-4">
+  <form [formGroup]="updateLibraryAuthMethodForm" (ngSubmit)="updateLibraryAuthMethod($event);">
+  <div>
+    <!-- <label for="active"><h6>Active</h6></label>
+    &nbsp;&nbsp;
+    <input type="checkbox" formControlName="active">     --> 
+    <div class="form-group checkbox-wrap">
+      <label class="checkbox">
+          <input type="checkbox" class="btn-checkbox-all" formControlName="active">
+          <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-label" for="active"><h6>Active</h6></label>
+    </div>                            
+  </div>
+
+  <div *ngIf="auth_is_active">
+    <div formGroupName="authSettings" >
+      <h6>Form Label</h6>
+
+      <div class="form-group col-md-12" >
+        <label for="username_placeholder">Username</label>        
+        <input type="text" formControlName="username_placeholder" class="form-control" />        
+      </div>
+
+      <div class="form-group col-md-12" *ngIf="password_not_required == 0">
+        <label for="password_placeholder">Password</label>        
+        <input type="text" formControlName="password_placeholder" class="form-control" />        
+      </div>
+
+      <h6>Settings</h6>
+      <div class="form-group col-md-7">
+        <!-- <label for="no_password_required">Hide Pin Field</label>
+        &nbsp;&nbsp;
+        <input type="checkbox" formControlName="no_password_required"> -->
+        <div class="checkbox-wrap">
+          <label class="checkbox">
+              <input type="checkbox" class="btn-checkbox-all" formControlName="no_password_required">
+              <span class="checkmark"></span>
+          </label>
+          <label class="checkbox-label" for="no_password_required">Hide Pin Field</label>
+        </div>               
+      </div>
+    </div>
+
+    <div>      
+      <div class="form-group col-md-12" >
+        <label for="home_code">Institution Home Field <span class="required-asterisk">*</span> (for multiple values separate by comma)</label>  
+        <br>
+        <code>
+          Code representing the Institution to be compared against Auth XML result
+        </code>
+        <input type="text" formControlName="home_code" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.home_code.errors }" />
+        <div *ngIf="submitted && f.home_code.errors" class="invalid-feedback">
+          <div *ngIf="f.home_code.errors.required">Institution Home Field is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12" >
+        <label for="patron_type">Patron Type (for multiple values separate by comma)</label>    
+        <input type="text" formControlName="patron_type" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.patron_type.errors }" />
+        <div *ngIf="submitted && f.patron_type.errors" class="invalid-feedback">
+          <div *ngIf="f.patron_type.errors.required">Authentication URL is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12" >
+        <label for="patron_type">Other Fields</label>
+        <br />
+        <code>
+          Multiple fields separated by semicolon. Multiple values separated by comma. e.g. PROFILE=1,2;P BARCODE[pb]=12345
+        </code>
+        <input type="text" formControlName="other_fields" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.other_fields.errors }" maxlength="250" />
+        <div *ngIf="submitted && f.other_fields.errors" class="invalid-feedback">
+          <div *ngIf="f.other_fields.errors.required">Authentication URL is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12" >
+        <label for="auth_url">Authentication URL<span class="required-asterisk">*</span></label>  
+        <br>
+        <code>
+          URL to authenticate against Institution's Patron API. Replace the user barcode with &#123;username&#125;. ex. https://mylibrary.org:8080/PATRONAPI/&#123;username&#125;/dump
+        </code>
+        <input type="text" formControlName="auth_url" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.auth_url.errors }" />
+        <div *ngIf="submitted && f.auth_url.errors" class="invalid-feedback">
+          <div *ngIf="f.auth_url.errors.required">Authentication URL is required</div>
+        </div>
+      </div>      
+    </div>
+  </div>
+
+  
+  <div class="mt-3">            
+    <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+    <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  </div> 
+  
+  </form>
+</div>

@@ -1,0 +1,93 @@
+
+<!-- header -->
+    <!--<app-header></app-header>-->
+<app-loader></app-loader>
+<div class="dashboard">
+
+<header class="header-menu" *ngIf="currentUser"> <!-- container -->
+    <nav class="navbar  navbar-expand-sm header-top-logo">
+        <div class="navbar-brand"> <h3 class="library-header-name" > {{currentUser.supplier_id ? currentUser.supplier_name : (currentUser.library_id ? currentUser.library_name : '')}}</h3></div>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <!-- <div class="collapse navbar-collapse" id="navbar-list-4"> -->
+        <div class="navbar-collapse" id="navbar-list-4">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIAAgMAAACJFjxpAAAADFBMVEXFxcX////p6enW1tbAmiBwAAAFiElEQVR4AezAgQAAAACAoP2pF6kAAAAAAAAAAAAAAIDbu2MkvY0jiuMWWQoUmI50BB+BgRTpCAz4G6C8CJDrC3AEXGKPoMTlYA/gAJfwETawI8cuBs5Nk2KtvfiLW+gLfK9m+r3X82G653+JP/zjF8afP1S//y+An4/i51//AsB4aH+/QPD6EQAY/zwZwN8BAP50bh786KP4+VT+3fs4/noigEc+jnHeJrzxX+NWMDDh4g8+EXcnLcC9T8U5S/CdT8bcUeBEIrwBOiI8ki7Ba5+NrePgWUy89/nYyxQ8Iw3f+pWY4h1gb3eAW7sDTPEOsLc7wK1TIeDuDB+I/OA1QOUHv/dFsZQkhKkh4QlEfOULYz2nGj2/Nn1LmwR/86VxlCoAW6kCsHRGANx1RgCMo5Qh2EsZgrXNQZZShp5Liv7Il8eIc5C91EHY2hxk6bwYmNscZIReDBwtCdhbErC1JGBpScBcOgFMLQsZMQs5Whayd+UQsLYsZGlZyNyykKllISNmIUfAwifw8NXvTojAjGFrdYi11SGWVoeYWx1i6lmQCiEjFkKOVgjZ+xxIhZCtFULWHkCqxCw9gNQKmP9vNHzipdEPrRcxtVbAeDkAvve0iM2QozVD9hfjhp4YP/UrkJYDbD2AtBxgfSkAvvHEeNcDSAsilgtAWxIy91J8AXgZAJ5e33+4tuACcAG4AFwALgBXRXQB6AFcB5MXAuA6nl9/0Vx/011/1V5/1/dfTPJvRtdnu/zL6beeFO/7r+fXBYbrEkt/j+i6ytXfpuvvE/ZXOnsA/a3a/l5xf7O6v1t+Xe/vOyz6HpO8yyboM8o7rfJes77bru83THk48p7TvOs27zvOO6/73vO++z7l4cgnMPQzKPopHC0N9noSSz6LJp/Gk88jyicy5TOp6qlc+VyyfDJbPpuuns6XzyfMJzTmMyrrKZ35nNJ8Ums+q7af1tvPK+4nNodEnPKp3fnc8npyez67/qVP7+/fL8hfcMjfsOhf8cjfMclfcnn9+BkOnLECP8Q58OYeyJ40eoyF6Ee/En/JHlP6mIlRVXprF4BxtAvArV0AxtEuALd2ARhHuwDc2gVgHPX/hFv9fMBddjIGeKg/WCxlCsI46u+Ga5mCcJd+sIG9UkGAW32ZbApFAHhod4Bb3eo04h3god0BbiUHYApVCNjbHeBW+QDAXT4a7qg7r7e214057vg0QhkEHkoSwq0kIdydXw4/Q3H8hjYJ3vL0WConBJhCHQaOToeBrU0BljYFmEoVgHGUKgAPnREAt84IgLuqFgAYSUEOAHszDwuAtSkHAZhLGYIpdCLgKGUIHtocZG1zkLmUIRhxDnJU1RDA1uYga5uDzKUOwhTnIEfnxcDe5iBrcyQAYGlzkKkUYhhxDrKXQgxbSwLWUohhbknA1JKAEZOAvSUBW0sC1pYEzC0JmFoSMMJyCDhaFrK3JGDtyiFgaVnI3LKQqWUhI2YhR8tC9paFrC0LWVoWMrcsZGpZyIhZyNGykL2rSIGtlQHWVgZYWhlgbmWAqZUBRiwDHK0MsLcywNbKAGsOoNUhllaHmFsdYmp1iBHrEEerQ+w5gFYI2VodYm11iKXVIeYcQCuETK0QMmIh5MgBtELI3gohWyuErDmAVolZWiFkzgG0SszUKjGjfj6gVmKOVonZcwCtFbB9HQC+ozWDbz1bvGu9iKW1AuYcQOtFTLEX1GbIaFegN0OOHEBrhuw5gNYM2XIArRuz5gDacoB3bTnAEktxXQ4wfw0AvveM8b4tiJjSJOwLIsbXsAKeNeKCiOO3D+AVbUl0AfjGs8ZPbUnIdgFoa1LWC0BblfMuB9AeC1j6gqQE0J9LmC8AOYD2ZMb7i4bt2ZTpWoHfPoB7Tj2fXzT8N1X41vkq/QHOAAAAAElFTkSuQmCC" width="40" height="40" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <div class="pl-4 text-muted"> {{currentUser.username }}</div>
+                  <hr>
+                  <a class="dropdown-item" href="/" (click)="logout()">Log Out</a>
+                </div>
+              </li>   
+            </ul>
+        </div>
+    </nav>
+</header>
+
+
+
+<nav class="nav-menu"> <!-- container -->
+    <!-- logo -->
+    <div class="row navbar-top-logo">
+        <div class="navbar-header col-sm-12">
+            <div class="">
+                <a class="navbar-brand" href="/">
+                    <img src="assets/img/librarypass-logo.png" width="220" class="img-responsive" title="Library Pass CMS" alt="Library Pass CMS">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu-list" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-menu-list">
+        <div class="nav-scroller py-1 mb-2 navbar-nav">
+            <ul class="nav" *ngIf="currentUser">
+                <li><a routerLink="/production-dashboard" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('prod_dashboard_nav')" ><i class="icon icon-nav icon-products"></i>Production Dashboard</a></li>
+                <li><a routerLink="/librarian" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('institution_report_nav')"><i class="icon icon-nav icon-institution-reports"></i> Institution Reports</a></li>
+                <li><a routerLink="/publisher" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('publisher_report_nav')"><i class="icon icon-nav icon-publisher-reports"></i> Publisher Reports</a></li>           
+                <li><a routerLink="/user_maintenance" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('user_maintain_nav')"><div class="icon icon-nav icon-user-group"></div>User Maintenance</a></li>           
+                <li><a routerLink="/cms_users" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('admin_nav')" ><i class="icon icon-nav icon-admin-users"></i> Admin Users</a></li>
+                <li><a routerLink="/libraries" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('institution_nav')" ><i class="icon icon-nav icon-institutions"></i> Institutions</a></li>
+                <li><a routerLink="/marc_records" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('marc_nav')" ><i class="icon icon-nav icon-institution-reports"></i> Marc Records</a></li>
+                <li><a routerLink="/content-filtering" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('cf_nav')" ><i class="icon icon-nav icon-products"></i> My Collection</a></li>
+                <li><a routerLink="/products" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('products_nav')" ><i class="icon icon-nav icon-products"></i> Products</a></li>
+                <li><a  routerLink="/banners" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('banners_nav')" ><div class="icon-banner"></div><div class="icon-label">Banners</div></a></li>
+                <li> <a routerLink="/drawers" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('drawers_nav')" ><div class="icon-drawer"></div><div class="icon-label">Drawers</div></a></li>
+                <li><a  routerLink="/settings" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('settings_nav')" ><div class="icon-settings"></div><div class="icon-label">Settings</div></a></li>
+                <li><a routerLink="/user-group" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('usergroup_nav')" ><div class="icon-user-group"></div><div class="icon-label">User Group</div></a></li>
+                <li><a routerLink="/user-roles" routerLinkActive="active-link" *ngIf="guard.hasAccessByCode('role_nav')" ><i class="icon icon-nav icon-user-maintenance"></i><div class="icon-label">Roles</div></a></li>                        
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- header -->
+
+    <!-- main app container -->
+    <main role="main" id="main_content">
+        <div class="row">
+            <div class="col-md-12">
+                <flash-messages></flash-messages>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </main>
+
+    
+    <!-- footer -->
+        <app-footer></app-footer>
+    <!-- footer -->
+<!--routes get injected here -->
+</div>

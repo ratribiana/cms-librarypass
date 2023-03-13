@@ -1,0 +1,12 @@
+.library-info{
+    font-size: 14px;
+}
+
+.library-info input{
+    font-size: 14px;
+}
+
+.tab-content{
+    background: #f7f7f7;
+    min-height: 600px;
+}

@@ -1,0 +1,127 @@
+<div class="row report-statements-tab">
+  <div class="col-12">
+    <p class="report-label float-left">Statements</p>
+  </div>
+
+  <div class="col-12">
+    <div class="filter-field-date">
+      <label class="float-left form-label filter-fields-space">Month: </label>
+      <div class="filter-fields filter-field-month filter-fields-space xs-float-right">
+        <select class="form-control" (change)="filterStatementbyMonth($event.target.value)">
+          <option *ngFor="let month of month_list; let i = index"  value="{{i + 1}}" [attr.selected]="month==current_month ? true : null">{{month}}</option>
+        </select>
+      </div>
+
+      <label class="float-left form-label filter-fields-space">Year: </label>
+      <div class="filter-fields filter-fields-space xs-float-right"> 
+        <select class="form-control" (change)="filterStatementbyYear($event.target.value)">
+          <option *ngFor="let year of prev_years" value="{{year}}">{{year}}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- <div class="float-right">
+      
+      <button type="button" class="btn btn-download" [attr.disabled]="(loading || total == 0) ? 'disabled' : null"  (click)="downloadZipReport();">Download All <i class="icon icon-download"></i></button>
+      <img *ngIf="loading" class="pl-2"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />  
+    </div> -->
+  </div>
+
+  <!-- <table class="table table-hover library-reports-table">
+    <thead>
+      <th width="30px" class="text-center"> 
+        <label class="checkbox">
+          <input type="checkbox" checked="checked" class="btn-checkbox-all" for=".checkbox-statements" (click)="checkAllItems();">
+          <span class="checkmark"></span>
+        </label>
+      </th>
+      <th> Date </th>
+      <th> Institution</th>
+      <th> Download </th>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let report of reports | async | paginate: { id: 'statement_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }">
+      <td class="text-center">
+        <label class="checkbox">
+          <input class="checkbox-statements" type="checkbox" ngModel="" ngTrueValue="1" ngFalseValue="0" ngChecked="">
+          <span class="checkmark"></span>
+        </label>
+      </td>
+      <td>
+        {{ (report.report_month - 1) | dateFormat : 'MMM' }} {{ report.report_year }}
+      </td>
+      <td>
+        {{ report.library_name }}
+      </td>
+      <td class="text-center">
+        <button type="button" (click)="downloadLibraryReportData(report, $event)" class="btn">
+          <i class="icon icon-download icon-download-gray"></i>
+        </button>
+      </td>
+    </tr>
+
+    </tbody>
+  </table> -->
+
+  <div class="col-12">
+    <div class="table-wrap">
+      <div class="table table-striped table-hover library-reports-table">
+        <div class="thead">
+          <!-- <div class="th text-center td-width-30">
+            <label class="checkbox">
+              <input type="checkbox" checked="checked" class="btn-checkbox-all" for=".checkbox-statements" (click)="checkAllItems();">
+              <span class="checkmark"></span>
+            </label>
+          </div> -->
+          <div class="th">Date</div>
+          <div class="th">Institution</div>
+          <div class="th">Download</div>
+        </div>
+
+        <div class="tbody">
+          <div class="tr" 
+            *ngFor="let report of reports | async | paginate: { id: 'statement_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }; let i = index">
+            
+            <a class="td-title collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+              <span class="arrow"></span>{{ report.library_name }}
+            </a>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}"></div>
+            <!-- <div class="td text-center collapse item-collapse item-collapse-{{i}} td-width-30">
+              <label class="checkbox">
+                <input class="checkbox-statements" type="checkbox" ngModel="" ngTrueValue="1" ngFalseValue="0" ngChecked="">
+                <span class="checkmark"></span>
+              </label>
+            </div> -->
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Date</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ (report.report_month - 1) | dateFormat : 'MMM' }} {{ report.report_year }}
+            </div>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Institution</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ report.library_name }}
+            </div>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Download</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              <button type="button" (click)="downloadLibraryReportData(report, $event)" class="btn">
+                <i class="icon icon-download icon-download-gray"></i>
+              </button>
+            </div>     
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 text-center">
+    <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+    <pagination-controls (pageChange)="getLibrarianStatementReports(library_id, $event)" previousLabel="" nextLabel="" id="statement_report_paging"></pagination-controls>
+  </div>
+</div>

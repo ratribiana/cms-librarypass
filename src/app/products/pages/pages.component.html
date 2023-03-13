@@ -1,0 +1,161 @@
+<section class="pages">
+    <form [formGroup]="detailForm">
+        <div class="row">
+            <div class="col-6">
+                <label class="checkbox-label">
+                    <input class="form-check-input" formControlName="waid_format" type="checkbox" value="">
+                    WAID format
+                </label>
+                <div>Are these pages for a WAID (Horizontal) formated book?</div>
+            </div>
+            <div class="col-6">
+                <label class="checkbox-label">
+                    <input class="form-check-input" formControlName="disable_trim" type="checkbox" value="">
+                    Disable Trim
+                </label>
+                <div>Use for DC to maintain white page borders</div>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="row">
+        <div class="page-container" cdkDropListGroup>
+            <div cdkDropList [cdkDropListEnterPredicate]="onCardEnter" (cdkDropListDropped)="onCardDropped()"></div>
+            <div cdkDropList class="page-holder" *ngFor="let page of pagesList; let pageNumber = index" [cdkDropListEnterPredicate]="onCardEnter" (cdkDropListDropped)="onCardDropped()">
+                <div cdkDrag class="page-card" (cdkDragMoved)="dragMoved($event);">
+                    <a class="page-delete" href="" (click)="onDeletePage($event, page.id)">
+                        <fa-icon [icon]="faWindowClose"></fa-icon>
+                    </a>
+                    <div style="text-align:center; padding-top:5px;">
+                        <div *ngIf="page.thumbnail_status > 0">
+                            Page {{pageNumber + 1}}
+                            <div class="image-wrap">
+                                <img src="{{page.thumbnail_url}}" *ngIf="page.thumbnail_status == 200" width="90" height="120" (click)="showPreview(page.image_url)" />
+                                <button (click)="downloadImage(page.image_url, 'img'+page.id+(pageNumber+1))" *ngIf="page.thumbnail_status == 200 && page.image_url != ''" class="image-download-button">
+                                    <span class="icon icon-download"></span>
+                                </button>
+                            </div>
+                            <div class="align-self-center text-center p-4 text-info" *ngIf="page.thumbnail_status == 404">Image not available</div>
+                        </div>
+                        <div *ngIf="page.thumbnail_status < 1">
+                            Uploading Image
+                            <div class="align-self-center text-center p-4 text-info" *ngIf="!page.thumbnail_status">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">uplaoding...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="dropzone" fileDragDrop (filesChangeEmiter)="onFileChange($event)" [single_file_only]="true" (filesInvalidEmiter)="onFileInvalid($event)" [allowed_extensions]="allowed_types">
+            <div class="text-wrapper">
+                <div class="centered">
+                    <input type="file" name="file_page" id="file_page" (change)="onFileChange($event.target.files)" accept="{{allowed_types}}">
+                    <label for="file_page"><span class="textLink">Click Here</span> or Drop Page File Here</label>
+                    <div class="description">Upload high quality, full color originals only. JPG, JPEG, GIF, TIF, or PNG.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <button type="button" class="btn btn-primary m-1" (click)="onImportRemoteFile()">Import Remote File</button>
+        <button type="button" class="btn btn-primary m-1" (click)="onReversePage()">Reverse Page Order</button>
+        <button type="button" class="btn btn-primary m-1" (click)="onDeleteAllPage()">Delete All Pages</button>
+    </div>
+    <div class="row mt-2" *ngIf="queueList.length > 0">
+             <div class="alert alert-warning col-md-12">
+              <p *ngFor="let queue of queueList" ><fa-icon [icon]="faInfoCircle"></fa-icon>  Importing from URL ({{queue.progress}}%) Waiting Last Updated: {{queue.updated}}</p>
+             </div>
+    </div>
+</section>
+
+<!-- ALERT BOX FOR INVALID START--->
+<app-confirm-modal #modalInvalid [modalConfig]="modalInvalidConfig">
+    <span *ngIf="serverError == '' "> {{fileNames}} has an invalid extension. Valid extension(s): {{allowed_types}} </span>
+    <span *ngIf="serverError != '' "> {{serverError}} </span>
+</app-confirm-modal>
+<!-- ALERT BOX FOR INVALID END--->
+
+<!-- MODAL FOR DELETE CONFIRMATION START-->
+<app-confirm-modal #modalDelete [modalConfig]="modalDeleteConfig">
+    <div class="text-center" *ngIf="!deleteAllPages">
+        <div class="mb-2"> Are you sure you wish to delete this page?</div>
+        <img src="{{deletePageSrc}}" class="align-self-center" width="90" height="120" />
+    </div>
+    <div class="text-center" *ngIf="deleteAllPages">
+        <div class="mb-2"> Are you sure you want to delete all pages? <br /> This action can not be reverted. <br /> Do you want to proceed?</div>
+    </div>
+</app-confirm-modal>
+<!-- MODAL FOR DELETE CONFIRMATION END -->
+
+<!-- MODAL FOR FTP REMOTE START -->
+<app-confirm-modal #modalImport [modalConfig]="modalConfig">
+    <section class="ftpModal">
+        <form [formGroup]="ftpForm">
+            <div class="col-12">
+                <div class="alert alert-primary">
+                    <strong>Allowed file types</strong>
+                    <br />
+                    <small>*.zip - ZIP files can ONLY ADD new pages</small>
+                    <small>*.pdf - PDF files can REPLACE current pages or ADD new pages</small>
+                </div>
+            </div>
+            <div class="col-12 form-group">
+                <!-- <label for="" *ngIf="printReadyImport">Fetch Print-Ready PDF/ZIP from Remote URL (http:// or ftp://)</label> -->
+                <label for="">Fetch InDesign/PSD Source Zip from Remote URL (http:// or ftp://)</label>
+                <input type="text" class="form-control" formControlName="source_url" (keyup)="onChangeUrl($event)" />
+            </div>
+            <div class="col-12 ml-3">
+                <label class="checkbox-label">
+                    <input class="form-check-input" formControlName="s3_source" type="checkbox" value="">
+                    S3 Source
+                </label>
+            </div>
+            <div class="col-12">
+                <label for="">Remote Login (Optional)</label>
+                <input type="text" class="form-control" formControlName="login" />
+            </div>
+            <div class="col-12">
+                <label for="">Remote Password (Optional)</label>
+                <input type="text" class="form-control" formControlName="password" />
+            </div>
+            <div class="col-12">
+                <label for="">Replace all pages?</label>
+                <select class="browser-default custom-select" formControlName="replace_pages">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="" class="mb-0">Disable Trimbox? </label> <br />
+                <small>(Use if landscape pages incorrectly cropped)</small>
+                <select class="browser-default custom-select" formControlName="disable_trimbox">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="" class="mb-0">Disable Trim? </label> <br />
+                <small>(Use for DC to maintain white page borders)</small>
+                <select class="browser-default custom-select" formControlName="disable_trim">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+        </form>
+    </section>
+</app-confirm-modal>
+<!-- MODAL FOR FTP REMOTE END -->
+
+
+<!-- The Modal -->
+<div class="preview" *ngIf="previewImageSrc !==''">
+  <span class="preview-close" (click)="closePreview()" >&times;</span>
+  <img class="preview-content" src="{{previewImageSrc}}">
+
+  <div class="preview-page-number"></div>
+</div>

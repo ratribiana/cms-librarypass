@@ -1,0 +1,27 @@
+.report-label{
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.user-update-password{
+    width: 54%;
+    float: left;
+    margin-right: 8px;
+}
+
+.instructions{
+    color: #5eb317;
+}
+
+.required-asterisk{
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 1.2em;
+}
+ 
+@media (max-width: 767px) {
+    .desktop-float-right {
+        margin-top: 15px;
+    }
+}

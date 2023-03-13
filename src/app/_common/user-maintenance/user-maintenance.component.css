@@ -1,0 +1,76 @@
+.report-label{
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.user-update-password{
+    width: 54%;
+    float: left;
+    margin-right: 0;
+    border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.instructions{
+    color: #5eb317;
+}
+
+.library-reports-table td {
+	overflow: hidden!important;
+}
+
+.btn-update {
+	color: #fff;
+	background-color: #B9BCC3;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+::ng-deep .select-wrap .multiselect-dropdown .dropdown-btn .selected-item {
+    clear: left;
+    margin-bottom: 2px;
+}
+
+@media (min-width: 768px) {
+    .td-width-200 {
+        max-width: 200px;
+    }
+    .td-width-150 {
+        max-width: 150px;
+    }
+    .td-width-75 {
+        max-width: 75px;
+    }
+
+    ::ng-deep .multiselect-dropdown .dropdown-btn div.selected-item {
+      max-width: 80%;
+    }
+
+    ::ng-deep .select-wrap .selected-item {
+        position: relative;
+    }
+
+    ::ng-deep .select-wrap .selected-num {
+        color: #9E9FA8;
+        position: absolute;
+        left: 100%;
+        max-width: 150px;
+        min-width: 90px;
+        margin-left: 12px;
+    }
+}
+@media (max-width: 767px) {
+    ::ng-deep .select2.select2-container {
+        width: 100%!important;
+    }
+
+    ::ng-deep .select-wrap .selected-num {
+        display: inline;
+    }
+    ::ng-deep .select-wrap .selected-num:before {
+        content: '(';
+    }
+    ::ng-deep .select-wrap .selected-num:after {
+        content: ')';
+    }
+}

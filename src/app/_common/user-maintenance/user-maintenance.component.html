@@ -1,0 +1,190 @@
+<div class="row">
+  <div class="col-12">
+    <div class="box" *ngIf="is_admin && !is_parent">
+      <div class="col-12 col-md-5 col-lg-4">
+        <ng-multiselect-dropdown
+          name="regions_list"          
+          [placeholder]="'Select Institution'"    
+          [data]="parent_institutions"             
+          [settings]="singleDropdownSettings"        
+          (onSelect)="onParentSelect($event)"
+          (onDeSelect)="resetParentInstitution()"
+        >
+        </ng-multiselect-dropdown> 
+      </div>
+    </div>
+  </div>    
+  <div class="col-12">
+    <div class="box" *ngIf="is_parent">
+      <div class="select-wrap col-12 col-md-5 col-lg-4">  
+        <form [formGroup]="searchForm">
+          <ng-multiselect-dropdown
+            name="libraries"
+            formControlName="libraries"
+            [placeholder]="'Select Institution'"
+            [data]="institution_node"
+            [(ngModel)]="selectedItems"
+            [settings]="dropdownSettings"            
+            (onSelect)="onLibrariesSelect($event)"
+            (onDeSelect)="onLibrariesDeSelect($event)"
+            (onSelectAll)="onLibrariesSelectAll($event)"
+          >
+            <ng-template
+              #optionsTemplate
+              let-item
+              let-option="option"
+              let-id="id"
+            >
+              <div [ngStyle]="getItemStyle(getItems[id].lineage)">
+                {{option}}
+              </div>
+            </ng-template>
+
+            <ng-template #optionSelectedTemplate let-option="option" let-id="id">
+              <div class="selected-text" [ngClass]="getItemClass(getItems[id])">
+                {{option}} <span class="selected-num" [hidden]="hideItemCount(getItems[id].lineage)">{{ getItemCountText(getItems[id].lineage) }}</span>
+              </div>
+            </ng-template>
+
+          </ng-multiselect-dropdown> 
+        </form>
+        <a href="#" (click)="resetParentInstitution($event)" *ngIf="is_admin">Reset Parent Institution</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="box">
+      <p class="report-label"> Users </p>
+    
+      <div [hidden]="!allow_add_user">
+        <p [hidden]="!library_id">
+          <button type="button" class="btn btn-outline-dark" (click)="loadUserCreate()" data-toggle="modal"
+            data-target="#addUserModal">
+            Add Single User
+          </button>
+          &nbsp;<b>OR</b>&nbsp;
+          <label>
+            Upload a CSV file, with the following columns. <b>Username/Email, Password</b>
+          </label>
+          &nbsp;
+          <input type="file" class="upload" (change)="uploaduserCSV($event.target.files)">
+        </p>
+        <p [hidden]="library_id" class="instructions">
+          <i>Please Select an Institution to add Users. </i>
+        </p>
+      </div> 
+
+      <div *ngIf="!dataLoaded" class="text-center mt-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <div >    
+        <form autocomplete="off">
+        <input (change)="filterbyUsername($event)" type="text" autocomplete="off" class="form-control form-search-input float-left form-search-width"
+          placeholder="Search by Username or Email">
+        <button type="button" class="btn form-search-btn btn-outline-dark">Search</button>
+        </form>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table table-striped table-hover library-reports-table">
+          <div class="thead">
+            <div class="th td-width-200"> Username/Email </div>
+            <div class="th td-width-150"> Institution </div>
+            <div class="th"> Active </div>
+            <div class="th"> Delete </div>
+            <div class="th td-width-75"> Update Password </div>
+          </div>
+
+          <div class="tbody">
+            <div class="tr" 
+              *ngFor="let user of users | async | paginate: { id: 'activity_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }; let i = index">
+              
+              <a class="td-title collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+                <span class="arrow"></span>{{ user['user_email'] }}
+              </a>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Username/Email</div>
+              <div class="td collapse item-collapse item-collapse-{{i}} td-width-200">{{ user['user_email'] }}</div>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}" >Institution</div>
+              <div class="td collapse item-collapse item-collapse-{{i}} td-width-150" >{{ libraries[user['library_id']] }}</div>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Active</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}"> 
+                <label class="switch">
+                  <input (click)="updateUserStatus($event, user['id'])" type="checkbox" class="form-check-input position-static" [checked]="user['active'] == 1"> 
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Action</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}"><button (click)="deleteUser($event, user['id'])" type="button" class="btn btn-outline-danger btn-delete"><i class="icon icon-delete"></i> Delete</button></div>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Update Password</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}"><input type="password" class="form-control user-update-password" placeholder="New Password">
+                <button (click)="updateUserPassword($event, user['id'])" type="button"
+                  class="btn btn-update">Update</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="total-checkout total-checkout-float">Total Users: {{total}}</p>
+      </div>
+
+      <div class="text-center">
+        <pagination-controls (pageChange)="getUserList($event, filter)" previousLabel="" nextLabel="" id="activity_report_paging">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Add User Modal -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="createUserForm" (ngSubmit)="createSingleUser($event);" autocomplete="off">
+            <div class="form-group">
+              <label for="username">Username / Email</label>
+              <input type="text" formControlName="username" class="form-control" autocomplete="off"
+                [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+              <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                <div *ngIf="f.username.errors.required">Username / Email is required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" formControlName="password" class="form-control" autocomplete="off"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">Password is required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button [disabled]="loading" class="btn btn-primary">Save</button>
+              <img *ngIf="loading" class="pl-2"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

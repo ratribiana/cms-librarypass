@@ -1,0 +1,82 @@
+<div *ngIf="!form_loaded" class="text-center mt-4">  
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="form_loaded">
+  <form [formGroup]="updateLibraryAuthMethodForm" (ngSubmit)="updateLibraryAuthMethod($event);">
+
+    <div class="form-group checkbox-wrap">
+      <label class="checkbox">
+          <input type="checkbox" class="btn-checkbox-all" formControlName="active">
+          <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-label" for="active"><h6>Active</h6></label>
+    </div>
+
+    <div *ngIf="auth_is_active">
+      <div>
+        <h6>Settings</h6>
+        <div>
+          <h6>Add new Tenant and Org ID</h6>
+          <div class="form-row col-12">
+            <div class="form-group col-md-5">
+              <label for="tenant_id">Tenant ID</label>
+              <code class="pb-3"> Number only</code>
+              <br>
+              <!-- pattern="^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$" -->
+              <input type="text" formControlName="tenant_id" class="form-control" placeholder="Add New Tenant ID" pattern="^[0-9]*$" maxlength="10" [ngClass]="{ 'is-invalid': submitted && f.tenant_id.errors }" />
+              <div *ngIf="submitted && f.tenant_id.errors" class="invalid-feedback">
+                Please Enter a valid Tenant ID upto 10 digit
+              </div>
+            </div>
+            <div class="form-group col-md-5" >
+              <label for="org_id">Org ID</label>
+              <br>
+              <!-- pattern="^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$" -->
+              <input type="text" formControlName="org_id" class="form-control" placeholder="Add New Org ID" maxlength="50" [ngClass]="{ 'is-invalid': submitted && f.org_id.errors }" />
+              <div *ngIf="submitted && f.org_id.errors" class="invalid-feedback">
+                Please Enter a valid Org ID upto 50 characters
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div >
+      <div class="form-group" >            
+        <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+        <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div> 
+    </div> 
+  </form>
+
+  <div class="col-md-10 padded-top" *ngIf="auth_is_active">
+    <table class="table table-hover table-striped library-reports-table col-md-12">
+  
+      <thead>
+        <th> Tenant ID </th>
+        <th> Org ID </th>
+        <th> &nbsp; </th>
+      </thead>
+    
+      <tbody>
+      <tr *ngFor="let tenant of tenants | async | paginate: { id: 'statement_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }">
+        <td>{{ tenant['tenant_id'] }}</td>
+        <td>{{ tenant['org_id'] }}</td>
+        <td>
+          <button type="button" (click)="deleteTenant($event, tenant['id'], tenant['tenant_id'])" class="btn btn-outline-danger btn-delete btn-delete-top"><i class="icon icon-delete"></i> Delete</button>               
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  
+  
+    <div class="col-12 text-center">
+      <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+      <pagination-controls (pageChange)="getTenantList($event, filter)" id="statement_report_paging" previousLabel="" nextLabel=""></pagination-controls>
+    </div>                                
+  </div>
+</div>

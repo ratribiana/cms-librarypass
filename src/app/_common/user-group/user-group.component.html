@@ -1,0 +1,127 @@
+<div class="box"  *ngIf="!isUserRolePage">
+	<div class="row">
+		<div class="col-12 d-flex">
+			<h4> User Groups </h4> <a routerLink="groups" skipLocationChange class="btn btn-aqua btn-md btn-primary ml-2"> Create</a>  
+			<hr>
+		</div>
+		<div class="col-12">
+			<table class="table table-striped table-hover">
+		      <thead>
+		        <th> Name </th>
+		        <th> Active </th>
+		        <th> Action </th>
+		      </thead>
+		      <tbody>
+		      	<tr *ngFor="let group of aclGroups">
+		      		<td>{{ group['name'] }}</td>
+		      		<td>
+		      			<label class="switch">
+		                  <input  type="checkbox" (click)="onActiveGroup($event, group['id'])" class="form-check-input position-static" [checked]="group['active'] == 1"> 
+		                  <span class="slider round"></span>
+	                	</label>
+		      		</td>
+		      		<td>
+		      			<a href="#" (click)="editGroups($event, group['id']);" type="button" class="btn btn-outline-dark btn-edit"><i class="icon icon-edit"></i> Edit</a>
+		      		</td>
+		      	</tr>
+		      </tbody>
+		    </table>
+		</div>
+	</div>
+</div>
+
+<div class="box" *ngIf="isUserRolePage">
+	<div class="row" >
+		<div class="col-12 d-flex">
+			<h4> Components </h4> <a routerLink="roles" skipLocationChange class="btn btn-aqua btn-md btn-primary ml-2"> Create</a>  
+			<hr>
+		</div>
+		<div class="col-12 text-muted">
+		</div>
+		<!-- <div class="col-12">
+			<table class="table table-striped table-hover col-12">
+		      <thead>
+		        <th> Name </th>
+		        <th> Component Id </th>
+				<th> Angular Route </th>
+		        <th> Active </th>
+		        <th> Action</th>
+		      </thead>
+		      <tbody>
+		      	<tr *ngFor="let roles of aclRoles">
+		      		<td>{{ roles['name'] }} <br><small>{{ roles['short_description'] }}</small></td>
+		      		<td>{{ roles['short_code'] }}</td>
+					  <td>{{ roles['url_route'] }}</td>
+		      		<td>
+		      			<label class="switch">
+		                  <input  type="checkbox" (click)="onActiveRoles($event, roles['id'])" class="form-check-input position-static" [checked]="roles['active'] == 1"> 
+		                  <span class="slider round"></span>
+	                	</label>
+		      		</td>
+		      		<td>
+		      			<a href="#" (click)="editRoles($event, roles['id']);" class="btn btn-outline-dark btn-edit"><i class="icon icon-edit"></i> Edit</a>
+		      		</td>
+		      	</tr>
+		      </tbody>
+		    </table>
+		</div> -->
+
+		<div class="col-12">
+			<div class="table-wrap">
+				<div class="table table-striped table-hover library-reports-table">
+					<div class="thead">
+						<div class="th">Name</div>
+				        <div class="th">Component Id</div>
+						<div class="th">Angular Route</div>
+				        <div class="th">Active</div>
+				        <div class="th">Action</div>
+					</div>
+
+					<div class="tbody">
+						<div class="tr" 
+						*ngFor="let roles of aclRoles; let i = index">
+
+						<a class="td-title collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+						<span class="arrow"></span>{{ roles['name'] }}<br><small>{{ roles['short_description'] }}</small>
+						</a>
+
+						<div class="th collapse item-collapse item-collapse-{{i}}">Name</div>
+						<div class="td collapse item-collapse item-collapse-{{i}}">
+							{{ roles['name'] }} <br><small>{{ roles['short_description'] }}</small>
+						</div>
+
+						<div class="th collapse item-collapse item-collapse-{{i}}">Component Id</div>
+						<div class="td collapse item-collapse item-collapse-{{i}}">
+							{{ roles['short_code'] }}
+						</div>
+
+						<div class="th collapse item-collapse item-collapse-{{i}}">Angular Route</div>
+						<div class="td collapse item-collapse item-collapse-{{i}}">
+							{{ roles['url_route'] }}
+						</div>
+
+						<div class="th collapse item-collapse item-collapse-{{i}}">Active</div>
+						<div class="td collapse item-collapse item-collapse-{{i}}">
+							<label class="switch">
+		                  		<input  type="checkbox" (click)="onActiveRoles($event, roles['id'])" class="form-check-input position-static" [checked]="roles['active'] == 1"> 
+		                  		<span class="slider round"></span>
+	                		</label>
+						</div>
+
+						<div class="th collapse item-collapse item-collapse-{{i}}">Action</div>
+						<div class="td collapse item-collapse item-collapse-{{i}}">
+							<a href="#" (click)="editRoles($event, roles['id']);" class="btn btn-outline-dark btn-edit"><i class="icon icon-edit"></i> Edit</a>
+						</div>
+
+
+					</div>
+				</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<router-outlet></router-outlet>

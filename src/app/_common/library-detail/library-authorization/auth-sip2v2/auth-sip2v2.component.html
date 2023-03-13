@@ -1,0 +1,264 @@
+<div *ngIf="!form_loaded" class="text-center mt-4">  
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="form_loaded" class="mb-3">
+  <form [formGroup]="updateLibraryAuthMethodForm" (ngSubmit)="updateLibraryAuthMethod($event);">
+    <div >      
+      <div class="form-group checkbox-wrap">
+        <label class="checkbox">
+            <input type="checkbox" class="btn-checkbox-all" formControlName="active">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-label" for="active"><h6>Active</h6></label>
+      </div>                                
+    </div>
+    
+    <div *ngIf="auth_is_active" style="margin-top:10px;">
+      <a href="{{sip2_test_url}}" target="_blank">
+        <h6 class="test-validator">Sip2 Validator</h6>
+      </a>
+      <h4>Server/Account Settings</h4>
+      <div class="col-md-5" formGroupName="authSettings" >
+        <h6>Form Label</h6>
+        <div class="form-group col-md-12" >
+          <label for="username_placeholder">Username</label>        
+          <input type="text" formControlName="username_placeholder" class="form-control" />        
+        </div>
+  
+        <div class="form-group col-md-12" >
+          <label for="password_placeholder">Password</label>        
+          <input type="text" formControlName="password_placeholder" class="form-control" />        
+        </div>
+      </div>
+
+
+      <div style="margin-top: 30px;">
+        <h6>Fill out the following settings for this SIP2 connection:</h6>
+        
+        <div class="form-group col-md-12">
+          <div class="checkbox-wrap">
+            <label class="checkbox">
+                <input type="checkbox" class="btn-checkbox-all" formControlName="requires_login">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="requires_login">Requires Institution Login</label>
+          </div>               
+        </div>
+  
+        <div class="mb-3" style="background-color: #cbdfef; padding: 8px;" *ngIf="library_login_required">      
+          <div class="form-group col-md-12" >
+            <label for="sip_login">Institution login<span class="required-asterisk">*</span> </label>        
+            <input type="text" formControlName="sip_login" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.sip_login.errors }" />
+            <div *ngIf="submitted && f.sip_login.errors" class="invalid-feedback">
+              <div *ngIf="f.sip_login.errors.required">Institution login is required</div>
+            </div>
+          </div>
+  
+          <div class="form-group col-md-12" >
+            <label for="sip_password">Institution password<span class="required-asterisk">*</span> </label>        
+            <input type="text" formControlName="sip_password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.sip_password.errors }" />
+            <div *ngIf="submitted && f.sip_password.errors" class="invalid-feedback">
+              <div *ngIf="f.sip_password.errors.required">Institution password is required</div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-group col-md-5" >
+          <label for="sip_host">Host address<span class="required-asterisk">*</span> </label>        
+          <!-- pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" 192.168.1.1-->
+          <input type="text" formControlName="sip_host" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.sip_host.errors }" />      
+          <div *ngIf="submitted && f.sip_host.errors" class="invalid-feedback">Invalid Host address</div>
+        </div>
+  
+        <div class="form-group col-md-5" >
+          <label for="sip_port">Port<span class="required-asterisk">*</span> </label>        
+          <input type="text" formControlName="sip_port" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.sip_port.errors }" />
+          <div *ngIf="submitted && f.sip_port.errors" class="invalid-feedback">
+            <div *ngIf="f.sip_port.errors.required">Port is required</div>
+          </div>
+        </div>
+    
+        <h6 class="section-label">Set default field values:</h6>
+  
+        <div class="form-group col-md-5" >
+          <label for="ao_field">Institution ID (AO Field)</label>        
+          <input type="text" formControlName="ao_field" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ao_field.errors }" />
+          <div *ngIf="submitted && f.ao_field.errors" class="invalid-feedback">
+            <div *ngIf="f.ao_field.errors.required">Institution ID is required</div>
+          </div>
+        </div>
+  
+        <div class="form-group col-md-5" >
+          <label for="cp_field">Location Code (CP Field)</label>        
+          <input type="text" formControlName="cp_field" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cp_field.errors }" />
+          <div *ngIf="submitted && f.cp_field.errors" class="invalid-feedback">
+            <div *ngIf="f.cp_field.errors.required">Location Code is required</div>
+          </div>
+        </div>
+  
+        <div class="form-group col-md-5">
+          <div class="checkbox-wrap">
+            <label class="checkbox">
+                <input type="checkbox" class="btn-checkbox-all" formControlName="use_ssl">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="use_ssl">Use SSL/TLS</label>
+          </div>                           
+        </div>
+  
+        <div class="form-group col-md-5">
+          <label for="use_pin_field">Use PIN Field</label>
+          <!-- &nbsp;&nbsp;<br>           
+          &nbsp;&nbsp;<input type="radio" formControlName="use_pin_field" value="0"> No Pin Field '0000' <br>
+          &nbsp;&nbsp;<input type="radio" formControlName="use_pin_field" value="1"> User Password <br>                             
+          &nbsp;&nbsp;<input type="radio" formControlName="use_pin_field" value="2"> Empty Password <br>     -->  
+
+          <div class="checkbox-wrap">
+            <label class="checkbox rounded">
+                <input type="radio" class="btn-checkbox-all" formControlName="use_pin_field" value="0">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="use_pin_field">No Pin Field '0000'</label>
+          </div>
+
+          <div class="checkbox-wrap">
+            <label class="checkbox rounded">
+                <input type="radio" class="btn-checkbox-all" formControlName="use_pin_field" value="1">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="use_pin_field">User Password</label>
+          </div>
+
+          <div class="checkbox-wrap">
+            <label class="checkbox rounded">
+                <input type="radio" class="btn-checkbox-all" formControlName="use_pin_field" value="2">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="use_pin_field">Empty Password</label>
+          </div>
+
+        </div>                
+      </div>      
+    </div>  
+
+    <div class="mt-3"> 
+      <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+      <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div> 
+  </form>
+
+  <div *ngIf="auth_is_active">
+      <hr style="margin-top:30px;">
+      <form [formGroup]="validationRulesForm" (ngSubmit)="addValidationRule($event);">
+        <div style="margin-top: 30px;">
+          <h4>Validation Rules</h4>        
+          <code>Comma(,) separated for Multiple Values</code>              
+          <div class="form-row col-md-12">
+            <div class="form-group col-md-3">                
+              <label for="field_id">Message/Title</label>
+              <select class="form-control" formControlName="field_id" [ngClass]="{ 'is-invalid': rule_submitted && r.field_id.errors }">
+                <option [ngValue]="sip2_field.id" *ngFor="let sip2_field of sip2_fields">
+                  {{sip2_field.message}} {{sip2_field.title}}                
+                </option>
+              </select>    
+              
+              <div *ngIf="rule_submitted && r.field_id.errors" class="invalid-feedback">
+                <div *ngIf="r.field_id.errors.required">Message/Title is required</div>
+              </div>      
+            </div>        
+          
+            <div class="form-group col-md-2">                
+              <label for="operator">Operator</label>
+              <select class="form-control" formControlName="operator" [ngClass]="{ 'is-invalid': rule_submitted && r.operator.errors }" (change)="changeOperator($event)">
+                <option [ngValue]="operator" *ngFor="let operator of operators">
+                  {{operator}}
+                </option>
+              </select>             
+              
+              <div *ngIf="rule_submitted && r.operator.errors" class="invalid-feedback">
+                <div *ngIf="r.operator.errors.required">Operator is required</div>
+              </div>      
+            </div>
+
+            <div class="form-group col-md-4">                
+              <label for="field_value">Value</label>
+              <input type="text" formControlName="field_value" class="form-control" [ngClass]="{ 'is-invalid': rule_submitted && r.field_value.errors }" /> 
+              
+              <div *ngIf="rule_submitted && r.field_value.errors" class="invalid-feedback">
+                <div *ngIf="r.field_value.errors.required">Field Value is required</div>
+              </div>              
+            </div>
+
+            <div class="form-group col-md-1">                
+              <label for="allow">Allowed</label>
+              <!-- <input class="form-control" type="checkbox" formControlName="allow" style="width: 33%;"> -->
+              <div class="checkbox-wrap">
+                <label class="checkbox">
+                    <input type="checkbox" class="btn-checkbox-all" formControlName="allow">
+                    <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- <div class="form-group col-md-1">                
+              <label for="required">Reqrd</label>
+              <input class="form-control" type="checkbox" formControlName="required" style="width: 33%;">                                                
+            </div> -->
+
+            <div class="form-group col-md-1">                
+              <label for="case_sensitive">CaseSensitve</label>
+              <!-- <input class="form-control" type="checkbox" formControlName="case_sensitive" style="width: 33%;">   -->
+              <div class="checkbox-wrap">
+                <label class="checkbox">
+                    <input type="checkbox" class="btn-checkbox-all" formControlName="case_sensitive">
+                    <span class="checkmark"></span>
+                </label>
+              </div>                                              
+            </div>
+          </div>
+        </div>  
+
+        <div class="mt-3"> 
+          <button [disabled]="rule_loading" class="btn btn-primary btn-aqua">Add Rule</button>
+          <img *ngIf="rule_loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div> 
+      </form>
+  </div>
+  
+  <div class="col-md-12 padded-top" *ngIf="auth_is_active" style="margin-top: 30px;">
+          
+                
+        <table class="table table-hover table-striped library-reports-table col-md-12 padded-top" [hidden]="!table_loaded">      
+          <thead>
+            <th> Message </th>    
+            <th> Title </th>    
+            <th> Operator </th>    
+            <th> Value </th>    
+            <th> Allowed </th>                
+            <th> Case Sensitive </th>     
+            <th> &nbsp; </th>           
+          </thead>
+        
+          <tbody>
+          <tr *ngFor="let library_sip2_rule of library_sip2_rules">
+            <td>{{ library_sip2_rule.message  }}</td>
+            <td>{{ library_sip2_rule.title  }}</td>
+            <td>{{ library_sip2_rule.operator  }}</td>
+            <td>{{ library_sip2_rule.field_value  }}</td>
+            <td>{{ library_sip2_rule.allow  }}</td>            
+            <td>{{ library_sip2_rule.case_sensitive  }}</td>
+            <td>                
+              <!-- <button  type="button" class="btn btn-outline-danger" (click)="deleteSipRule($event, library_sip2_rule['id'])">Delete</button>     -->
+              <button type="button" (click)="deleteSipRule($event, library_sip2_rule['id'])" class="btn btn-outline-danger btn-delete btn-delete-top"><i class="icon icon-delete"></i> Delete</button>          
+            </td>
+          </tr>
+          </tbody>
+        </table>                                   
+  </div>
+
+
+</div>
+

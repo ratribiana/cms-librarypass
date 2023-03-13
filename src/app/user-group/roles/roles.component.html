@@ -1,0 +1,68 @@
+<div class="box">
+	<div class="row">
+	  <div class="col-12">
+			<h4>{{ pageLabel }}</h4>
+			<hr>
+	  </div>
+	  <div class="col-sm-12 col-md-8">
+	  	  <div class="card mb-2">
+		  	<div class="card-body card-body-padding">
+		  			<h5>Information</h5>
+			  	<form [formGroup]="roleForm">
+			  		<div class="form-group col-12">
+			            <label for="roleName">Name<span class="required-asterisk">*</span></label>
+			            <input type="text" formControlName="roleName" class="form-control" autocomplete="off"  autofocus/>
+			         </div>
+			         <div class="form-group col-12">
+			            <label for="shortCode">Component Id<span class="required-asterisk">*</span></label>
+			            <input type="text" formControlName="shortCode" class="form-control" autocomplete="off" (keypress)="disallowSpecialChar($event)"/>
+			         </div>
+					 <div class="form-group col-12">
+			            <label for="urlRoute">Angular Route <span class="text-muted">(Optional)</span></label>
+			            <input type="text" formControlName="urlRoute" class="form-control" autocomplete="off" />
+			         </div>
+			          <div class="form-group col-12">
+			            <label for="shortDescription">Short Description</label>
+			            <input type="text" formControlName="shortDescription" class="form-control" autocomplete="off" />
+			         </div>
+			  	</form>
+			  </div>
+			</div>
+
+	  	<div class="card">
+		  	<div class="card-body card-body-padding">
+			  	<div class="form-group col-12 remove-padding">
+			  		<h5>API Access</h5>
+			  		<p>Please choose API resource that this <i><strong>Role</strong></i> have access to.</p>
+					  	<div class="alert alert-warning"  *ngIf="security_level"> 
+							<strong>Security!</strong> <br> Currently the API security level is soft which means all request on API resource is allowed.
+					  	</div>
+					  	<div class="table-wrap">
+							<table class="table table-striped table-hover col-12" *ngIf="!security_level">
+					      		<thead>
+					        		<th> Resource </th>
+					        		<th> Allow </th>
+					      		</thead>
+					      		<tbody>
+					      			<tr *ngFor="let routes of aclRoutes">
+					      				<td>{{ routes['route'] }}</td>
+										<td>
+						      				<label class="switch">
+						                  		<input  type="checkbox" (click)="onAllowUri($event)" attr.data-uri="{{ routes['route'] }}" class="form-check-input position-static" [checked]="routes['allow'] == 1" > 
+						                  		<span class="slider round"></span>
+					                		</label>
+						      			</td>
+						      		</tr>
+						      	</tbody>
+						    </table>
+						</div>
+			    	</div>
+				</div>
+			</div>
+		    <div class="col-12 text-right mt-4">
+			  	<a routerLink="/user-roles"  class="btn btn-outline-dark btn-edit">{{cancelLabel}}</a>
+			 	<button type="button" (click)="submitRole()" [disabled]="!roleForm.valid" class="btn btn-aqua">{{ saveLabel }}</button>
+		  </div>
+		</div>
+	</div>
+</div>

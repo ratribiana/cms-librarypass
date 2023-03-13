@@ -1,0 +1,77 @@
+<section class="sources">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="dropzone" fileDragDrop (filesChangeEmiter)="onFilePrintReadyChange($event)" [single_file_only]="true" (filesInvalidEmiter)="onFileInvalidPrintReady($event)" [allowed_extensions]="allowed_types_printready">
+                <div class="text-wrapper">
+                    <div class="centered">
+                        <input type="file" name="file" id="file" (change)="onFilePrintReadyChange($event.target.files)" accept="{{allowed_types_printready}}">
+                        <label for="file"><span class="textLink">Click Here</span> or Drop Print-Ready PDF File Here</label>
+                    </div>
+                </div>
+            </div>
+            <button type="button" (click)="onClickImportPrintReady()" class="btn btn-primary mt-1 btn-block">Import Remote Print-Ready PDF</button>
+        </div>
+        <div class="col-md-6">
+            <div class="dropzone" fileDragDrop (filesChangeEmiter)="onFileIndesignChange($event)" [single_file_only]="true" (filesInvalidEmiter)="onFileInvalidIndesign($event)" [allowed_extensions]="allowed_types_indesign">
+                <div class="text-wrapper">
+                    <div class="centered">
+                        <input type="file" name="file_indesign" id="file_indesign" (change)="onFileIndesignChange($event.target.files)" accept="{{allowed_types_indesign}}">
+                        <label for="file_indesign"><span class="textLink">Click Here</span> or Drop Zipped InDesign or Photoshop File Here</label>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mt-1 btn-block" (click)="onClickImportInDesign()">Import Remote File</button>
+        </div>
+    </div>
+    <div class="row mt-2" *ngIf="queueList.length > 0">
+        <div class="alert alert-warning col-md-12">
+            <p *ngFor="let queue of queueList">
+                <fa-icon [icon]="faInfoCircle"></fa-icon> Importing from URL ({{queue.progress}}%) Waiting Last Updated: {{queue.updated}}
+            </p>
+        </div>
+    </div>
+    <div class="row mt-3 mb-3">
+      <div class="col-12">
+    <span class="text-danger m" *ngIf="assetFiles.length <1">Assets files could not found</span>
+    </div>
+  </div>
+    <div class="row"  *ngIf="assetFiles.length >0">
+        <div class="col-12">
+            <h6>Assets</h6>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let asset of assetFiles">
+                    Cras justo odio
+                    <div>
+                        <a class="btn btn-primary btn-sm mr-2">
+                            <fa-icon [icon]="faDownload"></fa-icon>
+                        </a>
+                        <a class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="faWindowClose"></fa-icon>
+                        </a></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<app-confirm-modal #modalImport [modalConfig]="modalConfig">
+    <form [formGroup]="detailForm">
+        <div class="col-12 form-group">
+            <label for="" *ngIf="printReadyImport">Fetch Print-Ready PDF/ZIP from Remote URL (http:// or ftp://)</label>
+            <label for="" *ngIf="!printReadyImport">Fetch InDesign/PSD Source Zip from Remote URL (http:// or ftp://)</label>
+            <input type="text" class="form-control" formControlName="source_url" (keyup)="onChangeUrl($event)" />
+        </div>
+        <div class="col-12">
+            <label for="">Remote Login (Optional)</label>
+            <input type="text" class="form-control" formControlName="login" />
+            <input type="hidden" formControlName="type" />
+        </div>
+        <div class="col-12">
+            <label for="">Remote Password (Optional)</label>
+            <input type="text" class="form-control" formControlName="password" />
+        </div>
+    </form>
+</app-confirm-modal>
+<app-confirm-modal #modalInvalid [modalConfig]="modalInvalidConfig">
+    <span *ngIf="isMultipleFiles"> You may only drop one file.</span>
+    <span *ngIf="!isMultipleFiles"> {{fileName}} has an invalid extension. Valid extension(s): {{validExtension}} </span>
+</app-confirm-modal>

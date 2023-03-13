@@ -1,0 +1,50 @@
+.filter-fields{
+    min-width: 200px;
+}
+
+.report-statements-tab{
+    padding-bottom: 50px;
+}
+
+.library-reports-table {
+    font-size: 14px;
+    /*margin-left: 15px;
+    margin-right: 15px;*/
+}
+
+.library-reports-table td {
+    padding: 5px;
+}
+
+.report-label{
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.filter-field-month{
+    padding-right: 10px;
+}
+
+.note{
+    line-height: 40px; 
+    font-size: 13px;
+    color: #504b4b;
+}
+.col-no-padding {
+    padding: 0;
+}
+.report-label {
+    float: left;
+}
+@media (max-width: 767px) {
+    .note {
+        display: block;
+        line-height: normal;
+        margin-bottom: 15px;
+    }
+    .report-label {
+        float: none;
+        margin-bottom: 0;
+        line-height: normal;
+    }
+}

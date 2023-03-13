@@ -1,0 +1,152 @@
+<div class="box">
+    <div class="row ml-md-4">
+        <div class="col-12">
+            <h5>Account Information</h5>
+        </div>
+        <div class="col-md-8 mt-2 settings-container">
+                <div class="row p-3 settings-row">
+                    <div class="col-4">
+                        <h6>Name</h6>
+                    </div>
+                   <div class="col-8" *ngIf="!guard.hasAccessByCode('setting_sel_lib')"> {{name}}</div> 
+                    <div class="col-8" style="width:35%" *ngIf="guard.hasAccessByCode('setting_sel_lib')">  
+                        <ng-multiselect-dropdown
+                          name="libraries_list"          
+                          [placeholder]="'Search for Institution'"
+                          [data]="libraries"          
+                          [settings]="dropdownSettings"        
+                          (onSelect)="onLibrarySelect($event)"
+                          (onDeSelect)="onLibraryDeSelect($event)"
+                        >
+                        </ng-multiselect-dropdown> 
+                      </div>
+                </div>
+        </div>
+    </div>
+    <div style="height: 4em"></div>
+    <div class="row ml-4 " *ngIf="guard.hasAccessByCode('setting_sitecontrol') && library_id">
+        <div class="col-12">
+            <h5>Site Control</h5>
+        </div>
+        <div class="col-md-8 mt-2 settings-container">
+            <div class="row p-3 mb-10">
+                <div class="col-10">
+                    <div class="checkbox-wrap" *ngFor="let site_style of site_styles">
+                        <label class="checkbox rounded">
+                            <input class="form-check-input checkbox-statements" [formControl]="selectedTheme" type="radio" value="{{site_style.id}}">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-label">
+                           {{site_style.title}} 
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-3 settings-row">
+                <div class="col-10" >                  
+                     <div class="checkbox-wrap">
+                        <label class="checkbox">
+                            <input class="form-check-input checkbox-statements" [formControl]="show_read_progress" type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+
+                        <label class="form-check-label checkbox-label">Show Reader Progress</label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-secondary bt-sm btn-aqua" (click)="setTemplate()"> <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Save </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 4em"></div>
+
+    <div class="row ml-4 " *ngIf="guard.hasAccessByCode('setting_sitecontrol') && library_id && is_parent">
+        <div class="col-12">
+            <h5>My Collection</h5>
+        </div>
+        <div class="col-md-8 mt-2 settings-container">
+            <div class="row pt-3 px-3">
+                <div class="col-12 position-relative">
+                    <div *ngIf="curation_disabled && limitCuration.value == '1'"><i class="icon-padlock" placement="bottom" ngbTooltip="Your Administrator has locked this feature"></i></div>
+                    <div [class]="curation_disabled?'checkbox-wrap disabled': 'checkbox-wrap'">
+                        <label class="checkbox rounded">
+                            <input class="form-check-input checkbox-statements" [formControl]="limitCuration" type="radio" value="1" name="limitCuration" [disabled]="curation_disabled" (click)="onCheckMark($event, curation_disabled)">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-label">
+                            Allow Member accounts to curate individual collections <i class="icon-info" placement="bottom" ngbTooltip="If selected member accounts can make changes to their individual collections"></i>
+                        </label>     
+                    </div>
+                </div>
+                <div class="col-12 pl-5" *ngIf="limitCuration.value=='1' && !temp_hidden">
+                    <div [class]="curation_disabled?'checkbox-wrap disabled': 'checkbox-wrap'">
+                        <label class="checkbox rounded">
+                            <input class="form-check-input checkbox-statements" [formControl]="lockDisabled" type="checkbox" [disabled]="curation_disabled" (click)="onCheckMark($event, curation_disabled)">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-label">
+                            Lock Disabled Status <i class="icon-info" placement="bottom" ngbTooltip="If selected member accounts can not make any changes to titles that have been disabled in their collection"></i>
+                        </label>     
+                    </div>
+                </div>
+                <div class="col-12 position-relative">
+                    <div *ngIf="curation_disabled && limitCuration.value == '0'"><i class="icon-padlock" placement="bottom" ngbTooltip="Your Administrator has locked this feature"></i></div>
+                    <div [class]="curation_disabled?'checkbox-wrap disabled': 'checkbox-wrap'">
+                        <label class="checkbox rounded">
+                            <input class="form-check-input checkbox-statements" [formControl]="limitCuration" type="radio" value="0" name="limitCuration" [disabled]="curation_disabled" (click)="onCheckMark($event, curation_disabled)">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-label">
+                            Do Not Allow Member accounts to curate individual collections <i class="icon-info" placement="bottom" ngbTooltip="If selected member accounts can not make changes to their individual collections"></i>
+                            <!-- Lock Member individual collections curation -->
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-3 pr-3 pl-6 settings-row">
+                <div class="col-2 offset-10">
+                    <button type="button" class="btn btn-secondary bt-sm btn-aqua" (click)="openContinueModal()" [disabled]="curation_disabled" (click)="onCheckMark($event, curation_disabled)"> <span *ngIf="loading2" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Save </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 4em"></div>
+
+
+    <div class="row ml-4" *ngIf="guard.hasAccessByCode('settings_conn_reader') && library_id">
+        <div class="col-12">
+            <h5>Connect Reader User</h5>
+        </div>
+        <div class="col-md-8 mt-2 settings-container p-2">
+            <div class="alert alert-info text-center" *ngIf="readerUserName"> 
+               Connected to:  <strong>{{readerUserName}}</strong> <br/>  <br/>   <button  type="button" class="btn  btn-outline-danger btn-sm " (click)="disconnectUser()" ><i class="icon icon-delete"></i> Disconnect</button>
+
+            </div>
+            <div  *ngIf="!readerUserName" class="col-md-6">
+                <form [formGroup]="connectForm">
+                <div class="col-12 form-group">
+                    <label for="">Username <span class="required-asterisk">*</span></label>
+                    <input type="text" class="form-control"  formControlName="username"  />
+                </div>
+                <div class="col-12 form-group">
+                    <label for="">Password <span class="required-asterisk">*</span></label>
+                    <input type="password" class="form-control"  formControlName="pwd"  />
+                </div>
+               
+                <div class="col-12 form-group text-right">
+                <button type="submit" class="btn btn-primary btn-small" (click)="connectUser()"  [disabled]="!connectForm.valid" >Connect</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 4em"></div>
+</div>
+
+<app-confirm-modal #modalContinue [modalConfig]="modalContinueConfig" >
+    {{ modalContinueText }}
+</app-confirm-modal>

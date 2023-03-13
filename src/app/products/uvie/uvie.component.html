@@ -1,0 +1,41 @@
+<section class="uview">
+    <form [formGroup]="detailForm">
+        <div class="col-12 mb-3">
+            <label class="checkbox-label">
+                <input class="form-check-input" formControlName="uview_allowed" type="checkbox" value="">
+                PanelView Allowed
+            </label>
+            <div>Enable PanelViews for this product?</div>
+        </div>
+        <div class="col-12 mb-3">
+            <label class="checkbox-label">
+                <input class="form-check-input" formControlName="uview_publish" type="checkbox" value="">
+                PanelView Community
+            </label>
+            <div>Is the community allowed to create PanelViews?></div>
+        </div>
+        <div class="col-12 mb-3">
+            <label class="checkbox-label">
+                <input class="form-check-input" formControlName="uview_export" type="checkbox" value="">
+                PanelView Export
+            </label>
+            <div>For future user</div>
+        </div>
+    </form>
+    <div class="col-12 mt-3">
+        <label for="typeahead-focus" class="checkbox-label">PanelView Users</label>
+        <div class="input-group">
+         <div class="input-group-prepend">
+    <span class="input-group-text" >
+       <fa-icon [icon]="faSearch"></fa-icon>
+    </span>
+  </div>
+        <input id="typeahead-focus" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" (keydown.enter)="addUser($event)"   />
+    </div>
+</div>
+</section>
+
+
+<ng-template #rt let-r="result" let-t="term">
+  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>

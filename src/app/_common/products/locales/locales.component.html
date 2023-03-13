@@ -1,0 +1,33 @@
+<section class="locales">
+        <div class="col-12 p-0">
+            <label >
+                <input type="radio" value="0" name="localizationMode" [checked]="localizationMode == '0'" (change)="onLocaleModeChange($event.target.value)"> Available to all countries
+            </label>
+        </div>
+        <div class="col-12 p-0">
+            <label >
+                <input type="radio" value="1" name="localizationMode" [checked]="localizationMode == '1'" (change)="onLocaleModeChange($event.target.value)"> Available to ONLY the selected countries below
+            </label>
+        </div>
+        <div class="col-12 p-0">
+            <label >
+                <input type="radio" value="2" name="localizationMode" [checked]="localizationMode == '2'" (change)="onLocaleModeChange($event.target.value)"> Available to all countries EXCEPT the selected countries below
+            </label>
+        </div>
+
+        <div class="col-md-6 col-sm-12 mb-3 mt-3">
+            <label><b>Locale Preset</b></label>
+            <ng-multiselect-dropdown  
+                [placeholder]="'Select Preset'" 
+                [data]="localeRawPreset" 
+                [settings]="localeDropdown"
+                (onSelect)="onPresetSelect($event)" 
+                 >
+            </ng-multiselect-dropdown>
+        </div>
+
+<div class="pt-4">
+    <dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter"
+    [(destination)]="confirmed" height="265px" [format]="format" [disabled]="disabled"></dual-list>
+</div>
+</section>

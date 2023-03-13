@@ -1,0 +1,52 @@
+<div *ngIf="!loaded && service_id" class="text-center mt-4">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div *ngIf="loaded">
+    <!-- <form [formGroup]="updateLibraryBillingForm" (ngSubmit)="updateLibraryBilling($event);" class="billing-form"> -->
+    <form [formGroup]="updateLibraryForm">
+        <div class="offset-md-1 col-md-11">
+            <div class="form-group checkbox-wrap">
+                <label class="checkbox">
+                    <input type="checkbox" class="btn-checkbox-all" formControlName="show_read_progress">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-label" for="show_read_progress"><strong>Show Reader Progress</strong></label>
+            </div>
+        </div>
+        <div class="offset-md-1 col-md-11">
+            <div class="form-group col-md-5 p-2">
+                <label for="max_weekly_books_per_user"><b>Max Checkouts Per Patron</b> <span class="required-asterisk">*</span></label>
+                <input type="number" formControlName="max_weekly_books_per_user" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.max_weekly_books_per_user.errors }" />
+                <div *ngIf="submitted && f.max_weekly_books_per_user.errors" class="invalid-feedback">
+                    <div *ngIf="f.max_weekly_books_per_user.errors.required">Max Checkouts Per Patron is required</div>
+                </div>
+            </div>
+            <div class="form-group col-md-12 p-2">
+                <label for="max_weekly_books_per_user"><b>Site Template</b> <span class="required-asterisk">*</span></label>
+                <div *ngFor="let site_style of site_styles" class="col-md-12">
+                    <div class="checkbox-wrap">
+                        <label class="checkbox rounded">
+                            <input type="radio" class="btn-checkbox-all" formControlName="site_template" value="{{site_style.id}}">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-label" for="site_template">{{site_style.title}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-md-1 col-md-7 mb-4">
+                <b class="mb-2">Allowed Price Tiers</b>
+                <ng-multiselect-dropdown name="price_tiers" [placeholder]="'Select Price Tiers'" [data]="library_price_tiers" formControlName="price_tiers" [disabled]="disabled" [settings]="dropdownSettings">
+                </ng-multiselect-dropdown>
+            </div>
+            <div class="offset-md-1 col-md-7 mb-4">
+                <b class="mb-2">Allowed Content Ratings</b>
+                <ng-multiselect-dropdown name="content_ratings" [placeholder]="'Select Content Ratings'" [data]="library_content_ratings" formControlName="content_ratings" [disabled]="disabled" [settings]="dropdownSettings">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+    </form>
+</div>

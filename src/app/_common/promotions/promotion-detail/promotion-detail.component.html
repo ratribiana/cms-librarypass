@@ -1,0 +1,160 @@
+<div class="box">
+  <h5 class="pb-1"> Promotions {{page_title}} </h5>
+
+  <div class="col-12">
+    <div *ngIf="!dataLoaded" class="text-center mt-2 mb-2">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-mb-7">
+    <div class="" *ngIf="dataLoaded">
+      <p *ngIf="page_type == 'drawers'">
+        <label>Link: &nbsp;</label>
+        <a href="{{drawer_link}}" target="_blank">{{drawer_link}}</a>
+      </p>
+      <form [formGroup]="createPromotionForm" (ngSubmit)="updatePromotions($event);" autocomplete="off">
+        
+        <div class="form-group">
+          <label for="name">Name <span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="name" class="form-control" autocomplete="off"
+            [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+          <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="f.name.errors.required">Name is required</div>
+          </div>
+        </div>
+
+        <div class="form-group">              
+          <label> Start Date </label>
+            <input [owlDateTimeTrigger]="start_date" formControlName="start_date" [owlDateTime]="start_date" class="form-control" 
+                [ngClass]="{ 'is-invalid': submitted && f.start_date.errors }" />
+            <div *ngIf="submitted && f.start_date.errors" class="invalid-feedback">
+                <div *ngIf="f.start_date.errors.required">Start Date is required</div>
+            </div>
+            <owl-date-time #start_date ></owl-date-time>                              
+        </div>
+
+
+        <div class="form-group">              
+            <label> End Date </label>
+              <input [owlDateTimeTrigger]="end_date" formControlName="end_date" [owlDateTime]="end_date" class="form-control" 
+                [ngClass]="{ 'is-invalid': submitted && f.end_date.errors }" />
+              <div *ngIf="submitted && f.end_date.errors" class="invalid-feedback">
+                <div *ngIf="f.end_date.errors.required">End Date is required</div>
+              </div>    
+              <owl-date-time #end_date ></owl-date-time>                                        
+        </div>
+
+        <div class="form-group" *ngIf="page_type == 'banners'">
+            <label> Banner Image </label>          
+            <input type="file" class="form-control" formControlName="promo_image" id="file" 
+              accept="image/*" (change)="handleFileInput($event)">
+            <div class="m-2 float-left col-12" ><img src="{{banner_image}}" width="250"></div>  
+        </div>
+
+        <div class="form-group" *ngIf="page_type == 'banners'">
+          <label for="content_url">Content Url (<code>https://<i>subdomain</i>.librarypass.com</code>)</label>
+          <input type="text" formControlName="content_url" class="form-control" autocomplete="off"
+            [ngClass]="{ 'is-invalid': submitted && f.content_url.errors }" />
+          <div *ngIf="submitted && f.content_url.errors" class="invalid-feedback">
+            <div *ngIf="f.content_url.errors.pattern">Content Url should be a subdomain of librarypass</div>
+          </div>
+        </div>
+        
+        <!-- <div class="form-group">
+            <label for="language_id">Language</label>
+            <select class="form-control" formControlName="language_id">
+                <option [ngValue]="language.id" *ngFor="let language of languages">{{language.name}}</option>                    
+            </select>              
+        </div> -->
+
+        <div class="form-group" *ngIf="is_admin">
+          <label for="content_rating_id">Age Rating</label>
+          <select class="form-control" formControlName="content_rating_id">
+              <option [ngValue]="age_rating.id" *ngFor="let age_rating of age_ratings">{{age_rating.name}}</option>                    
+          </select>                  
+        </div>
+      
+
+        <div class="form-group">
+          <button [disabled]="loading" class="btn btn-aqua">Save</button> &nbsp;&nbsp;&nbsp;
+          <button [disabled]="loading" class="btn btn-aqua btn-no-bg" (click)="deletePromotion($event, promotion_id)" >Delete</button>
+          <img *ngIf="loading" class="pl-2"
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <div class="col-12">
+    <div *ngIf="dataLoaded && !productsLoaded" class="text-center mt-2 mb-2">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 mt-3" *ngIf="page_type == 'drawers'" [hidden]="!productsLoaded">
+    <div>
+        <h5 class="pb-1"> Promotions Books</h5>
+        <!-- <label>
+          Search Books to add to Promotion
+          <select class="drawer-promotions-table form-control" multiple="multiple" style="width: 100%"></select>
+        </label>
+        <button type="button" class="btn btn-outline-dark col-2" (click)="addPromotionProducts()">Add Books</button>     -->
+
+        <button type="button" class="btn btn-outline-dark btn-aqua" data-toggle="modal" data-target="#addBooksModal" data-backdrop="static" >
+        Add Books to Drawer
+        </button>
+      
+        &nbsp;&nbsp;&nbsp;
+        <button  class="btn btn-outline-danger btn-aqua btn-no-bg" (click)="deleteSelectedBooks($event)" [hidden]="!multiSelectClicked">Delete Selected Books</button>
+    </div>   
+    <br>
+    <div class="table-scroll">
+      <table id="promotions_products_table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"  class="row-border hover" [hidden]="!productsLoaded">    
+          <tbody>
+            <tr *ngFor="let product of products">
+              <td>{{ product.sort_number }}</td>        
+              <td><img src="{{ product.product_image_url }}" /></td>
+              <td>{{ product.name }}</td>            
+              <td style="word-break: normal">{{ product.bundle_name }}</td>            
+              <td>{{ product.id }}</td>   
+              <td>
+                <label class="switch">
+                  <input type="checkbox" (click)="showMultipleActionsButton($event)" class="deleted-books form-check-input position-static" name="deleted_books" value="{{ product.id }}">
+                  <span class="slider round"></span>
+                </label>
+              </td>                 
+              <td>              
+                <button (click)="deleteProduct($event, product['id'])" type="button" class="btn btn-outline-danger btn-delete btn-delete-top"><i class="icon icon-delete"></i> Delete</button>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addBooksModal" tabindex="-1" role="dialog" aria-labelledby="addBooksModalLabel"
+  aria-hidden="true" *ngIf="page_type == 'drawers'">
+  <div class="modal-dialog" role="document" style="width: 90%; max-width: 1500px !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBooksModalLabel">Add Books to Drawer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="resetProductsTable()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-promotion-products [promotion_id]="promotion_id"></app-promotion-products>
+      </div>
+    </div>
+  </div>
+</div>

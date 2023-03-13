@@ -1,0 +1,26 @@
+table.dataTable td.sorting_1 {
+    /* text-align: center; */
+    cursor: move
+}
+
+.required-asterisk {
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 1.2em;
+}
+
+.hidden {
+    display: none;
+}
+
+::ng-deep .cdk-overlay-container {
+    /* Do you changes here */
+    position: fixed; 
+    z-index: 1600;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    width: 100%;
+}

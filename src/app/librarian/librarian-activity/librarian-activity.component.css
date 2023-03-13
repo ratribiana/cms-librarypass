@@ -1,0 +1,43 @@
+.total-checkout{
+    color: #B5B5C3;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.filter-fields{
+    min-width: 200px;
+}
+
+.library-reports-table {
+    font-size: 14px;
+    /*margin-left: 15px;
+    margin-right: 15px;*/
+}
+
+.library-reports-table td {
+    padding: 5px;
+}
+
+.report-label{
+    font-size: 25px;
+    padding-right: 10px;
+    margin-bottom: 0;
+}
+
+.statement-date-range{
+    margin-left: 10px;
+}
+
+.statement-date-range input{
+    width: 230px;
+}
+.btn-export {
+    color: #3F4254;
+    border: 0;
+}
+
+@media (max-width: 767px) {
+    .filter-fields {
+        margin-bottom: 15px;
+    }
+}

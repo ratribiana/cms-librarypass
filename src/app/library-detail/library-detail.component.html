@@ -1,0 +1,69 @@
+<div class="library-info ">	
+	<div class="col-md-12">
+		<div class="box">
+			<h6 *ngIf="LibData">{{LibData.name}}</h6>
+			
+			<nav>
+				<div>
+					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+						<a class="nav-item nav-link active" id="lib-info-tab" data-toggle="tab" href="#lib-info" role="tab"
+							aria-controls="lib-info" aria-selected="true">Information</a>
+						<a class="nav-item nav-link" [ngClass]="{'disabled' : !library_id}" id="lib-services-tab" data-toggle="tab"
+							href="#lib-services" role="tab" aria-controls="lib-services" aria-selected="false">Services</a>
+						<a class="nav-item nav-link" [ngClass]="{'disabled' : !library_id}" id="lib-billing-tab" data-toggle="tab"
+							href="#lib-billing" role="tab" aria-controls="lib-billing" aria-selected="false">Billing</a>
+						<!-- <a class="nav-item nav-link" [ngClass]="{'disabled' : !library_id}" id="lib-circulation-tab" data-toggle="tab" href="#lib-circulation" role="tab" aria-controls="lib-circulation" aria-selected="false">Circulation Control</a>		 -->
+						<a class="nav-item nav-link" [ngClass]="{'disabled' : !library_id}" id="lib-authorization-tab"
+							data-toggle="tab" href="#lib-authorization" role="tab" aria-controls="lib-authorization"
+							aria-selected="false">Authorization Settings</a>
+						<a class="nav-item nav-link" [ngClass]="{'disabled' : !library_id}" id="lib-children-tab" data-toggle="tab"
+							href="#lib-children" role="tab" aria-controls="lib-children" aria-selected="false">Child Institutions</a>		
+						<a class="nav-item nav-link" [ngClass]="{'disabled' : !library_id}" id="lib-adjust-balance-tab"
+							data-toggle="tab" href="#lib-adjust-balance" role="tab" aria-controls="lib-adjust-balance"
+							aria-selected="false">Adjust Balance</a>
+					</div>
+				</div>
+			</nav>
+
+			<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+				<div class="tab-pane fade show active" id="lib-info" role="tabpanel" aria-labelledby="nav-info-tab">
+					<app-library-profile [library_id]="library_id" [LibData]="LibData" *ngIf="LibData"></app-library-profile>
+					<app-library-create *ngIf="!LibData"></app-library-create>
+				</div>
+
+		<div class="tab-pane fade" id="lib-services" role="tabpanel" aria-labelledby="nav-services-tab"
+			*ngIf="library_id">
+			<app-library-services [library_id]="library_id" [LibData]="LibData" ></app-library-services>
+		</div>
+		
+		<div class="tab-pane fade" id="lib-adjust-balance" role="tabpanel" aria-labelledby="lib-adjust-balance-tab"
+			*ngIf="library_id">
+			<app-library-balance-adjust [library_id]="library_id" [LibData]="LibData" *ngIf="LibData">
+			</app-library-balance-adjust>
+		</div>
+
+				<div class="tab-pane fade" id="lib-billing" role="tabpanel" aria-labelledby="nav-billing-tab"
+					*ngIf="library_id">
+					<app-library-billing [library_id]="library_id" [LibData]="LibData" *ngIf="LibData"></app-library-billing>
+				</div>
+
+
+				<div class="tab-pane fade" id="lib-children" role="tabpanel" aria-labelledby="nav-children-tab"
+					*ngIf="library_id">
+					<app-library-children [library_id]="library_id"></app-library-children>
+				</div>
+
+				<!-- <div class="tab-pane fade" id="lib-circulation" role="tabpanel" aria-labelledby="nav-circulation-tab" *ngIf="library_id">
+					<app-library-circulation [library_id]="library_id" [max_checkouts_per_user]="max_weekly_books_per_user" *ngIf="LibData"></app-library-circulation>	
+				</div>		 -->
+
+				<div class="tab-pane fade" id="lib-authorization" role="tabpanel" aria-labelledby="nav-authorization-tab"
+					*ngIf="library_id">
+					<app-library-authorization [library_id]="library_id" [authSecretCode]="authSecretCode" [library_name]="library_name">
+					</app-library-authorization>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

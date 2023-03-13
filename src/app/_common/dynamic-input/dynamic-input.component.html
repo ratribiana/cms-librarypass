@@ -1,0 +1,39 @@
+<!-- TO RENDER TEXT TYPE START -->
+<div *ngIf="type_id == '1'" >
+    <label for="{{'dc_' + input_id }}">{{ label_name }} </label>
+    <input type="text" class="form-control" [name]="'dc_' + input_id" [(ngModel)]="input_value" (ngModelChange)="onValueChange($event)" [disabled]="disabled"/>
+</div>
+<!-- TO RENDER TEXT TYPE END -->
+
+<!-- TO RENDER LIST TYPE START -->
+<div *ngIf="type_id == '2'" >
+    <label for="{{'dl_' + input_id }}">{{ label_name }} </label>
+    <select class="browser-default custom-select" class="form-control" [name]="'dl_' + input_id" [(ngModel)]="input_value" (ngModelChange)="onValueChange($event)"  [disabled]="disabled">
+      <option *ngFor="let opt of sources" [ngValue]="opt.label"> {{opt.label}}</option>
+    </select>
+</div>
+<!-- TO RENDER LIST TYPE END -->
+
+<!-- TO RENDER YES NO TYPE START -->
+<div *ngIf="type_id == '3'" >
+    <label for="{{'do_' + input_id }}">{{ label_name }} </label>
+    <div *ngFor="let opt of sources; let i = index">
+        <label for="{{'do_' + input_id }}">
+            <input id="opt{{i}}" [name]="'do_' + input_id" type="radio" [value]="opt.label" [(ngModel)]="input_value" (ngModelChange)="onValueChange($event)"  [disabled]="disabled"/>
+            {{opt.label}}</label>
+    </div>
+</div>
+<!-- TO RENDER YES NO TYPE END -->
+
+
+<!-- TO RENDER DATE TYPE START -->
+<div *ngIf="type_id == '4'" >
+    <label for="{{'dt_' + input_id }}">{{ label_name }} </label>
+    <input placeholder="Date" class="form-control" 
+               [(ngModel)]="input_value"
+               (ngModelChange)="onValueChange($event)"
+               [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [id]="'dt_' + input_id"  [disabled]="disabled">
+        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+</div>
+<!-- TO RENDER DATE TYPE END -->
+

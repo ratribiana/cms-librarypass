@@ -1,0 +1,9 @@
+<div class="overflow-auto kf-container" >
+    <div *ngFor="let data of pageList ; index as i">
+    <div class="d-flex flex-row list-row  " [ngClass]="{'highlight': i ==0}" id="list_page_{{i}}" (click)="editPage(i)">
+        <div  class="p-2" ><img src="{{data.thumbnail_url}}" height="40px" class="img-responsive" ></div>
+        <div class="p-2 pt-3" > {{comicName}} - Page {{i+1}}</div>
+        <div class="ml-auto p-2 pt-3" *ngIf="i > 0" ><div class="edit-pen"></div></div>
+    </div>
+    </div>
+</div>

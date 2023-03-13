@@ -1,0 +1,90 @@
+<section class="comic-detail">
+    <form [formGroup]="detailForm" class="col-12">
+        <div class="col-12">
+            <label for="">Service Type<span class="required-asterisk">*</span></label>
+            <div class="col-12">
+                <label *ngFor="let service of serviceList">
+                    <input type="checkbox" formControlName="service_types"> {{service.name}}
+                </label>
+            </div>
+        </div>
+        <div class="col-12 form-group">
+            <label for="">Name<span class="required-asterisk">*</span></label>
+            <input type="text" class="form-control" formControlName="name"  (keyup)="onNameUpdate($event)"/>
+        </div>
+        <div class="col-12">
+            <label for="">Product ID</label>
+            <input type="text" class="form-control" formControlName="comic_bundle_name" />
+        </div>
+        <div class="col-12">
+            <label for="">Series Bundle ID</label>
+            <input type="text" class="form-control" formControlName="series_bundle_name" />
+        </div>
+        <div class="row col-12 pr-0">
+            <div class="col-6 pr-0">
+                <label for="">Raw (Sort) Name<span class="required-asterisk">*</span></label>
+                <input type="text" class="form-control" formControlName="raw_name" />
+            </div>
+            <div class="col-6 pr-0">
+                <label for="">Number<span class="required-asterisk">*</span></label>
+                <input type="number" class="form-control" formControlName="number" />
+            </div>
+        </div>
+        <div class="row col-12 pr-0">
+            <div class="col-4 pr-0">
+                <label for="">Publisher<span class="required-asterisk">*</span></label>
+                <ng-multiselect-dropdown name="publishers_list" [placeholder]="'Select Publisher'" [data]="publishers" [settings]="publisherDropdown" (onSelect)="onNameUpdate($event)"  formControlName="supplier_id" >
+                </ng-multiselect-dropdown >
+            </div>
+            <div class="col-4 pr-0">
+                <label for="">Product Type<span class="required-asterisk">*</span></label>
+                <ng-multiselect-dropdown name="product_type_list" [placeholder]="'Select Type'" [data]="productTypes" [settings]="productTypeDropdown" formControlName="product_type_id">
+                </ng-multiselect-dropdown>
+            </div>
+            <div class="col-4 pr-0">
+                <label for="">Language<span class="required-asterisk">*</span></label>
+                <ng-multiselect-dropdown name="language_list" [placeholder]="'Select Language'" [data]="languages" [settings]="languageDropdown" (onSelect)="onNameUpdate($event)" formControlName="language_id">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+        <div class="row col-12 pr-0">
+            <div class="col-4 pr-0">
+                <label for="">Release Type<span class="required-asterisk">*</span></label>
+                <ng-multiselect-dropdown name="relase_type" [placeholder]="'Select Release'" [data]="releaseTypes" [settings]="languageDropdown" formControlName="release_category_id">
+                </ng-multiselect-dropdown>
+            </div>
+            <div class="col-8 pr-0">
+                <label for="">Publisher Product Identifier</label>
+                <input type="text" class="form-control" formControlName="product_publisher_identifier" />
+            </div>
+        </div>
+        <div class="col-12">
+            <label for="">Video URL</label>
+            <input type="text" class="form-control" formControlName="video_url" />
+        </div>
+        <div class="col-12">
+            <label for="">Synopsis (Issue Subtitle or One Line Description)</label>
+            <input type="text" class="form-control" formControlName="synopsis" />
+        </div>
+        <div class="col-12">
+            <label for="">Description <span class="required-asterisk">*</span></label>
+            <textarea rows="6" cols="50" class="form-control" formControlName="description"></textarea>
+        </div>
+        <div class="col-12">
+            <label for=""><input type="checkbox" formControlName="manga_orientation"> Right to Left Orientation for Manga</label>
+        </div>
+        <div class="col-12">
+            <label for=""><input type="checkbox" formControlName="webtoon_orientation"> Vertical Orientation for Reading</label>
+        </div>
+        <div class="col-12">
+            <label for="">Legal/Copyright</label>
+            <textarea rows="6" cols="50" class="form-control" formControlName="legal"></textarea>
+        </div>
+        
+        <div class="col-12" style="display: none;">
+            <label for="">Notes</label>
+            <textarea rows="6" cols="50" class="form-control" formControlName="notes"></textarea>
+        </div>
+
+    </form>
+</section>

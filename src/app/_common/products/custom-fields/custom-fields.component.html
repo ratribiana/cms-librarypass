@@ -1,0 +1,41 @@
+<section class="custom-fields">
+    <div class="row">
+        <div class="col-md-6">
+            <h6>Custom Fields</h6>
+            <div class="card">
+                <div class="card-body">
+                    <div *ngFor="let ufields of userAddedFields;">
+                        <div class="d-flex align-items-end mt-2">
+                            <app-dynamic-input [type_id]="ufields.source.type_id" [label_name]="ufields.source.label" [input_id]="ufields.id" [input_value]="ufields.value" (onChangeValue)="onChangeValue($event)" [sources]="ufields.source.options">
+                            </app-dynamic-input>
+                            <button type="button" class="btn btn-outline-danger d-inline ml-2" (click)="removeCustomFields(ufields.id)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 ">
+            <h6>Add Custom Fields</h6>
+            <div class="card">
+                <div class="card-body pl-0 pr-0">
+                    <div class="col-12 scroll">
+                        <div *ngFor="let cfields of customFields">
+                            <div class="d-flex align-items-end">
+                                <app-dynamic-input [type_id]="cfields.type_id" [label_name]="cfields.label" [input_id]="cfields.id" [disabled]="true" [sources]="cfields.options">
+                                </app-dynamic-input>
+                                <button type="button" class="btn btn-outline-primary d-inline ml-2" (click)="addCustomFields(cfields.id)">Add</button>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<app-confirm-modal #modalDelete [modalConfig]="modalDeleteConfig" >
+        Deleting this field will immediately delete the data from the database.  Are you sure?
+</app-confirm-modal>
+

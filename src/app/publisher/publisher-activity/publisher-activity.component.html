@@ -1,0 +1,193 @@
+<div class="row">
+    <div class="col-12">
+        <p class="report-label"> Activity</p>
+        <i class="note">(All activity data is 7 days behind.)</i> <br>
+        <div class="float-right" *ngIf="checkouts">
+            <button type="button" class="btn btn-outline-dark" [attr.disabled]="(loading || total == 0) ? 'disabled' : null" (click)="exportToCSV()">Export to Excel</button>
+            <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div>
+    </div>
+    <div class="row pl-2">
+      <div class="col-12 pl-4">
+      <span class="note" >Dates and times are displayed in UTC timezone</span>   
+      </div>
+    </div>
+    <div class="col-12 publisher-totals" *ngIf="checkouts">
+        <p class="float-left total-checkout">Total Reads: {{total_checkouts}}</p>
+        <!-- <p class="float-left total-checkout">Amount: {{ total_amount | currency }} </p> -->
+        <p class="float-left total-checkout">Publisher Royalty: {{total_publisher_portion | currency}}</p>
+        <p class="float-left total-checkout">Royalty Rate: {{payout_rate}}</p>
+    </div>
+    <div class="col-12">
+        <div class="filter-fields xs-float-right">
+            <div class="float-left">
+                <select class="form-control" (change)="filterActivityReports($event.target.value)">
+                    <!-- <option value="30_days">Last 30 Days</option> -->
+                    <!-- <option value="7_days">Last 7 Days</option> -->
+                    <option value="quarter_now">Current Quarter to Date</option>
+                    <option value="month_now">Current Month to Date</option>
+                    <option value="year_now">Current Year to Date</option>
+                    <option value="quarter_prev">Previous Quarter</option>
+                    <option value="month_prev">Previous Month</option>
+                    <option value="year_prev">Previous Year</option>
+                    <option value="custom_range">Custom Range</option>
+                </select>
+            </div>
+         <!--   <div class="float-left statement-date-range hidden" *ngIf="isCustomRange">
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" (dateTimeChange)="filterCustomRange($event.value)" [selectMode]="'range'" rangeSeparator="-" placeholder="Date Range" class="form-control" >
+                <owl-date-time [pickerType]="'calendar'" #dt1 ></owl-date-time>
+            </div> -->
+
+            <div class="float-left statement-date-range hidden" *ngIf="isCustomRange">
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" [formControl]="month_year"  placeholder="Month Year" class="form-control" (dateTimeChange)="filterCustomRange()">
+                <owl-date-time [pickerType]="'calendar'"  (yearSelected)="chosenYearHandler($event)"
+                   (monthSelected)="chosenMonthHandler($event, dt1)" [startView]="'multi-years'" #dt1="owlDateTime" ></owl-date-time>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 no-padding-xs">
+        <table class="table table-striped table-hover publisher-reports-table dataTable mt-3">
+            <thead>
+                <tr>
+                    <th sortable="Product Name" (sort)="onSort($event)"> Product Name </th>
+                    <th sortable="Publisher Identifier" (sort)="onSort($event)"> Identifier </th>
+                    <!-- <th sortable="Publisher" (sort)="onSort($event)" *ngIf="is_admin"> Publisher Name</th> -->
+                    <th sortable="available_date" (sort)="onSort($event)"> Comics Plus Release Date</th>
+                    <th sortable="content_rating_name" (sort)="onSort($event)"> Age Rating </th>
+                    <th sortable="page_count" (sort)="onSort($event)"> Page Count</th>
+                    <!-- <th> Amount </th> -->
+                    <th sortable="Checkouts" (sort)="onSort($event)" *ngIf="report_type == 'aggregated'"> Total Reads </th>
+                    <th sortable="Checkout Date" (sort)="onSort($event)" *ngIf="report_type == 'detached'"> Read Date </th>                        
+                    <!-- <th sortable="Royalty Rate" (sort)="onSort($event)" *ngIf="is_admin"> Royalty Rate </th> -->
+                    <th sortable="Publisher Portion" (sort)="onSort($event)">  Royalty </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let checkout of checkouts | async | paginate: { id: 'publisher_activity_paging', itemsPerPage: limit, currentPage: page, totalItems: total }; let i = index">
+                    <td class="no-padding">
+                        <a class="td-title hidden-desktop collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+                            <span class="arrow"></span>{{ checkout['Product Name'] }}
+                        </a>
+                        <span class="hidden-mobile">{{ checkout['Product Name'] }}</span>
+                    </td>
+                    <td class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Publisher Identifier</div>
+                        {{ checkout['Publisher Identifier'] }}
+                    </td>
+                    <!-- <td *ngIf="is_admin" class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Publisher Name</div>
+                        {{ checkout['Publisher'] }}
+                    </td> -->
+                    <!-- <td>{{ checkout['Amount'] | currency}}</td> -->                
+                    <!-- <td>{{ checkout['Publisher Portion'] | currency}}</td> -->
+                    
+                    <td class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Comics Plus Release Date</div>
+                        {{ checkout['available_date'] | dateFormat : 'lll' }}
+                    </td>                
+                    <td class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Age Rating</div>
+                        {{ checkout['content_rating_name'] }}
+                    </td>
+
+                    <td class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Page Count</div>
+                        {{ checkout['page_count'] }}
+                    </td>
+
+                    <td *ngIf="report_type == 'detached'" class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Checkout Date</div>
+                        {{ checkout['Checkout Date'] | dateFormat : 'lll' }}
+                    </td>                
+
+
+                    <td *ngIf="report_type == 'aggregated'" class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Total Reads</div>
+                        {{ checkout['Checkouts'] }}
+                    </td>
+
+
+                    <!-- <td *ngIf="is_admin" class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Royalty Rate</div>
+                        {{ checkout['Royalty Rate']|percentage}}
+                    </td> -->
+                    <td class="collapse item-collapse item-collapse-{{i}}">
+                        <div class="hidden-desktop th">Publisher Royalty</div>
+                        {{ checkout['Publisher Portion'] | currency }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <div class="col-12">
+        <div class="table-wrap">
+          <div class="table table-striped table-hover library-reports-table">
+            <div class="thead">
+                <div class="th">Product Name</div>
+                <div class="th">Publisher Identifier</div>
+                <div class="th" sortable="Publisher" (sort)="onSort($event)" *ngIf="is_admin">Publisher Name</div>
+                <div class="th" sortable="Checkouts" (sort)="onSort($event)" *ngIf="report_type == 'aggregated'">Checkouts</div>
+                <div class="th" sortable="Date" (sort)="onSort($event)" *ngIf="report_type == 'detached'">Checkout Date</div>                        
+                <div class="th" sortable="Royalty Rate" (sort)="onSort($event)" *ngIf="is_admin">Royalty Rate</div>
+                <div class="th" sortable="Publisher Portion" (sort)="onSort($event)">Publisher Royalty</div>
+            </div>
+
+            <div class="tbody">
+              <div class="tr" 
+                *ngFor="let checkout of checkouts | async | paginate: { id: 'publisher_activity_paging', itemsPerPage: limit, currentPage: page, totalItems: total }; let i = index">
+                
+                <a class="td-title collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+                  <span class="arrow"></span>{{ checkout['Product Name'] }}
+                </a>
+
+                <div class="th collapse item-collapse item-collapse-{{i}}">Product Name</div>
+                <div class="td collapse item-collapse item-collapse-{{i}}">
+                  {{ checkout['Product Name'] }}
+                </div>
+
+                <div class="th collapse item-collapse item-collapse-{{i}}">Publisher Identifier</div>
+                <div class="td collapse item-collapse item-collapse-{{i}}">
+                  {{ checkout['Publisher Identifier'] }}
+                </div>
+
+                <div class="th collapse item-collapse item-collapse-{{i}}" *ngIf="is_admin">Publisher Name</div>
+                <div class="td collapse item-collapse item-collapse-{{i}}" *ngIf="is_admin">
+                  {{ checkout['Publisher'] }}
+                </div>
+
+                <div class="th collapse item-collapse item-collapse-{{i}}" *ngIf="report_type == 'aggregated'">Checkouts</div>
+                <div class="td collapse item-collapse item-collapse-{{i}}" *ngIf="report_type == 'aggregated'">
+                  {{ checkout['Checkouts'] }}
+                </div>
+
+                <div class="th collapse item-collapse item-collapse-{{i}}" *ngIf="report_type == 'detached'">Checkout Date</div>
+                <div class="td collapse item-collapse item-collapse-{{i}}" *ngIf="report_type == 'detached'">
+                  {{ checkout['Checkout Date'] | dateFormat : 'lll' }}
+                </div>
+
+                <div class="th collapse item-collapse item-collapse-{{i}}" *ngIf="is_admin">Royalty Rate</div>
+                <div class="td collapse item-collapse item-collapse-{{i}}" *ngIf="is_admin">
+                  {{ checkout['Royalty Rate']|percentage}}
+                </div>
+
+                <div class="th collapse item-collapse item-collapse-{{i}}">Publisher Royalty</div>
+                <div class="td collapse item-collapse item-collapse-{{i}}">
+                  {{ checkout['Publisher Portion'] | currency }}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div> -->
+
+    <div class="col-12">
+        <!--<p class="float-right total-checkout">Total Checkouts: {{total}}</p>-->
+    </div>
+    <div class="col-12 text-center" *ngIf="checkouts">
+        <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+        <pagination-controls (pageChange)="getActivityReports(supplier_id, $event, report_type)" previousLabel="" nextLabel="" id="publisher_activity_paging"></pagination-controls>
+    </div>
+</div>

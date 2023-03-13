@@ -1,0 +1,8 @@
+<section class="sku">
+<form [formGroup]="skuForm" class="col-12">
+  <div class="col-12 mt-2"  *ngFor="let sku of applicationsList">
+    <label for="">{{sku.name}}</label>
+    <input type="text" class="form-control" formControlName="application_{{sku.id}}"  />
+  </div>
+</form>
+</section>

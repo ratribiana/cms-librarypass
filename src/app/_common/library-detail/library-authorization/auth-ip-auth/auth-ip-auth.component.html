@@ -1,0 +1,132 @@
+<div *ngIf="!form_loaded" class="text-center mt-4">  
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="form_loaded" class="mb-4">
+  <form [formGroup]="updateLibraryAuthMethodForm" (ngSubmit)="updateLibraryAuthMethod($event);">
+    <!-- div >      
+      <label for="active"><h6>Active</h6></label>
+      &nbsp;&nbsp;
+      <input type="checkbox" formControlName="active">                                  
+    </div> -->
+    <div class="form-group checkbox-wrap">
+      <label class="checkbox">
+          <input type="checkbox" class="btn-checkbox-all" formControlName="active">
+          <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-label" for="active"><h6>Active</h6></label>
+    </div>     
+
+    <div *ngIf="auth_is_active">
+
+      <div formGroupName="authSettings" >
+        <h6>Form Label</h6>
+        <div class="form-group col-md-12" >
+          <label for="username_placeholder">Username</label>        
+          <input type="text" formControlName="username_placeholder" class="form-control" />        
+        </div>
+  
+        <div class="form-group col-md-12" >
+          <label for="password_placeholder">Password</label>        
+          <input type="text" formControlName="password_placeholder" class="form-control" />        
+        </div>
+      </div>
+
+      <div>        
+        <h6>Settings</h6>
+
+        <div formGroupName="authSettings" >
+          <div class="form-group checkbox-wrap">
+            <label class="checkbox">
+                <input type="checkbox" class="btn-checkbox-all" formControlName="allow_signup_page">
+                <span class="checkmark"></span>
+            </label>
+            <label class="checkbox-label" for="allow_signup_page">Check the box to Allow User Sign Up</label>
+          </div>
+        </div>
+        
+        <div class="form-row col-md-12">
+          <div class="form-group col-md-12" >
+            <label for="ip">IP Address</label>                            
+            <code class="pb-3"> Add a single IP address: (eg: 192.168.1.100)</code>
+            <input type="text" formControlName="ip" class="form-control" placeholder="Add New IP Address" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" [ngClass]="{ 'is-invalid': submitted && f.ip.errors }" />
+            <div *ngIf="submitted && f.ip.errors" class="invalid-feedback">
+              Please Enter a valid IP Address (eg. 192.168.1.100)
+            </div>            
+          </div>
+        </div>
+        
+        <div class="form-row col-md-12">
+          <div class="form-group col-md-7">                
+            <label for="from_ip_address">From</label>
+            <input type="text" formControlName="from_ip_address"  placeholder="Starting IP Address (eg. 192.168.1.100)" class="form-control" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" [ngClass]="{ 'is-invalid': submitted && f.from_ip_address.errors }" />
+            <div *ngIf="submitted && f.from_ip_address.errors" class="invalid-feedback">
+                Please Enter a valid IP Address (eg. 192.168.1.100)
+            </div>      
+            <code class="pb-3"> OR Add a range of IP addresses: (eg: 192.168.1.100 - 130)</code>          
+          </div>        
+          <div class="form-group col-md-1 text-center pt-4 mt-2">       
+            <span> - </span>
+          </div>
+          <div class="form-group col-md-4">                
+            <label for="to_ip_address">To</label>
+            <input type="number" min="1" max="255" formControlName="to_ip_address"  placeholder="Range (eg.130)" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.to_ip_address.errors }" />
+            <div *ngIf="submitted && f.to_ip_address.errors" class="invalid-feedback">
+                <div *ngIf="f.to_ip_address.errors.max || f.to_ip_address.errors.min">Please Enter a valid Range [1-255] </div>              
+                <div *ngIf="f.to_ip_address.errors.ValidateRange">Value Should be greater than the Fourth part of the From IP Adress</div>
+            </div>                
+          </div>
+        </div>
+      </div>  
+      
+    </div>  
+
+    
+    <div class="mt-3"> 
+      <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+      <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    </div> 
+
+  </form>
+  
+  <div class="col-md-12 padded-top" *ngIf="auth_is_active">
+        <div>
+          <form autocomplete="off">
+            <input (change)="filterbyIPAddress($event)" type="text" autocomplete="none" class="form-control col-8 float-left" placeholder="Search IP address" >
+            <button type="button" class="btn btn-primary btn-aqua">Search</button>
+          </form>
+          <img *ngIf="!table_loaded" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div>              
+                
+        <table class="table table-hover table-striped library-reports-table col-md-12 padded-top" [hidden]="!table_loaded">      
+          <thead>
+            <th> IP Address </th>    
+            <!-- <th><button  type="button" class="btn btn-danger" (click)="deleteAllAuthIP()">Delete All </button></th> -->
+            <th>
+              <button type="button" (click)="deleteAllAuthIP()" class="btn btn-outline-danger btn-delete btn-delete-top"><i class="icon icon-delete"></i> Delete All</button>  
+            </th>
+          </thead>
+        
+          <tbody>
+          <tr *ngFor="let ip of ips | async | paginate: { id: 'statement_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }">
+            <td>{{ ip['ip']  }}</td>
+            <td>                
+              <!-- <button  type="button" class="btn btn-outline-danger" (click)="deleteAuthIP($event, ip['id'], ip['ip'])">Delete</button>  -->
+              <button type="button" (click)="deleteAuthIP($event, ip['id'], ip['ip'])" class="btn btn-outline-danger btn-delete btn-delete-top"><i class="icon icon-delete"></i> Delete</button>              
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      
+      
+        <div class="col-12 text-center">
+          <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+          <pagination-controls (pageChange)="getIPsList($event, filter)" id="statement_report_paging" [hidden]="!table_loaded" previousLabel="" nextLabel=""></pagination-controls>
+        </div>                                
+  </div>
+
+
+</div>
+

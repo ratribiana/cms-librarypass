@@ -1,0 +1,45 @@
+.settings-container {
+	border-top: 1px solid #828282;
+	border-bottom: 1px solid #828282;
+}
+
+.settings-row {
+	border-bottom: 1px solid #cfd4d1;
+}
+
+.required-asterisk{
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 1.2em;
+}
+
+.icon-info::before {
+	content: "i";
+} 
+.icon-info {
+	display: inline-block;
+    color: #fff;
+    background: #bbb;
+    border-radius: 100%;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 12px;
+    font-size: 8px;
+    margin-top: -2px;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.5)
+}
+.icon-padlock {
+	position: absolute;
+	top: 4px;
+	right: 100%;
+	display: inline-block;
+	background-size: 16px 16px;
+    width: 16px;
+    height: 16px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('../../assets/img/padlock-icon.png');
+}

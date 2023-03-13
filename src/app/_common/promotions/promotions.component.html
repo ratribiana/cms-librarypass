@@ -1,0 +1,248 @@
+<div class="box">
+  <div class="row">
+    <div class="col-12 float-left" *ngIf="is_admin">
+      <div class="mb-3 width-25">  
+        <ng-multiselect-dropdown
+          name="libraries_list"          
+          [placeholder]="'Search for Institution'"
+          [data]="libraries"          
+          [settings]="dropdownSettings"        
+          (onSelect)="onLibrarySelect($event)"
+          (onDeSelect)="onLibraryDeSelect($event)"
+        >
+        </ng-multiselect-dropdown> 
+      </div>  
+    </div>
+
+    <div class="col-12 pb-2 ">
+        <button type="button" class="btn btn-outline-dark btn-aqua no-bg" data-toggle="modal" [hidden]="this.library_id && is_admin"
+        data-target="#addPromotionModal">
+        Add {{page_title}} Promotions
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button  class="btn btn-outline-danger btn-aqua no-bg" (click)="deletePromotions($event)" [hidden]="!multiSelectClicked">Delete Selected Promotions</button>
+    </div>
+
+    <div *ngIf="!dataLoaded" class="text-center col-12 mt-2 mb-2">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <div class="col-12 no-padding-xs">
+      <table id="promotions_table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"  class="table table-striped table-hover" [hidden]="!dataLoaded">
+        <tbody>
+          <tr *ngFor="let promotion of promotions; let i = index" [ngClass]=" (promotion.library == 1 && !promotion.is_expired) ? 'active' : 'expired'">    
+            <td class="hidden">
+              {{ promotion.sort_number }}
+            </td>
+            <td class="no-padding reorder">
+              <a class="td-title hidden-desktop collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+                <span class="arrow"></span><span class="reorder-number">{{ promotion.sort_number }}</span>: {{ promotion.name }}
+              </a>
+              <span class="hidden-mobile reorder-number">{{ promotion.sort_number }}</span>
+            </td>        
+            <td class="collapse item-collapse item-collapse-{{i}}">
+              <div class="hidden-desktop th">Name</div>
+              {{ promotion.name }}
+            </td>
+            <td class="collapse item-collapse item-collapse-{{i}}">
+              <div class="hidden-desktop th">Start Date</div>
+              {{ promotion.start_date }}
+            </td>
+            <td class="collapse item-collapse item-collapse-{{i}}">
+              <div class="hidden-desktop th">End Date</div>
+              {{ promotion.end_date }}
+            </td>        
+            <td class="collapse item-collapse item-collapse-{{i}}">
+              {{ promotion.id }}
+            </td>        
+            <td class="collapse item-collapse item-collapse-{{i}}"> 
+              <div class="hidden-desktop th">Active</div>
+              <label class="switch">
+                <input (click)="updatePromotionStatus($event, promotion['id'])" [checked]="promotion['library'] == 1" type="checkbox"
+              class="form-check-input position-static" />
+                <span class="slider round"></span>
+              </label>
+            </td>        
+
+            <td class="collapse item-collapse item-collapse-{{i}}">
+              <div class="hidden-desktop th">Select</div>
+              <label class="switch">
+                <input type="checkbox" (click)="showMultipleActionsButton($event)" class="deleted-promotions form-check-input position-static" name="deleted_promotions" value="{{ promotion.id }}">
+                <span class="slider round"></span>
+              </label>
+            </td>        
+            <td class="collapse item-collapse item-collapse-{{i}}">   
+              <div class="hidden-desktop th">Actions</div>       
+              <button (click)="editPromotion($event, promotion['id'])" type="button" class="btn btn-outline-dark btn-edit"><i class="icon icon-edit"></i> Edit</button>
+              &nbsp;
+              <button (click)="deletePromotion($event, promotion['id'])" type="button" class="btn btn-outline-danger btn-delete"><i class="icon icon-delete"></i> Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <div class="col-12">
+      <div class="table-wrap">
+        <div id="promotions_table" class="table table-striped table-hover library-reports-table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <div class="thead">
+            <div class="th">Sort</div>
+            <div class="th">Name</div>
+            <div class="th">Start Date</div>
+            <div class="th">End Date</div>
+            <div class="th">Active</div>
+            <div class="th">Select</div>
+            <div class="th">Actions</div>
+          </div>
+
+          <div class="tbody">
+            <div
+              *ngFor="let promotion of promotions; let i = index" [ngClass]="(promotion.library == 1 && !promotion.is_expired) ? 'tr active' : 'tr expired'">
+              
+              <a class="td-title collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+                <span class="arrow"></span>{{ promotion.sort_number }}: {{ promotion.name }}
+              </a>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Sort</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}">
+                {{ promotion.sort_number }}
+              </div>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Name</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}">
+                {{ promotion.name }}
+              </div>
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Start Date</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}">
+                {{ promotion.start_date }}
+              </div>     
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">End Date</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}">
+                {{ promotion.end_date }}
+              </div>     
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Active</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}">
+                <label class="switch">
+                  <input (click)="updatePromotionStatus($event, promotion['id'])" [checked]="promotion['library'] == 1" type="checkbox"
+                class="form-check-input position-static" />
+                  <span class="slider round"></span>
+                </label>
+              </div>   
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Select</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}">
+                <label class="switch">
+                  <input type="checkbox" (click)="showMultipleActionsButton($event)" class="deleted-promotions form-check-input position-static" name="deleted_promotions" value="{{ promotion.id }}">
+                  <span class="slider round"></span>
+                </label>
+              </div>   
+
+              <div class="th collapse item-collapse item-collapse-{{i}}">Actions</div>
+              <div class="td collapse item-collapse item-collapse-{{i}}">
+                <button (click)="editPromotion($event, promotion['id'])" type="button" class="btn btn-outline-dark btn-edit"><i class="icon icon-edit"></i> Edit</button>
+                &nbsp;
+                <button (click)="deletePromotion($event, promotion['id'])" type="button" class="btn btn-outline-danger btn-delete"><i class="icon icon-delete"></i> Delete</button>
+              </div>     
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div> -->
+
+      <!-- Add Promotion Modal -->
+      <div class="modal fade" id="addPromotionModal" tabindex="-1" role="dialog" aria-labelledby="addPromotionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addPromotionModalLabel">Add New {{page_title}} </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <form [formGroup]="createPromotionForm" (ngSubmit)="createPromotions($event);" autocomplete="off">
+                
+                <div class="form-group">
+                  <label for="name">Name <span class="required-asterisk">*</span></label>
+                  <input type="text" formControlName="name" class="form-control" autocomplete="off"
+                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                  <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                    <div *ngIf="f.name.errors.required">Name is required</div>
+                  </div>
+                </div>
+
+                <div class="form-group">              
+                  <label> Start Date <span class="required-asterisk">*</span></label>
+                    <input [owlDateTimeTrigger]="start_date" formControlName="start_date" [owlDateTime]="start_date" class="form-control" 
+                        [ngClass]="{ 'is-invalid': submitted && f.start_date.errors }" />
+                    <div *ngIf="submitted && f.start_date.errors" class="invalid-feedback">
+                        <div *ngIf="f.start_date.errors.required">Start Date is required</div>
+                    </div>
+                    <owl-date-time #start_date ></owl-date-time>                              
+                </div>
+
+
+                <div class="form-group">              
+                    <label> End Date <span class="required-asterisk">*</span></label>
+                      <input [owlDateTimeTrigger]="end_date" formControlName="end_date" [owlDateTime]="end_date" class="form-control" 
+                        [ngClass]="{ 'is-invalid': submitted && f.end_date.errors }" />
+                      <div *ngIf="submitted && f.end_date.errors" class="invalid-feedback">
+                        <div *ngIf="f.end_date.errors.required">End Date is required</div>
+                      </div>    
+                      <owl-date-time #end_date ></owl-date-time>                                        
+                </div>
+
+
+                <div class="form-group" *ngIf="page_type == 'banner'">
+                    <label> Banner Image </label>
+                    <input type="file" class="form-control" formControlName="promo_image" id="file" 
+                      accept="image/*" (change)="handleFileInput($event)">
+                    <div class="m-2 float-left col-12" ><img src="{{banner_image}}" width="250"></div>  
+                </div>
+
+
+                <div class="form-group" *ngIf="page_type == 'banner'">
+                  <label for="content_url">Content Url (<code>https://<i>subdomain</i>.librarypass.com</code>)</label>
+                  <input type="text" formControlName="content_url" class="form-control" autocomplete="off"
+                    [ngClass]="{ 'is-invalid': submitted && f.content_url.errors }" />
+                  <div *ngIf="submitted && f.content_url.errors" class="invalid-feedback">
+                    <div *ngIf="f.content_url.errors.pattern">Content Url should be a subdomain of librarypass</div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="is_admin">
+                    <label for="content_rating_id">Age Rating</label>
+                    <select class="form-control" formControlName="content_rating_id">
+                        <option [ngValue]="age_rating.id" *ngFor="let age_rating of age_ratings">{{age_rating.name}}</option>                    
+                    </select>                  
+                </div>
+                
+                <!-- <div class="form-group">
+                    <label for="language_id">Language</label>
+                    <select class="form-control" formControlName="language_id">
+                        <option [ngValue]="language.id" *ngFor="let language of languages">{{language.name}}</option>                    
+                    </select>                  
+                </div> -->
+
+                <div class="form-group">
+                  <button [disabled]="loading" class="btn btn-primary">Save</button>
+                  <img *ngIf="loading" class="pl-2"
+                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>

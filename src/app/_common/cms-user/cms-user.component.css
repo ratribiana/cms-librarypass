@@ -1,0 +1,14 @@
+.report-label{
+    font-size: 25px;
+    padding-right: 10px;
+}
+
+.user-update-password{
+    width: 54%;
+    float: left;
+    margin-right: 8px;
+}
+
+.instructions{
+    color: #5eb317;
+}

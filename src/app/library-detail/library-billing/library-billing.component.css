@@ -1,0 +1,19 @@
+.required-asterisk{
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 1.2em;
+}
+
+.current-balance{
+    /* color: #5db217; */
+    font-size: 15px;
+}
+ 
+.billing-form{
+    min-width: 50%;
+}
+
+.no-padding {
+	padding: 0;
+}

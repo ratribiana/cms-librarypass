@@ -1,0 +1,119 @@
+<div class="row">
+  <div class="col-12">
+    <span class="report-label">Activity</span>
+  </div>
+  <div class="row pl-2">
+    <div class="col-12 pl-4">
+    <span class="note" >Dates and times are displayed in UTC timezone</span>   
+    </div>
+  </div>
+  <div class="col-12 librarian-totals">
+    <p class="total-checkout">Total: {{total}}</p>    
+  </div>
+
+  <div class="col-12">
+    <label class="float-left form-label">Last of: </label>
+    <div class="filter-fields xs-float-right">
+      <div>
+        <select class="form-control" (change)="filterActivityReports($event.target.value)">
+          <option value="30_days">Last 30 Days</option>
+          <option value="7_days">Last 7 Days</option>
+          <option value="month_now">This Month</option>
+          <option value="year_now">This Year</option>
+          <option value="year_prev">Last Year</option>
+          <option value="custom_range">Custom Range</option>
+        </select>
+      </div>
+
+      <div class="float-left statement-date-range hidden" *ngIf="isCustomRange">
+        <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" (dateTimeChange)="filterCustomRange($event.value)"
+          [selectMode]="'range'" rangeSeparator="-" placeholder="Date Range" class="form-control">
+        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+      </div>
+
+    </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-aqua" [attr.disabled]="(loading || total == 0) ? 'disabled' : null"
+        (click)="exportToCSV()">Export to Excel</button>
+        <img *ngIf="loading" class="pl-2"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />  
+    </div>
+  </div>
+
+  <!-- <table class="table table-striped table-hover library-reports-table">
+    <thead>
+      <th> Date </th>
+      <th> Product Name </th>
+      <th> Institution </th>
+      <th> Content Rating </th>
+      <th> User </th>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let checkout of checkouts | async | paginate: { id: 'activity_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }">
+        <td>{{ checkout['Date'] | dateFormat : 'lll' }}</td>
+        <td>{{ checkout['Product Name'] }}</td>
+        <td>{{ checkout['Library'] }}</td>
+        <td>{{ checkout['Content Rating'] }}</td>
+        <td>{{ checkout['Patron'] }}</td>
+      </tr>
+    </tbody>
+  </table> -->
+
+  <div class="col-12">
+    <div class="table-wrap">
+      <div class="table table-striped table-hover library-reports-table">
+        <div class="thead">
+          <div class="th">Date</div>
+          <div class="th">Product Name</div>
+          <div class="th">Institution</div>
+          <div class="th">Content Rating</div>
+          <div class="th">User</div>
+        </div>
+
+        <div class="tbody">
+          <div class="tr" 
+            *ngFor="let checkout of checkouts | async | paginate: { id: 'activity_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }; let i = index">
+            
+            <a class="td-title collapsed" data-toggle="collapse" href=".item-collapse-{{i}}" role="button" aria-expanded="false" aria-controls="collapse">
+              <span class="arrow"></span>{{ checkout['Product Name'] }}
+            </a>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Date</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ checkout['Date'] | dateFormat : 'lll' }}
+            </div>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Product Name</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ checkout['Product Name'] }}
+            </div>
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Institution</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ checkout['Library'] }}
+            </div>     
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">Content Rating</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ checkout['Content Rating'] }}
+            </div>     
+
+            <div class="th collapse item-collapse item-collapse-{{i}}">User</div>
+            <div class="td collapse item-collapse item-collapse-{{i}}">
+              {{ checkout['Patron'] }}
+            </div>     
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 text-center">
+    <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+    <pagination-controls (pageChange)="getLibrarianActivityReport(library_id, $event)" previousLabel="" nextLabel="" id="activity_report_paging">
+    </pagination-controls>
+  </div>
+</div>

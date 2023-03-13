@@ -1,0 +1,100 @@
+<div *ngIf="!library_selected_price_tiers && !library_selected_content_rating" class="text-center mt-4">  
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="library_selected_price_tiers && library_selected_content_rating">  
+  <form [formGroup]="updateLibraryForm" (ngSubmit)="updateLibrary($event);" >
+  <div class="row offset-1 col-md-11" >      
+      <div class="form-group col-md-5 p-2">         
+        <label for="max_weekly_books_per_user"><b>Max Checkouts Per Patron</b> <span class="required-asterisk">*</span></label>
+        <input type="number" formControlName="max_weekly_books_per_user" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.max_weekly_books_per_user.errors }" />        
+        <div *ngIf="submitted && f.max_weekly_books_per_user.errors" class="invalid-feedback">
+          <div *ngIf="f.max_weekly_books_per_user.errors.required">Max Checkouts Per Patron is required</div>
+        </div>
+      </div>    
+  </div>
+
+  <div class="row data-row">
+    <div class="data-container" class="col-md-5 offset-1">
+      <b>Allowed price tiers</b>
+      
+      <div  
+        cdkDropList
+        #selectedpriceTiersList="cdkDropList"
+        [cdkDropListData]="library_selected_price_tiers"
+        [cdkDropListConnectedTo]="[priceTiersList]"
+        class="data-list chosen"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="updatePriceTiers($event)" 
+        (cdkDropListExited)="updatePriceTiers($event)">
+
+        <div class="data-box" *ngFor="let item of library_selected_price_tiers" cdkDrag>
+          {{item.name}} ({{item.amount_usd}})
+        </div>
+      </div>  
+    </div>
+      
+    <div class="data-container" class="col-md-5 ">
+      <b>&nbsp;</b>
+      <div    
+        cdkDropList
+        #priceTiersList="cdkDropList"
+        [cdkDropListData]="library_price_tiers"
+        [cdkDropListConnectedTo]="[selectedpriceTiersList]"
+        class="data-list "
+        (cdkDropListDropped)="drop($event)">
+
+        <div class="data-box" *ngFor="let item of library_price_tiers" cdkDrag>
+          <span id="{{item.id}}">{{item.name}} ({{item.amount_usd}})</span>
+        </div>    
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row data-row">
+    <div class="data-container" class="col-md-5 offset-1">
+      <b>Allowed content rating</b>
+      
+      <div  
+        cdkDropList
+        #selectedContentRatings="cdkDropList"
+        [cdkDropListData]="library_selected_content_rating"
+        [cdkDropListConnectedTo]="[contentRatingsList]"
+        class="data-list chosen"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="updateContentRating($event)" 
+        (cdkDropListExited)="updateContentRating($event)">
+  
+        <div class="data-box" *ngFor="let item of library_selected_content_rating" cdkDrag>
+          {{item.name}}
+        </div>
+      </div>  
+    </div>
+      
+    <div class="data-container" class="col-md-5">		
+      <b>&nbsp;</b>
+      <div    
+        cdkDropList
+        #contentRatingsList="cdkDropList"
+        [cdkDropListData]="library_content_rating"
+        [cdkDropListConnectedTo]="[selectedContentRatings]"
+        class="data-list "
+        (cdkDropListDropped)="drop($event)">
+  
+        <div class="data-box" *ngFor="let item of library_content_rating" cdkDrag>
+          <span id="{{item.id}}">{{item.name}}</span>
+        </div>    
+      </div>
+    </div>
+   
+  </div>
+
+  <div class="form-group col-md-11 offset-1">            
+    <button [disabled]="loading" class="btn btn-primary">Save Changes</button>
+    <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  </div> 
+  </form>
+</div>

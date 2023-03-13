@@ -1,0 +1,128 @@
+<div class="box">
+  <div class="row">
+        <div class="col-12">    
+          <p class="report-label float-left" *ngIf="cms_user_id"> Update Admin User </p>        
+          <p class="report-label float-left" *ngIf="!cms_user_id"> Add Admin User </p>        
+        </div>
+        
+        <div class="col-12">
+          <div *ngIf="!loadedForm" class="text-center mt-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row col-12" [hidden]="!loadedForm" >             
+          <form [formGroup]="updateCmsUserForm" (ngSubmit)="updateCmsUser($event);" autocomplete="off" class="col-sm-12 col-md-6">
+            <input name="user_id" type="hidden" formControlName="user_id">
+            <div class="form-group col-md-12">
+              <label for="cms_role_id">Role<span class="required-asterisk">*</span></label>
+
+              <select class="form-control" formControlName="cms_role_id" [ngClass]="{ 'is-invalid': submitted && f.cms_role_id.errors }" >        
+                <option [ngValue]="cms_user_role.id" *ngFor="let cms_user_role of cms_user_roles">{{cms_user_role.name}}</option>
+              </select>
+              
+              <div *ngIf="submitted && f.cms_role_id.errors" class="invalid-feedback">
+                <div *ngIf="f.cms_role_id.errors.required">Role is required</div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12 supplier-fields" style="display: none;">
+              <label for="supplier_id">Publisher<span class="required-asterisk">*</span></label>                
+              <input type="hidden" formControlName="supplier_id" name="supplier_id" id="supplier_id">        
+              <select class="publisher-suppliers form-control" [ngClass]="{ 'is-invalid': submitted && f.supplier_id.errors }"></select>
+
+              <div *ngIf="submitted && f.supplier_id.errors" class="invalid-feedback">
+                <div *ngIf="f.supplier_id.errors.required">Publisher is required</div>
+              </div>
+            </div>          
+
+            <div class="form-group col-md-12" style="display: none;">
+              <label for="library_id">Institution</label>                
+              <input type="hidden" formControlName="library_id" name="library_id" id="library_id">
+              <select class="institution-libraries form-control" [ngClass]="{ 'is-invalid': submitted && f.library_id.errors }"></select>
+
+              <div *ngIf="submitted && f.library_id.errors" class="invalid-feedback">
+                <div *ngIf="f.library_id.errors.required">Institution is required</div>
+              </div>
+            </div>              
+
+            <div class="form-group col-md-12">
+              <label for="email_address">Email<span class="required-asterisk">*</span></label>
+              <input type="email" formControlName="email_address" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.email_address.errors }" />
+              <div *ngIf="submitted && f.email_address.errors" class="invalid-feedback">
+                <div *ngIf="f.email_address.errors.required">Email is required</div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label for="username">Username<span class="required-asterisk">*</span></label>
+              <input type="text" formControlName="username" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" [(ngModel)]="username" (blur)="onRemoveSpace()" />
+              <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                <div *ngIf="f.username.errors.required">Username is required</div>
+              </div>        
+            </div>        
+
+            <div class="form-group col-md-12">
+              <label for="password">Password
+                  <span class="required-asterisk" *ngIf="!cms_user_id">*</span>            
+                </label>
+              <input type="password" formControlName="password" class="form-control" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">Password is required</div>
+              </div>        
+            </div>    
+            
+            <!-- 
+            <div class="form-group col-md-12 supplier-fields" style="display: none;">
+              <label for="ssh_private_key">SSH Private key<span class="required-asterisk">*</span></label>        
+              <textarea rows="6" cols="50" formControlName="ssh_private_key" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ssh_private_key.errors }">        
+              </textarea>
+              <div *ngIf="submitted && f.ssh_private_key.errors" class="invalid-feedback">
+                <div *ngIf="f.ssh_private_key.errors.required">SSH Private key is required</div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12 supplier-fields" style="display: none;">
+              <label for="ssh_public_key">SSH Public key<span class="required-asterisk">*</span></label>        
+              <textarea rows="5" cols="50" formControlName="ssh_public_key" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ssh_public_key.errors }">        
+              </textarea>
+              <div *ngIf="submitted && f.ssh_public_key.errors" class="invalid-feedback">
+                <div *ngIf="f.ssh_public_key.errors.required">SSH Public key is required</div>
+              </div>
+            </div> -->
+
+            <div class="form-group col-md-11 pt-3">            
+              <button *ngIf="cms_role == '5' && private_key_ppk" [disabled]="loading" type="button" class="btn btn-outline-dark mr-4" [attr.disabled]="" (click)="exportPPK()">Download SFTP Key</button>
+              <button [disabled]="loading" class="btn btn-aqua"><span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"> </span> Save Changes</button> 
+              
+            </div>         
+
+          </form>  
+
+
+
+            <div class="col-sm-12 col-md-6 d-none" *ngIf="guard.hasAccessByCode('add_role')">
+              <h5>Allow additional access</h5>
+              <table class="table table-striped table-hover col-12">
+                  <thead>
+                    <th> Name </th>
+                    <th> Allow </th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let roles of userRoles">
+                      <td>{{ roles['name'] }} <br><small>{{ roles['short_description'] }}</small></td>
+                      <td>
+                        <label class="switch">
+                              <input  type="checkbox" (click)="addMoreRoles($event, roles['id'])" class="form-check-input position-static" [checked]="roles['allow'] == 1"> 
+                              <span class="slider round"></span>
+                            </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>        
+        </div>    
+  </div>
+</div>

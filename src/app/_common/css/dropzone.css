@@ -1,0 +1,48 @@
+.dropzone {
+    height: 200px;
+    display: table;
+    width: 100%;
+    background-color: #eee;
+    border: dotted 1px #aaa;
+}
+
+.dropzone .text-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.dropzone  .centered {
+    font-family: sans-serif;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.dropzone input[type="file"] {
+    display: none;
+}
+
+.dropzone .textLink {
+    background-color: #f45e61;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropzone .text-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.dropzone .centered {
+    font-family: sans-serif;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.dropzone .description {
+    font-size:.9rem; 
+    padding-top:10px;
+    color:#5c5c5c;
+}

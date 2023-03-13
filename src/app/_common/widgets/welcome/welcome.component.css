@@ -1,0 +1,10 @@
+.smiley{
+	background-image: url('/assets/img/welcome-smiley.svg');
+    height:25px;
+    width:25px;
+    margin-left: 2px;
+    margin-right: 10px;
+    background-size:     cover; 
+    background-repeat:   no-repeat; 
+    display: inline-block;
+}

@@ -1,0 +1,55 @@
+<div class="box" style="padding-bottom: 30px;">
+
+  <div class="select-wrap mb-3 width-35" *ngIf="is_admin && !is_parent">
+    <ng-multiselect-dropdown
+      name="regions_list"          
+      [placeholder]="'Select Institution'"    
+      [data]="parent_institutions"             
+      [settings]="dropdownSingleSelect"        
+      (onSelect)="onParentSelect($event)"      
+      (onDeSelect)="resetParentInstitution()"      
+    >
+    </ng-multiselect-dropdown> 
+  </div>
+
+  <div class="select-wrap mb-3 width-50" *ngIf="is_parent">
+    <form [formGroup]="searchForm">
+    <ng-multiselect-dropdown
+      name="libraries"
+      formControlName="libraries"
+      [placeholder]="'Select Institution'"
+      [data]="institution_node"
+      [(ngModel)]="selectedItems"
+      [settings]="dropdownSettings"
+      (onSelect)="onLibrariesSelect($event)"
+      (onDeSelect)="onLibrariesDeSelect($event)"
+      (onSelectAll)="onLibrariesSelectAll($event)"
+    >
+      <ng-template
+        #optionsTemplate
+        let-item
+        let-option="option"
+        let-id="id"
+      >
+        <div [ngStyle]="getItemStyle(getItems[id].lineage)">
+          {{option}}
+        </div>
+      </ng-template>
+
+      <ng-template #optionSelectedTemplate let-option="option" let-id="id">
+        <div class="selected-text" [ngClass]="getItemClass(getItems[id])">
+          {{option}} <span class="selected-num" [hidden]="hideItemCount(getItems[id].lineage)">{{ getItemCountText(getItems[id].lineage) }}</span>
+        </div>
+      </ng-template>
+    </ng-multiselect-dropdown> 
+  </form>
+  <a href="#" (click)="resetParentInstitution($event)" *ngIf="is_admin">Reset Parent Institution</a>
+  </div>
+</div>
+
+<div class="box">
+  <app-librarian-activity [library_id]="library_id" [library_ids]="library_ids" [show_patron_info]="show_patron_info"></app-librarian-activity>  
+  <app-librarian-statement [library_id]="library_id" [library_ids]="library_ids" [show_patron_info]="show_patron_info" [is_admin]="is_admin"></app-librarian-statement>  
+</div>
+
+

@@ -1,0 +1,140 @@
+<div class="col-12 row uview-row ">
+  <div class="col-1" id="tool_container">
+    <div class="uview-tools pl-2 ">
+      <div class="pt-3">
+        <a (click)="closeTab()">
+          <div class="home"></div>
+        </a>
+      </div>
+      <div [hidden]="!showCreationTools">
+        <div class="separator"></div>
+
+        <div class="pt-1">
+          <a (click)="setTool('pick', $event)">
+            <div class="cursor"></div>
+          </a>
+          <a (click)="setTool('square', $event)">
+            <div class="square"></div>
+          </a>
+          <a (click)="setTool('circle', $event)">
+            <div class="circle"></div>
+          </a>
+          <a (click)="setTool('polygon', $event)">
+            <div class="pen"></div>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="editMode">
+        <div class="separator"></div>
+
+        <div class="pt-1">
+          <a (click)="setTool('add-point', $event)">
+            <div class="add-point"></div>
+          </a>
+          <a (click)="setTool('remove-point', $event)">
+            <div class="remove-point"></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+      <div class="pt-1 pl-2">
+        <a (click)="setTool('reset', $event)">
+          <div class="focus-canvas"></div>
+        </a>
+        <div class="mt-3">
+          <a (click)="setTool('zoom-out', $event)">
+            <div class="zoom-out"></div>
+          </a>
+        </div>
+        <div class="mt-3">
+          <a (click)="setTool('zoom-in', $event)">
+            <div class="zoom-in"></div>
+          </a>
+        </div>
+        <div class="mt-3">
+          <a (click)="setTool('pan', $event)">
+            <div class="grab"></div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-7" id="canvas_container">
+    <div style="text-center">
+      <app-canvas [entries]="entries" (canvasRendered)="eventCanvasRendered($event)"
+        (updateEntries)="setEntries($event)" [imageUrl]="imageUrl" (isFocusingObject)="eventHasSelectedObject($event)"
+        (screenResized)="eventResizeScreen()"></app-canvas>
+    </div>
+
+  </div>
+  <div class="col-4 pt-2 pl-0 pr-0">
+    <div class="accordion" id="accordion_uview">
+      <div class="card">
+        <div class="card-header p-0 pl-2" id="headingOne">
+          <h2 class="mb-0">
+            <button class="btn btn-link" onclick="this.blur();" type="button" data-toggle="collapse"
+              data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Pages
+            </button>
+          </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion_uview">
+          <div class="card-body">
+            <app-page-list [pageList]="pageList" [comicName]="comicName" (selectedPageIndex)="setSelectedPage($event)">
+            </app-page-list>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header p-0 pl-2" id="headingTwo">
+          <h2 class="mb-0">
+            <button class="btn btn-link collapsed" id="btnKeyframes" onclick="this.blur();" type="button"
+              data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Keyframe Path
+            </button>
+          </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion_uview">
+          <div class="card-body">
+            <app-keyframes [entries]="entries" (selectedKeyframe)="highLightThisPolygonInCanvas($event)"
+              (editKeyframe)="setPolygonToEdit($event)" (saveKeyframe)="saveKeyframe($event)"
+              (deleteKeyframe)="onDeleteKeyFrame($event)" (updateFrameOrder)="saveFrameOrder($event)"></app-keyframes>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="card">
+              <div class="card-header p-0 pl-2" id="headingThree">
+                <h2 class="mb-0">
+                  <button class="btn btn-link collapsed"  onclick="this.blur();" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                   Details
+                  </button>
+                </h2>
+              </div>
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion_uview">
+                <div class="card-body">
+                  <app-details></app-details>
+
+                </div>
+              </div>
+            </div> -->
+    </div>
+    <div class="mt-4 pt-2 text-center">
+      <div class="btn-group btn-group-sm" role="group">
+        <button type="button" class="btn btn-outline-primary" (click)="movePage(selectedPage -1)">Prev</button>
+        <button type="button" class="btn btn-primary" (click)="movePage(selectedPage)"> Refresh Page #{{selectedPage +
+          1}} </button>
+        <button type="button" class="btn btn-outline-primary" (click)="movePage(selectedPage + 1)">Next</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-confirm-modal #modalDelete [modalConfig]="modalDeleteConfig">
+  Deleting this frame will immediately delete the data from the database. Are you sure?
+</app-confirm-modal>
+<div id="overlay" [hidden]="!isRendering"></div>

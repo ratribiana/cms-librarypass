@@ -1,0 +1,94 @@
+.total-checkout{
+    color: #B5B5C3;
+    font-weight: bold;
+    font-size: 1rem;
+    padding-right: 50px;
+    margin-bottom: 0;
+}
+
+.filter-fields{
+    min-width: 150px;
+    margin-top: 1rem;
+}
+
+.publisher-reports-table {
+    font-size: 14px;
+    /*margin-left: 15px;*/
+    /*margin-right: 15px;*/
+    overflow-wrap: break-word;
+}
+
+.report-label{
+    font-size: 25px;
+    padding-right: 10px;
+    margin-bottom: 0;
+}
+
+.statement-date-range{
+    margin-left: 10px;
+}
+
+.statement-date-range input{
+    width: 230px;
+}
+
+.publisher-totals{
+    margin-top: 0;
+}
+
+
+
+th[sortable] {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+th[sortable]:before {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 22px;
+  float: left;
+  margin-left: -22px;
+  background: url('/assets/img/sort/sort_both.png');
+  background-repeat: no-repeat;
+}
+
+th[sortable].desc:before, th[sortable].asc:before {
+  /*background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAmxJREFUeAHtmksrRVEUx72fH8CIGQNJkpGUUmakDEiZSJRIZsRQmCkTJRmZmJgQE0kpX0D5DJKJgff7v+ru2u3O3vvc67TOvsdatdrnnP1Y///v7HvvubdbUiIhBISAEBACQkAICAEhIAQ4CXSh2DnyDfmCPEG2Iv9F9MPlM/LHyAecdyMzHYNwR3fdNK/OH9HXl1UCozD24TCvILxizEDWIEzA0FcM8woCgRrJCoS5PIwrANQSMAJX1LEI9bqpQo4JYNFFKRSvIgsxHDVnqZgIkPnNBM0rIGtYk9YOOsqgbgepRCfdbmFtqhFkVEDVPjJp0+Z6e6hRHhqBKgg6ZDCvYBygVmUoEGoh5JTRvIJwhJo1aUOoh4CLPMyvxxi7EWOMgnCGsXXI1GIXlZUYX7ucU+kbR8NW8lh3O7cue0Pk32MKndfUxQFAwxdirk3fHappAnc0oqDPzDfGTBrCfHP04dM4oTV8cxr0SVzH9FF07xD3ib6xCDE+M+aUcVygtWzzbtGX2rPBrEUYfecfQkaFzYi6HjVnGBdtL7epqAlc1+jRdAap74RrnPc4BCijttY2tRcdN0g17w7HqZrXhdJTYAuS3hd8z+vKgK3V1zWPae0mZDMykadBn1hTQBLnZNwVrJpSe/NwEeDsEwCctEOsJTsgxLvCqUl2ACftEGvJDgjxrnBqkh3ASTvEWrIDQrwrnJpkB3DSDrGW7IAQ7wqnJtkBnLRztejXXVu4+mxz/nQ9jR1w5VB86ejLTFcnDwhzV+F6T+CHZlx6THSjn76eyyBIOPHyDakhBAQAkJACAgBISAEhIAQYCLwC8JxpAmsEGt6AAAAAElFTkSuQmCC') no-repeat;*/
+  /*background-size: 22px;*/
+  background-image: url('/assets/img/sort/sort_asc.png');
+}
+
+th[sortable].desc:before {
+  /*transform: rotate(180deg);
+  -ms-transform: rotate(180deg);*/
+  background-image: url('/assets/img/sort/sort_desc.png');
+}
+
+.note{
+    line-height: 40px; 
+    font-size: 13px;
+    color: #504b4b;
+}
+.report-label {
+    float: left;
+}
+@media (max-width: 767px) {
+  .note {
+    display: block;
+    line-height: normal;
+  }
+  .report-label {
+      float: none;
+      margin-bottom: 0;
+      line-height: normal;
+  }
+}
+@media (min-width: 768px) {
+  .publisher-reports-table td {
+    padding: 5px;
+    max-width: 40px;
+    min-width: 10%;
+  }
+}

@@ -1,0 +1,56 @@
+<div class="box">
+	<div class="row">
+	  <div class="col-12">
+			<h4>{{ pageLabel }}</h4>
+			<hr>
+	  </div>
+	  <div class="col-12">
+	  	  <div class="card mb-2">
+		  	<div class="card-body card-body-padding">
+		  			<h5>Information</h5>
+			  	<form [formGroup]="groupForm">
+			  		<div class="form-group col-12">
+			            <label for="groupName">Name<span class="required-asterisk">*</span></label>
+			            <input type="text" formControlName="groupName" class="form-control" autocomplete="off"  />
+			         </div>
+			  	</form>
+			  </div>
+			</div>
+
+	  	<div class="card">
+		  	<div class="card-body card-body-padding">
+		  		<div class="form-group col-12 remove-padding">
+			  		<h5>Role Access</h5>
+			  		<p>Please choose the roles that this <i><strong>Group</strong></i> have access to.</p>
+			  		<div class="table-wrap">
+						<table class="table table-striped table-hover col-12">
+					      <thead>
+					        <th> Roles </th>
+					        <th> Allow </th>
+					      </thead>
+					      <tbody>
+					      	<tr *ngFor="let roles of aclRoles">
+					      		<td>
+					      			<strong>{{ roles.name }}</strong>
+					      			<p>{{ roles.short_description }}</p>
+					      		</td>
+
+					      		<td>
+					      			<label class="switch">
+					                  <input  type="checkbox" (click)="onAllowRole($event)" attr.data-id="{{ roles.id }}" class="form-check-input position-static" [checked]="roles.allow == 1" > 
+					                  <span class="slider round"></span>
+				                	</label>
+					      		</td>
+					      	</tr>
+					      </tbody>
+					    </table>
+					</div>
+		    	</div>
+			</div>
+		</div>
+	    <div class="col-12 text-right mt-4">
+		  <a routerLink="/user-group"  class="btn btn-outline-dark btn-edit">{{cancelLabel}}</a>
+		 <button type="button" (click)="submitGroup()" [disabled]="!groupForm.valid" class="btn btn-aqua">{{ saveLabel }}</button>
+	  </div>
+	</div>
+</div>

@@ -1,0 +1,67 @@
+<div *ngIf="!form_loaded" class="text-center mt-4">  
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="form_loaded">
+  <form [formGroup]="updateLibraryAuthMethodForm" (ngSubmit)="updateLibraryAuthMethod($event);">
+    <!-- <div class="form-group col-md-12">
+      <label for="active"><h6>Active</h6></label>
+      &nbsp;&nbsp;
+      <input type="checkbox" formControlName="active">                            
+    </div> -->
+    <div class="form-group checkbox-wrap">
+      <label class="checkbox">
+          <input type="checkbox" class="btn-checkbox-all" formControlName="active">
+          <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-label" for="active"><h6>Active</h6></label>
+    </div>
+
+    <div *ngIf="auth_is_active">
+      <div>
+        <h6>Settings</h6>        
+        <div class="form-group col-md-12" >
+          <label for="scope">Entity ID</label>        
+          <br>
+          <code>You can find the Entity ID in your SP Dashboard Configuration->Application->[Name of your application]->Discovery</code>
+          <!-- pattern="^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$" -->
+          <input type="text" formControlName="scope" class="form-control" placeholder="Add New Entity ID" [ngClass]="{ 'is-invalid': submitted && f.scope.errors }" />
+          <div *ngIf="submitted && f.scope.errors" class="invalid-feedback">
+            Please Enter a valid Entity ID (eg. https://idp.librarypass.com/openathens)
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div >
+      <div class="form-group" >            
+        <button [disabled]="loading" class="btn btn-primary btn-aqua">Save Changes</button>
+        <img *ngIf="loading" class="pl-2" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div> 
+    </div> 
+  </form>
+
+  <div class="col-md-10 padded-top" *ngIf="auth_is_active">
+    <table class="table table-hover table-striped library-reports-table col-md-12">
+      <thead>
+        <th> Domain </th>    
+        <th> &nbsp; </th>
+      </thead>
+      <tbody>
+      <tr *ngFor="let scope of scopes | async | paginate: { id: 'statement_report_paging', itemsPerPage: limit, currentPage: page, totalItems: total }">
+        <td>{{ scope['scope']  }}</td>
+        <td>                
+          <button type="button" (click)="deleteAuthScope($event, scope['id'], scope['scope'])" class="btn btn-outline-danger btn-delete btn-delete-top"><i class="icon icon-delete"></i> Delete</button>               
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    
+    <div class="col-12 text-center">
+      <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
+      <pagination-controls (pageChange)="getScopes($event, filter)" id="statement_report_paging" previousLabel="" nextLabel=""></pagination-controls>
+    </div>                                
+</div>
+</div>

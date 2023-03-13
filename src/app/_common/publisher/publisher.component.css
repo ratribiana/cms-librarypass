@@ -1,0 +1,33 @@
+.btn-gen-report {
+	float: right;
+}
+@media (max-width: 767px) {
+	.btn-gen-report {
+		margin-top: 15px;
+		float: none;
+	}
+	.no-float-mob {
+		float: none!important;
+	}
+	.report-quarter-button {
+		margin-top: 5px;
+	}
+	.monthly-report-input {
+		margin-bottom: 5px;
+	}
+	.report-quarter-button,
+	.monthly-report-input,
+	.monthly-report-button {
+		width: 100%;
+	}
+}
+@media (min-width: 768px) {
+	.monthly-report-input {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+	.monthly-report-button {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+}

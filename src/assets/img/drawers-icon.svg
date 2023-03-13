@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.589" height="20.589" viewBox="0 0 20.589 20.589">
+  <g id="drawers-icon" transform="translate(-12774.75 1529.25)">
+    <rect id="Rectangle_24094" data-name="Rectangle 24094" width="18" height="19" transform="translate(12776 -1528)" fill="#f0f1f4"/>
+    <g id="_007-doorway" data-name="007-doorway" transform="translate(12775 -1529)">
+      <path id="Path_6844" data-name="Path 6844" d="M19.251,0H.837A.837.837,0,0,0,0,.837V4.185a.837.837,0,0,0,.837.837V19.251a.837.837,0,0,0,.837.837h16.74a.837.837,0,0,0,.837-.837V5.022a.837.837,0,0,0,.837-.837V.837A.837.837,0,0,0,19.251,0ZM9.207,18.414h-6.7V5.022h6.7Zm8.37,0h-6.7V5.022h6.7Zm.837-15.066H1.674V1.674h16.74Zm0,0" fill="#bbc0d2" stroke="#bbc0d2" stroke-width="0.5"/>
+      <path id="Path_6847" data-name="Path 6847" d="M224.837,234.93a.837.837,0,0,0,.837-.837v-1.256a.837.837,0,1,0-1.674,0v1.256A.837.837,0,0,0,224.837,234.93Zm0,0" transform="translate(-212.282 -220.863)" fill="#bbc0d2" stroke="#bbc0d2" stroke-width="0.5"/>
+      <path id="Path_6848" data-name="Path 6848" d="M128.837,232a.837.837,0,0,0-.837.837v1.256a.837.837,0,1,0,1.674,0v-1.256A.837.837,0,0,0,128.837,232Zm0,0" transform="translate(-121.304 -220.863)" fill="#bbc0d2" stroke="#bbc0d2" stroke-width="0.5"/>
+    </g>
+  </g>
+</svg>

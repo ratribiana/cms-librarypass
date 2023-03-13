@@ -1,0 +1,44 @@
+<section class="workflow-log">
+    <div class="col-12 mb-3 text-right">
+        <div class="d-flex flex-row-reverse ">
+            <div class="p-0">
+                <button type="button" class="btn form-search-btn btn-outline-dark">Search</button>
+            </div>
+            <div class="p-0">
+                <input (change)="filterRecords($event)" type="text" autocomplete="none" class="form-control form-search-input " placeholder="Type keyword">
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="col-12">
+            <table class="table table-striped table-hover library-reports-table col-sm-12">
+                <thead>
+                    <th> Date </th>
+                    <th> User </th>
+                    <th> Step/Task </th>
+                    <th> Page </th>
+                    <th> Text Region </th>
+                    <th> Word Count </th>
+                    <th> Text Value </th>
+                </thead>
+                <tbody>
+                     <tr *ngFor="let logs of workflow_logs | async | paginate: { id: 'workflow_log_records', itemsPerPage: limit, currentPage: page, totalItems: total }">
+            <td>{{logs.created}}</td>
+            <td>{{logs.user}}</td>
+            <td>{{logs.step}}</td>
+            <td>{{logs.page}}</td>
+            <td >{{logs.test_region}}</td>        
+            <td >{{logs.word_count}}</td>        
+            <td >{{logs.text_value}}</td>        
+          </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+        <p class="float-right total-checkout">Total : {{total}}</p>
+      </div>
+      <div class="text-center">
+        <pagination-controls (pageChange)="getWorkflowlogs($event, filter)" previousLabel="" nextLabel="" id="workflow_log_records"></pagination-controls>
+      </div>
+    </div>
+</section>

@@ -1,0 +1,80 @@
+:host ::ng-deep .multiselect-dropdown .dropdown-btn {
+    display: inline-block;
+    border: 1px solid #ccc !important;
+    width: 60%;
+    padding: 12px;
+    margin-bottom: 0;    
+    font-weight: 400;
+    line-height: 2.4;
+    text-align: left;
+    vertical-align: middle;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 4px;
+    font-size: 14px;  
+    min-width: 130px;
+    min-height: 50px;
+    color: #2b2828;
+}
+
+:host ::ng-deep .multiselect-dropdown .dropdown-list{
+    width: 150%;  
+}
+  
+:host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item {
+    width: 100%;  
+    /* margin: 2px;     */
+    /* border: 1px solid #fff !important; */
+    /* border-bottom: #adadad !important; */
+    background: #fff !important;  
+    color: #292c2f !important;
+    border-style: none!important;
+    height: 30px;
+}
+
+:host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item a {
+    float: right;  
+    color: #292c2f !important;
+}
+
+.required-asterisk {
+    color: red;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 1.2em;
+}
+
+#productsTable tbody tr {
+    font-size: 14px !important;
+}
+
+#productsTable thead tr {
+    font-size: 14px !important;
+}
+
+#productsTable_filter {
+    font-size: 14px !important;
+}
+
+#dataTables_length {
+    font-size: 14px !important;
+}
+
+#productsTable_info {
+    font-size: 14px !important;
+}
+
+#productsTable_paginate {
+    font-size: 14px !important;
+}
+
+.spinner-border {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+}
+
+@media (max-width: 767px) {
+    .btn-search-space {
+        margin-top: 15px;
+    }
+}
