@@ -1023,6 +1023,39 @@ h3{
 ::ng-deep .desktop-float-right {
   float: right;
 }
+::ng-deep .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+  max-width: none !important;
+}
+
+::ng-deep span[class^="filter-select-"] .dropdown-btn:before, span[class*=" filter-select-"] .dropdown-btn:before {
+  float: left;
+}
+
+::ng-deep #filter-form .multiselect-dropdown .dropdown-btn .selected-item-container {
+  float: right;
+  margin-right: 8px;
+}
+
+::ng-deep .multiselect-dropdown .dropdown-btn span:nth-child(2)  {
+  margin-left: 5px !important;
+}
+
+::ng-deep #filter-form .multiselect-dropdown .dropdown-btn .selected-item {
+  max-width: none !important;
+}
+
+#navbarDropdownMenuLink {
+  display: flex;
+}
+
+#navbarDropdownMenuLink::after {
+  margin-top: 16px;
+}
+
+::ng-deep .display-none {
+  display: none;
+}
+
 @media (max-width: 767px) {
   ::ng-deep .filter-fields.xs-float-right {
     float: right;

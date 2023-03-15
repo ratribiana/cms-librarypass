@@ -188,6 +188,6 @@
     </div>
     <div class="col-12 text-center" *ngIf="checkouts">
         <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
-        <pagination-controls (pageChange)="getActivityReports(supplier_id, $event, report_type)" previousLabel="" nextLabel="" id="publisher_activity_paging"></pagination-controls>
+        <pagination-controls [ngClass]="{ 'display-none': loading }" (pageChange)="getActivityReports(supplier_id, $event, report_type)" previousLabel="" nextLabel="" id="publisher_activity_paging"></pagination-controls>
     </div>
 </div>

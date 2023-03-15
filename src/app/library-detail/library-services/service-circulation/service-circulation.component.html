@@ -39,12 +39,12 @@
         <div class="row">
             <div class="offset-md-1 col-md-7 mb-4">
                 <b class="mb-2">Allowed Price Tiers</b>
-                <ng-multiselect-dropdown name="price_tiers" [placeholder]="'Select Price Tiers'" [data]="library_price_tiers" formControlName="price_tiers" [disabled]="disabled" [settings]="dropdownSettings">
+                <ng-multiselect-dropdown [settings]="dropdownSettings" name="price_tiers" [placeholder]="'Select Price Tiers'" [data]="library_price_tiers" formControlName="price_tiers" [disabled]="disabled" >
                 </ng-multiselect-dropdown>
             </div>
             <div class="offset-md-1 col-md-7 mb-4">
                 <b class="mb-2">Allowed Content Ratings</b>
-                <ng-multiselect-dropdown name="content_ratings" [placeholder]="'Select Content Ratings'" [data]="library_content_ratings" formControlName="content_ratings" [disabled]="disabled" [settings]="dropdownSettings">
+                <ng-multiselect-dropdown [settings]="dropdownSettings" name="content_ratings" [placeholder]="'Select Content Ratings'" [data]="library_content_ratings" formControlName="content_ratings" [disabled]="disabled" >
                 </ng-multiselect-dropdown>
             </div>
         </div>

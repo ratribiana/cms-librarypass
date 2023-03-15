@@ -17,10 +17,10 @@
 
         <div class="col-md-6 col-sm-12 mb-3 mt-3">
             <label><b>Locale Preset</b></label>
-            <ng-multiselect-dropdown  
-                [placeholder]="'Select Preset'" 
-                [data]="localeRawPreset" 
+            <ng-multiselect-dropdown
                 [settings]="localeDropdown"
+                [placeholder]="'Select Preset'" 
+                [data]="localeRawPreset"
                 (onSelect)="onPresetSelect($event)" 
                  >
             </ng-multiselect-dropdown>

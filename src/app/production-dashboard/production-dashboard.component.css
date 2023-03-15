@@ -240,12 +240,14 @@ ul{
 .filter-select-workflow .dropdown-btn:before {
     content: 'Workflow Status';
 }
+
 #filter-form .multiselect-dropdown .dropdown-btn .selected-item {
     display: inline-block;
     float: none;
     margin-left: 4px;
     margin-right: 0;
 }
+
 /*#add-filters .dropdown-btn > span:last-child > span:first-child:not(.dropdown-down):not(.dropdown-up) {
     
 }*/

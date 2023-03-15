@@ -3,10 +3,10 @@
     <div class="col-12 float-left" *ngIf="is_admin">
       <div class="mb-3 width-25">  
         <ng-multiselect-dropdown
+          [settings]="dropdownSettings"
           name="libraries_list"          
           [placeholder]="'Search for Institution'"
-          [data]="libraries"          
-          [settings]="dropdownSettings"        
+          [data]="libraries"  
           (onSelect)="onLibrarySelect($event)"
           (onDeSelect)="onLibraryDeSelect($event)"
         >

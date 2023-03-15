@@ -78,7 +78,7 @@
       
         <div class="col-12 text-center">
           <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
-          <pagination-controls (pageChange)="getDomainsList($event, filter)" id="statement_report_paging" previousLabel="" nextLabel=""></pagination-controls>
+          <pagination-controls [ngClass]="{ 'display-none': loading }" (pageChange)="getDomainsList($event, filter)" id="statement_report_paging" previousLabel="" nextLabel=""></pagination-controls>
         </div>                                
   </div>
 

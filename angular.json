@@ -45,7 +45,11 @@
             "allowedCommonJsDependencies": [
               "crypto-js",
               "angular2-flash-messages",
-              "ng2-select2"
+              "ng2-select2",
+              "fabric",
+              "moment",
+              "lodash",
+              "file-saver"
            ]
           },
           "configurations": {
@@ -53,13 +57,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "5mb",
                   "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 }
               ],
               "fileReplacements": [
@@ -71,7 +75,6 @@
               "outputHashing": "all",
               "optimization": true,
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,

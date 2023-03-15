@@ -123,3 +123,6 @@ th[sortable] {
     background-image: url('/assets/img/sort/sort_desc.png');
   }
   
+  .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
+    height: 48px !important;
+  }

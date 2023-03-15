@@ -2,10 +2,10 @@
 
   <div class="mb-3" style="width:35%" *ngIf="is_admin">  
     <ng-multiselect-dropdown
+      [settings]="dropdownSettings"
       name="schools_list"          
       [placeholder]="'Select Institution'"
-      [data]="schools"          
-      [settings]="dropdownSettings"        
+      [data]="schools" 
       (onSelect)="onSchoolSelect($event)"
       (onDeSelect)="onSchoolDeSelect($event)"
     >
@@ -134,10 +134,10 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="col-12 text-center">
       <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
-      <pagination-controls (pageChange)="getMarcReports(library_id, $event)" id="statement_report_paging" previousLabel="" nextLabel=""></pagination-controls>
+      <pagination-controls [ngClass]="{ 'display-none': loading }" (pageChange)="getMarcReports(library_id, $event)" id="statement_report_paging" previousLabel="" nextLabel=""></pagination-controls>
     </div>
   </div>
 

@@ -59,10 +59,6 @@ export class PublisherComponent implements OnInit {
   ) {}
 
   ngOnInit() {  
-    console.log(this.pub_statement)
-    if (this.pub_statement) this.pub_statement.getStatementReports(this.supplier_id, this.page, this.report_type);
-    if (this.pub_activity) this.pub_activity.getActivityReports(this.supplier_id, this.page, this.report_type);
-
     this.dropdownSettings= {
         singleSelection: true,
         closeDropDownOnSelection: true,
@@ -74,6 +70,11 @@ export class PublisherComponent implements OnInit {
     if(this.is_admin){
       this.getPublisherList();
     }    
+  }
+
+  ngAfterViewInit() {
+    this.pub_statement.getStatementReports(this.supplier_id, this.page, this.report_type);
+    this.pub_activity.getActivityReports(this.supplier_id, this.page, this.report_type);
   }
 
   getPublisherList(){

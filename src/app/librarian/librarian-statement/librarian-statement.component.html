@@ -122,6 +122,6 @@
 
   <div class="col-12 text-center">
     <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
-    <pagination-controls (pageChange)="getLibrarianStatementReports(library_id, $event)" previousLabel="" nextLabel="" id="statement_report_paging"></pagination-controls>
+    <pagination-controls [ngClass]="{ 'display-none': loading }" (pageChange)="getLibrarianStatementReports(library_id, $event)" previousLabel="" nextLabel="" id="statement_report_paging"></pagination-controls>
   </div>
 </div>

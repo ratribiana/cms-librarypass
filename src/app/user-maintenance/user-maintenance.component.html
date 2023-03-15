@@ -3,10 +3,10 @@
     <div class="box" *ngIf="is_admin && !is_parent">
       <div class="col-12 col-md-5 col-lg-4">
         <ng-multiselect-dropdown
+          [settings]="singleDropdownSettings" 
           name="regions_list"          
           [placeholder]="'Select Institution'"    
           [data]="parent_institutions"             
-          [settings]="singleDropdownSettings"        
           (onSelect)="onParentSelect($event)"
           (onDeSelect)="resetParentInstitution()"
         >
@@ -19,12 +19,12 @@
       <div class="select-wrap col-12 col-md-5 col-lg-4">  
         <form [formGroup]="searchForm">
           <ng-multiselect-dropdown
+            [settings]="dropdownSettings"  
             name="libraries"
             formControlName="libraries"
             [placeholder]="'Select Institution'"
             [data]="institution_node"
-            [(ngModel)]="selectedItems"
-            [settings]="dropdownSettings"            
+            [(ngModel)]="selectedItems"      
             (onSelect)="onLibrariesSelect($event)"
             (onDeSelect)="onLibrariesDeSelect($event)"
             (onSelectAll)="onLibrariesSelectAll($event)"

@@ -33,24 +33,24 @@
         <div class="row col-12 pr-0">
             <div class="col-4 pr-0">
                 <label for="">Publisher<span class="required-asterisk">*</span></label>
-                <ng-multiselect-dropdown name="publishers_list" [placeholder]="'Select Publisher'" [data]="publishers" [settings]="publisherDropdown" (onSelect)="onNameUpdate($event)"  formControlName="supplier_id" >
+                <ng-multiselect-dropdown [settings]="publisherDropdown" name="publishers_list" [placeholder]="'Select Publisher'" [data]="publishers" (onSelect)="onNameUpdate($event)"  formControlName="supplier_id" >
                 </ng-multiselect-dropdown >
             </div>
             <div class="col-4 pr-0">
                 <label for="">Product Type<span class="required-asterisk">*</span></label>
-                <ng-multiselect-dropdown name="product_type_list" [placeholder]="'Select Type'" [data]="productTypes" [settings]="productTypeDropdown" formControlName="product_type_id">
+                <ng-multiselect-dropdown [settings]="productTypeDropdown" name="product_type_list" [placeholder]="'Select Type'" [data]="productTypes" formControlName="product_type_id">
                 </ng-multiselect-dropdown>
             </div>
             <div class="col-4 pr-0">
                 <label for="">Language<span class="required-asterisk">*</span></label>
-                <ng-multiselect-dropdown name="language_list" [placeholder]="'Select Language'" [data]="languages" [settings]="languageDropdown" (onSelect)="onNameUpdate($event)" formControlName="language_id">
+                <ng-multiselect-dropdown [settings]="languageDropdown" name="language_list" [placeholder]="'Select Language'" [data]="languages" (onSelect)="onNameUpdate($event)" formControlName="language_id">
                 </ng-multiselect-dropdown>
             </div>
         </div>
         <div class="row col-12 pr-0">
             <div class="col-4 pr-0">
                 <label for="">Release Type<span class="required-asterisk">*</span></label>
-                <ng-multiselect-dropdown name="relase_type" [placeholder]="'Select Release'" [data]="releaseTypes" [settings]="languageDropdown" formControlName="release_category_id">
+                <ng-multiselect-dropdown [settings]="languageDropdown" name="relase_type" [placeholder]="'Select Release'" [data]="releaseTypes" formControlName="release_category_id">
                 </ng-multiselect-dropdown>
             </div>
             <div class="col-8 pr-0">

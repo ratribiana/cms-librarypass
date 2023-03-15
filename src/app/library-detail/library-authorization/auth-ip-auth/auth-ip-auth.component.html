@@ -123,7 +123,7 @@
       
         <div class="col-12 text-center">
           <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
-          <pagination-controls (pageChange)="getIPsList($event, filter)" id="statement_report_paging" [hidden]="!table_loaded" previousLabel="" nextLabel=""></pagination-controls>
+          <pagination-controls [ngClass]="{ 'display-none': loading }" (pageChange)="getIPsList($event, filter)" id="statement_report_paging" [hidden]="!table_loaded" previousLabel="" nextLabel=""></pagination-controls>
         </div>                                
   </div>
 

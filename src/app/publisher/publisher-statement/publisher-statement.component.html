@@ -112,6 +112,6 @@
   
   <div class="col-12 text-center" *ngIf="reports">
     <div class="spinner" [ngClass]="{ 'hidden': !loading }"></div>
-    <pagination-controls (pageChange)="getStatementReports(supplier_id, $event)" id="publisher_report_paging" previousLabel="" nextLabel=""></pagination-controls>
+    <pagination-controls [ngClass]="{ 'display-none': loading }" (pageChange)="getStatementReports(supplier_id, $event)" id="publisher_report_paging" previousLabel="" nextLabel=""></pagination-controls>
   </div>
 </div>

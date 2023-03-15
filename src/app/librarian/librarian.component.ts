@@ -54,18 +54,24 @@ export class LibrarianComponent implements OnInit {
       singleSelection: true,
     };
 
-    if(this.is_admin){               
-      this.library_id = 0;
-      this.getParentInstitutions();      
-      this.displayReports([]);    
-    }
-    else{
-      this.getInstitutionNode();   
-    }        
+      
 
     this.searchForm = this.fb.group({
       libraries: []
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if(this.is_admin){               
+        this.library_id = 0;
+        this.getParentInstitutions();      
+        this.displayReports([]);    
+      }
+      else{
+        this.getInstitutionNode();   
+      }  
+    }, 0)
   }
 
   getInstitutionNode(){

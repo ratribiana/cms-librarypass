@@ -6,12 +6,12 @@
       
       <div class="mb-3">  
         <ng-multiselect-dropdown
+          [settings]="dropdownSettings"
           name="content_ratings"
           formControlName="content_ratings"
           [placeholder]="'Age'"
           [data]="library_content_ratings"  
-          [disabled]="filter_disabled"
-          [settings]="dropdownSettings"        
+          [disabled]="filter_disabled"  
           (onSelect)="onContentRatingSelect($event)"
           (onDeSelect)="onContentRatingDeSelect($event)"
         >
@@ -20,12 +20,12 @@
 
       <div class="mb-3">  
         <ng-multiselect-dropdown
+          [settings]="dropdownSettings" 
           name="publishers"
           formControlName="publishers"
           [placeholder]="'Publishers'"
           [data]="publishers"  
           [disabled]="filter_disabled"
-          [settings]="dropdownSettings"        
           (onSelect)="onPublishersSelect($event)"
           (onDeSelect)="onPublishersDeSelect($event)"
         >
@@ -34,12 +34,12 @@
 
       <div class="mb-3">  
         <ng-multiselect-dropdown
+          [settings]="dropdownSettings" 
           name="productTypes"
           formControlName="productTypes"
           [placeholder]="'Types'"
           [data]="productTypes"  
           [disabled]="filter_disabled"
-          [settings]="dropdownSettings"        
           (onSelect)="onProductTypesSelect($event)"
           (onDeSelect)="onProductTypesDeSelect($event)"
         >
