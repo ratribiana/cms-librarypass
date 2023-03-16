@@ -124,9 +124,9 @@ import { AuthOpenathensComponent } from './library-detail/library-authorization/
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule.withConfig({ callSetDisabledState: 'whenDisabledForLegacyCode' }),
+    FormsModule,
     HttpClientModule,
-    ReactiveFormsModule.withConfig({ callSetDisabledState: 'whenDisabledForLegacyCode' }),
+    ReactiveFormsModule,
     NgxPaginationModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
