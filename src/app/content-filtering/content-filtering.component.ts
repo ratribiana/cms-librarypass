@@ -287,23 +287,19 @@ export class ContentFilteringComponent implements OnInit {
   }
 
   onDropDownClose(event){    
-    if(this.selectedItems.length > 0){
-      $('.lib-list').parent().find('input').prop('checked', false);
-      $('.option-' + this.selectedItems[0].id).parent().find('input').prop('checked', true);
-        
-      this.pseudoCheckChildren(this.selectedItems[0].id);
+    if(this.selectedItems.length > 1){
+      this.pseudoCheckChildren(this.selectedItems);
     }
-    
   }
 
-  pseudoCheckChildren(lib_id){
-    let result = this.getChildrenOption(lib_id);              
+  pseudoCheckChildren(lib){
+    let result = this.getChildrenOption(lib[0].id);
+            
     if(result.length > 1){                    
-      $('.child-list-count').html( ' +' + result.length + ' institution');
-      result.forEach(dat => {          
-        $('.option-' + dat.id).parent().find('input').prop('checked', true);
-      });              
-    }        
+      $("#library_list .multiselect-item-checkbox:not(:first-child)").find('input').prop('checked', true);
+    }
+
+    return result.length
   }
 
   filterCustomRange(dateFilter: any){    
@@ -312,6 +308,23 @@ export class ContentFilteringComponent implements OnInit {
   }
 
   onFilterSelect(item: any, type){    
+    if (this.selectedItems.length > 0) {
+        let childrenCount = this.pseudoCheckChildren(this.selectedItems);
+ 
+        if (childrenCount == 0) {
+          $("#library_list .multiselect-item-checkbox").find('input').prop('checked', false);
+          $(`#library_list [aria-label="${this.selectedItems[0].name}"]`).prop('checked', false);
+ 
+        } else {
+          this.getInstitutionNode(this.selectedItems[0])
+          $("#library_list .multiselect-item-checkbox").find('input').prop('checked', false);
+          setTimeout(() => {
+            $("#library_list .multiselect-item-checkbox").find('input').prop('checked', true);
+          }, 1000)
+
+        }
+    } 
+
     if( type == 'selected_availability' ){
       this.selected_availability = item.id;
       if(item.id == 'just_released'){
@@ -371,7 +384,8 @@ export class ContentFilteringComponent implements OnInit {
       case 'institution':                
         this.library_id = 0;
         this.selectedItems = [];
-        $('.lib-list').parent().find('input').prop('checked', false);        
+        this.resetParentInstitution(null)
+        // $('.lib-list').parent().find('input').prop('checked', false);        
         break;
       case 'selected_age':
         this.selected_age = 0;
@@ -403,8 +417,8 @@ export class ContentFilteringComponent implements OnInit {
     this.getInstitutionNode(item);
   }
 
-  resetParentInstitution(event){    
-    event.preventDefault();
+  resetParentInstitution(event: Event | null){    
+    if (event != null) event.preventDefault();
     this.is_parent = false;        
     this.selectedItems = [];
     this.institution_node = [];      
@@ -418,14 +432,16 @@ export class ContentFilteringComponent implements OnInit {
 
     let institution_node = await this.getLibraryNodes(this.library_id);
     this.institution_node = institution_node;
-
+  
     if(this.institution_node.length > 1){
       this.is_parent = true;          
-      this.selectedItems = [{
-        'id' : item.id,
-        'name' : item.name,
-        'lineage' : '1.1'
-      }];                                
+      this.selectedItems = this.institution_node
+
+ 
+
+      setTimeout(() => {
+        const librarySelector = $("#library_list .selected-item-container:first-child .selected-item").append(`<span class='selected-num'>+ ${this.institution_node.length - 1} ${this.institution_node.length > 1 ? 'institutions' : 'institution'}</span>`);
+      }, 500)                                
 
       await this.sleep(1000);
       $("body").trigger("click"); 

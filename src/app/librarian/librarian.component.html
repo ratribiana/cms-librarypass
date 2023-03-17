@@ -11,11 +11,12 @@
     >
     </ng-multiselect-dropdown> 
   </div>
-
-  <div class="select-wrap mb-3 width-50" *ngIf="is_parent">
+ 
+  <div class="select-wrap mb-3 width-35" *ngIf="is_parent">
     <form [formGroup]="searchForm">
     <ng-multiselect-dropdown
       [settings]="dropdownSettings"
+      id="libraries"
       name="libraries"
       formControlName="libraries"
       [placeholder]="'Select Institution'"
@@ -25,22 +26,7 @@
       (onDeSelect)="onLibrariesDeSelect($event)"
       (onSelectAll)="onLibrariesSelectAll($event)"
     >
-      <ng-template
-        #optionsTemplate
-        let-item
-        let-option="option"
-        let-id="id"
-      >
-        <div [ngStyle]="getItemStyle(getItems[id].lineage)">
-          {{option}}
-        </div>
-      </ng-template>
-
-      <ng-template #optionSelectedTemplate let-option="option" let-id="id">
-        <div class="selected-text" [ngClass]="getItemClass(getItems[id])">
-          {{option}} <span class="selected-num" [hidden]="hideItemCount(getItems[id].lineage)">{{ getItemCountText(getItems[id].lineage) }}</span>
-        </div>
-      </ng-template>
+      test
     </ng-multiselect-dropdown> 
   </form>
   <a href="#" (click)="resetParentInstitution($event)" *ngIf="is_admin">Reset Parent Institution</a>

@@ -78,7 +78,7 @@ export class LibrarianComponent implements OnInit {
     this.is_parent = false;
     this.libraryService.getLibraryNodes(this.library_id)
     .subscribe(res => {  
-
+      console.log(res)
       if(res.length > 1){
         this.is_parent = true;        
         this.selectedItems = res;
@@ -86,7 +86,12 @@ export class LibrarianComponent implements OnInit {
       }
             
       let ids = res.map(function(value) { return value['id']; });                  
-      this.displayReports(ids);            
+      this.displayReports(ids);
+      if (ids.length > 1) {
+        setTimeout(() => {
+          const librarySelector = $("#libraries .selected-item-container:first-child .selected-item").append(`<span class='selected-num'>+ ${ids.length - 1} ${ids.length > 1 ? 'institutions' : 'institution'}</span>`);
+        }, 500)   
+      }         
     });
   }
 
@@ -97,8 +102,8 @@ export class LibrarianComponent implements OnInit {
     });
   }
 
-  resetParentInstitution(event){    
-    event.preventDefault();
+  resetParentInstitution(event: Event | null){    
+    if (event != null) event.preventDefault();
     this.is_parent = false;        
     this.selectedItems = [];
     this.library_ids = [];
@@ -122,6 +127,7 @@ export class LibrarianComponent implements OnInit {
         return !removed_ids.includes(dat.id);
       });
      this.selectedItems = remaining_items;
+     this.resetParentInstitution(null)
     }
     
     let ids = this.selectedItems.map(function(value) { return value['id']; });    
@@ -199,7 +205,7 @@ export class LibrarianComponent implements OnInit {
     let allData = this.institution_node.sort(this.sortFunction);
     let parentData = [];
     let newClass = '';
-
+    console.log(data)
     allData.map(function(value) {
       let item = selff.selectedItems.filter(function(item) { 
         return item.id == value.id;

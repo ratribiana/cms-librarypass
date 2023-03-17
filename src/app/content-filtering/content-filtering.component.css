@@ -34,7 +34,8 @@
 }
 
 :host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item a {
-    float: right;  
+    float: right;
+    margin-left: 8px;  
     /*color: #292c2f !important;*/
 }
 
@@ -126,3 +127,11 @@ th[sortable] {
   .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
     height: 48px !important;
   }
+
+::ng-deep #library_list .dropdown-list ul.item2 .multiselect-item-checkbox:not(:first-child) {
+    margin-left: 6px;
+}
+
+::ng-deep #library_list .multiselect-dropdown .dropdown-btn .selected-item-container:not(:first-child) {
+	display:none;
+}

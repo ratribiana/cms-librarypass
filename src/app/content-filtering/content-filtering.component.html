@@ -21,7 +21,8 @@
           <div class="mb-3" *ngIf="is_parent">  
             <ng-multiselect-dropdown
               [settings]="dropdownSettings"
-              name="libraries_list"              
+              name="libraries_list"
+              id="library_list"              
               formControlName="libraries_list"
               [placeholder]="'Select Institution'"
               [data]="institution_node"
@@ -53,7 +54,7 @@
 
             </ng-multiselect-dropdown> 
 
-            <a href="#" (click)="resetParentInstitution=$event" *ngIf="is_admin">Reset Parent Institution</a>
+            <a href="#" (click)="resetParentInstitution($event)" *ngIf="is_admin">Reset Parent Institution</a>
           </div>                          
 
           <div class="mb-3">  

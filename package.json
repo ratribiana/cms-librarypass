@@ -2,8 +2,8 @@
   "name": "comics-plus-cms",
   "version": "2.0.0",
   "engines": {
-    "npm" : "8.19.2",
-    "node" : "18.10.0"
+    "npm": "8.19.2",
+    "node": "18.10.0"
   },
   "scripts": {
     "ng": "ng",
