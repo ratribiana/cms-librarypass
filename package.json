@@ -12,7 +12,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "preinstall": "nvm install 18.10.0 && nvm use 18.10.0 && npm install && npm run build",
+    "postinstall": "nvm use 8.17.0"
   },
   "private": true,
   "dependencies": {
